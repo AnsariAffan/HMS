@@ -17,8 +17,9 @@ export const savePateint = createAsyncThunk(
           "data": values
       }
       );
-      console.log(response);
+      console.log(response.data.message);
       // await history.push("/UserTableController");
+      window.alert(response.data.message)
       history.push("/Usertable")
       return response.data
     } catch (error) {
@@ -40,6 +41,7 @@ export const updatePateint = createAsyncThunk(
       );
       history.push("/Usertable")
       console.log(response);
+    
       return response.data;
           
     } catch (error) {

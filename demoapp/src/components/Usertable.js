@@ -129,6 +129,7 @@ const Usertable = () => {
   const [uniqueNames2, setUniqueNames2] = useState([]);
 
   console.log(message)
+  
   useEffect(() => {
     dispatch(getAllPateints());
   }, [dispatch]);

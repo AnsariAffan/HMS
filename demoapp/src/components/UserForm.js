@@ -20,6 +20,8 @@ const MyForm = () => {
     dispatch(getAllPateints());
   }, [dispatch]);
 
+  console.log(allPateint.message)
+
   useEffect(() => {
     if (allPateint && allPateint.data && id) {
       const patientData = allPateint.data.find((patient) => patient._id === id);
