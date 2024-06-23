@@ -28,6 +28,26 @@ export const savePateint = createAsyncThunk(
   }
 );
 
+export const updatePateint = createAsyncThunk(
+  "api/updatePatient",
+  async (values, { rejectWithValue }) => {
+    try {
+      const response = await axios.put(
+        "http://localhost:8000/api/updateNewEntry",
+        {
+          data: values
+        }
+      );
+      console.log(response);
+      return response.data;
+    } catch (error) {
+      console.error("Update patient error:", error);
+      return rejectWithValue(error.response ? error.response.data : error.message);
+    }
+  }
+);
+
+
 
 // 
 

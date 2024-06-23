@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Tabs, Form, Input, DatePicker, Button, Row, Col, Select } from 'antd';
 import './Userform.css'; // Import your custom CSS file
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllPateints, savePateint } from '../api/api';
+import { getAllPateints, savePateint, updatePateint } from '../api/api'; // Import the updatePatient action
 import { Option } from 'antd/es/mentions';
 import { useParams } from 'react-router-dom';
 import moment from 'moment';
@@ -13,6 +13,7 @@ const MyForm = () => {
   const dispatch = useDispatch();
   const { allPateint } = useSelector((state) => state.products);
   const [form] = Form.useForm();
+  const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
     dispatch(getAllPateints());
@@ -22,6 +23,7 @@ const MyForm = () => {
     if (allPateint && allPateint.data && id) {
       const patientData = allPateint.data.find((patient) => patient._id === id);
       if (patientData) {
+        setIsEditing(true);
         form.setFieldsValue({
           Ragistration_Date: patientData.Ragistration_Date ? moment(patientData.Ragistration_Date) : null,
           First_Name: patientData.First_Name || '',
@@ -48,10 +50,15 @@ const MyForm = () => {
 
   const onFinish = async (values) => {
     try {
-      await dispatch(savePateint(values));
-      console.log('Form values submitted:', values);
+      if (isEditing) {
+        await dispatch(updatePateint(values)); // Call updatePatient if editing
+        console.log('Patient updated:', values);
+      } else {
+        await dispatch(savePateint(values));
+        console.log('Patient saved:', values);
+      }
     } catch (error) {
-      console.error('Error saving patient:', error);
+      console.error('Error saving/updating patient:', error);
     }
   };
 
@@ -60,7 +67,7 @@ const MyForm = () => {
       <Row gutter={24}>
         <Col span={8}>
           <Form.Item label="Registration Date" name="Ragistration_Date">
-            <DatePicker style={{    width: "-webkit-fill-available"}}  className="custom-input" />
+            <DatePicker style={{ width: "-webkit-fill-available" }} className="custom-input" />
           </Form.Item>
         </Col>
         <Col span={8}>
@@ -82,7 +89,7 @@ const MyForm = () => {
         </Col>
         <Col span={8}>
           <Form.Item label="Date of Birth" name="Date_of_Birth">
-            <DatePicker style={{    width: "-webkit-fill-available"}}  className="custom-input" />
+            <DatePicker style={{ width: "-webkit-fill-available" }} className="custom-input" />
           </Form.Item>
         </Col>
         <Col span={8}>
@@ -173,22 +180,22 @@ const MyForm = () => {
 };
 
 const Tab1 = () => (
-  <div >
-    <h3 >Patient Information</h3>
+  <div>
+    <h3>Patient Information</h3>
     <MyForm />
   </div>
 );
 
 const Tab2 = () => (
-  <div >
-    <h3 >Tab 2 Content</h3>
+  <div>
+    <h3>Tab 2 Content</h3>
     {/* Add Tab 2 specific content */}
   </div>
 );
 
 const Tab3 = () => (
-  <div >
-    <h3 >Tab 3 Content</h3>
+  <div>
+    <h3>Tab 3 Content</h3>
     {/* Add Tab 3 specific content */}
   </div>
 );
@@ -198,8 +205,8 @@ const UserForm = () => {
 
   return (
     <div className="tab-container">
-      <Tabs  activeKey={activeTab} onChange={(key) => setActiveTab(key)} centered>
-        <TabPane   tab="Patient Information" key="1">
+      <Tabs activeKey={activeTab} onChange={(key) => setActiveTab(key)} centered>
+        <TabPane tab="Patient Information" key="1">
           <Tab1 />
         </TabPane>
         <TabPane tab="Tab 2" key="2">
