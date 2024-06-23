@@ -1,4 +1,4 @@
-import React, { Children, useState } from 'react';
+import React, { Children, useEffect, useState } from 'react';
 import { Layout, Menu, Table, Input, Button, DatePicker, Avatar, Flex } from 'antd';
 import { UserOutlined, SearchOutlined, CalendarOutlined, DashboardOutlined, UsergroupAddOutlined, ScheduleOutlined, AppstoreAddOutlined } from '@ant-design/icons';
 import './Dashboard.css';
@@ -6,25 +6,56 @@ import './Dashboard.css';
 import { PieChart, Pie, LineChart, Line, Tooltip, Cell } from 'recharts';
 
 import Dashboard from './Dashboard';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllPateints } from '../api/api';
 const { Header, Content, Sider } = Layout;
 const { Search } = Input;
 
 
 const UserDashboard = () => {
+
+    const dispatch =   useDispatch()
+    const { isLoading, allPateint,message } = useSelector((state) => state.products);
+
+    
+const data = allPateint.data
+
+function countGender() {
+    let maleCount = 0;
+    let femaleCount = 0;
+
+    data?.forEach(record => {
+        if (record.Gender === 'Male') {
+            maleCount++;
+        } else if (record.Gender === 'Female') {
+            femaleCount++;
+        }
+    });
+// console.log(maleCount, femaleCount )
+    return { maleCount, femaleCount };
+}
+
+// console.log(countGender())
+
+useEffect(() => {
+dispatch(getAllPateints())
+countGender()
+}, []);
+
     const today = new Date().toISOString().slice(0, 10);
     const [appointments, setAppointments] = useState([]);
     const [sessions, setSessions] = useState([]);
   
     // Dummy data
     const doctorCount = 10;
-    const patientCount = 50;
+    const patientCount = allPateint.data?.length;
     const newBookingCount = 5;
     const todaySessionsCount = 3;
   
     // Dummy data for charts
     const pieChartData = [
-      { name: 'Doctors', value: doctorCount },
-      { name: 'Patients', value: patientCount },
+      { name: 'Female', value: countGender().femaleCount },
+      { name: 'Male', value: countGender().maleCount },
     ];
   
     const lineChartData = [
@@ -89,7 +120,7 @@ const UserDashboard = () => {
         {/* Existing content */}
         <div className="dashboard-charts">
             <div className="chart-item">
-                <h2>Doctor vs Patient Distribution</h2>
+                <h2>Male s Female Patient Distribution </h2>
                 <PieChart width={400} height={300}>
                   <Pie dataKey="value" data={pieChartData} cx={200} cy={150} outerRadius={90} label>
                     {pieChartData.map((entry, index) => (

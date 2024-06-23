@@ -9,45 +9,22 @@ import moment from 'moment';
 const { TabPane } = Tabs;
 
 const MyForm = () => {
-  const { id } = useParams();
-  const dispatch = useDispatch();
-  const { allPateint } = useSelector((state) => state.products);
+
+const {id}= useParams();
+
+// console.log(id)
+
+  const dispatch =   useDispatch()
+  const { isLoading, allPateint,message } = useSelector((state) => state.products);
+// console.log(allPateint)
+
   const [form] = Form.useForm();
+  
 
-  useEffect(() => {
-    dispatch(getAllPateints());
-  }, [dispatch]);
-
-  useEffect(() => {
-    if (allPateint && allPateint.data && id) {
-      const patientData = allPateint.data.find((patient) => patient._id === id);
-      if (patientData) {
-        form.setFieldsValue({
-          Ragistration_Date: patientData.Ragistration_Date ? moment(patientData.Ragistration_Date) : null,
-          First_Name: patientData.First_Name || '',
-          Middle_Name: patientData.Middle_Name || '',
-          Last_Name: patientData.Last_Name || '',
-          Date_of_Birth: patientData.Date_of_Birth ? moment(patientData.Date_of_Birth) : null,
-          Marital_Status: patientData.Marital_Status || 'Married',
-          Age: patientData.Age || '',
-          Year: patientData.Year || '',
-          Gender: patientData.Gender || 'Male',
-          Nationality: patientData.Nationality || '',
-          Religion: patientData.Religion || '',
-          Contact_Number: patientData.Contact_Number || '',
-          Permanent_address: patientData.Permanent_address || '',
-          Occupation: patientData.Occupation || '',
-          AdharCard_Number: patientData.AdharCard_Number || '',
-          PadCard_Number: patientData.PadCard_Number || '',
-          Self_Annual_Income: patientData.Self_Annual_Income || '',
-          Familty_Annual_Income: patientData.Familty_Annual_Income || '',
-        });
-      }
-    }
-  }, [id, allPateint, form]);
 
   const onFinish = async (values) => {
     try {
+      // Dispatch the async action to save patient data
       await dispatch(savePateint(values));
       console.log('Form values submitted:', values);
     } catch (error) {
@@ -55,8 +32,28 @@ const MyForm = () => {
     }
   };
 
+
+useEffect(() => {
+  
+ dispatch(getAllPateints())
+}, []);
+useEffect(() => {
+  if (allPateint && allPateint.data && id) {
+    const patientData = allPateint.data.find(patient => patient._id === id);
+    console.log(patientData)
+    if (patientData) {
+      form.setFieldsValue({
+        ...patientData,
+        // Ragistration_Date: patientData.Ragistration_Date ? moment(patientData.Ragistration_Date) : null,
+        // Date_of_Birth: patientData.Date_of_Birth ? moment(patientData.Date_of_Birth) : null,
+      });
+    }
+  }
+}, [id, allPateint, form]);
+
+
   return (
-    <Form className="patient-form" layout="vertical" form={form} onFinish={onFinish}>
+    <Form className="patint-form" layout="vertical" onFinish={onFinish}>
       <Row gutter={24}>
         <Col span={8}>
           <Form.Item label="Registration Date" name="Ragistration_Date">
@@ -86,7 +83,7 @@ const MyForm = () => {
           </Form.Item>
         </Col>
         <Col span={8}>
-          <Form.Item label="Marital Status" name="Marital_Status">
+        <Form.Item label="Marital Status" name="Matertal_Status">
             <Select className="custom-input">
               <Option value="Married">Married</Option>
               <Option value="Unmarried">Unmarried</Option>
@@ -106,7 +103,7 @@ const MyForm = () => {
           </Form.Item>
         </Col>
         <Col span={8}>
-          <Form.Item label="Gender" name="Gender">
+        <Form.Item label="Gender" name="Gender">
             <Select className="custom-input">
               <Option value="Male">Male</Option>
               <Option value="Female">Female</Option>
@@ -138,30 +135,30 @@ const MyForm = () => {
           </Form.Item>
         </Col>
         <Col span={8}>
-          <Form.Item label="Occupation" name="Occupation">
+          <Form.Item label="Occupation" name="Occopation">
             <Input className="custom-input" />
           </Form.Item>
         </Col>
         <Col span={8}>
           <Form.Item label="Aadhar Card Number" name="AdharCard_Number">
-            <Input className="custom-input" />
+            <Input  className="custom-input" />
           </Form.Item>
         </Col>
       </Row>
       <Row gutter={24}>
         <Col span={8}>
           <Form.Item label="PAN Card Number" name="PadCard_Number">
-            <Input className="custom-input" />
+            <Input  className="custom-input" />
           </Form.Item>
         </Col>
         <Col span={8}>
           <Form.Item label="Self Annual Income" name="Self_Annual_Income">
-            <Input className="custom-input" />
+            <Input  className="custom-input" />
           </Form.Item>
         </Col>
         <Col span={8}>
           <Form.Item label="Family Annual Income" name="Familty_Annual_Income">
-            <Input className="custom-input" />
+            <Input  className="custom-input" />
           </Form.Item>
         </Col>
       </Row>
@@ -173,9 +170,12 @@ const MyForm = () => {
 };
 
 const Tab1 = () => (
+
+
+
   <div>
     <h3>Patient Information</h3>
-    <MyForm />
+    <MyForm onFinish={(values) => console.log('Tab 1 Form:', values)} />
   </div>
 );
 
@@ -214,3 +214,5 @@ const UserForm = () => {
 };
 
 export default UserForm;
+
+

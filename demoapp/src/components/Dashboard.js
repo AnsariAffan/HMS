@@ -1,15 +1,24 @@
 
 
-import React, { Children, useState } from 'react';
+import React, { Children,  useEffect, useState } from 'react';
 import { Layout, Menu, Table, Input, Button, DatePicker, Avatar, Flex } from 'antd';
 import { UserOutlined, SearchOutlined, CalendarOutlined, DashboardOutlined, UsergroupAddOutlined, ScheduleOutlined, AppstoreAddOutlined } from '@ant-design/icons';
 import './Dashboard.css';
 import { PieChart, Pie, LineChart, Line, Tooltip } from 'recharts';
 import Link from 'antd/es/typography/Link';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllPateints } from '../api/api';
 const { Header, Content, Sider } = Layout;
 const { Search } = Input;
 
 const Dashboard = (      {children}) => {
+
+  const dispatch =   useDispatch()
+    const { isLoading, allPateint,message } = useSelector((state) => state.products);
+
+    
+
+
     const today = new Date().toISOString().slice(0, 10);
     const [appointments, setAppointments] = useState([]);
     const [sessions, setSessions] = useState([]);
