@@ -152,8 +152,8 @@ const MyForm = () => {
           </Form.Item>
         </Col>
         <Col span={8}>
-          <Form.Item label="Aadhar Card Number" name="AdharCard_Number">
-            <Input className="custom-input" />
+          <Form.Item  label="Aadhar Card Number" name="AdharCard_Number">
+            <Input disabled={isEditing?true:false} className="custom-input" />
           </Form.Item>
         </Col>
       </Row>
