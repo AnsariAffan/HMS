@@ -173,22 +173,22 @@ const MyForm = () => {
 };
 
 const Tab1 = () => (
-  <div>
-    <h3>Patient Information</h3>
+  <div >
+    <h3 >Patient Information</h3>
     <MyForm />
   </div>
 );
 
 const Tab2 = () => (
-  <div>
-    <h3>Tab 2 Content</h3>
+  <div >
+    <h3 >Tab 2 Content</h3>
     {/* Add Tab 2 specific content */}
   </div>
 );
 
 const Tab3 = () => (
-  <div>
-    <h3>Tab 3 Content</h3>
+  <div >
+    <h3 >Tab 3 Content</h3>
     {/* Add Tab 3 specific content */}
   </div>
 );
@@ -198,8 +198,8 @@ const UserForm = () => {
 
   return (
     <div className="tab-container">
-      <Tabs activeKey={activeTab} onChange={(key) => setActiveTab(key)} centered>
-        <TabPane tab="Patient Information" key="1">
+      <Tabs  activeKey={activeTab} onChange={(key) => setActiveTab(key)} centered>
+        <TabPane   tab="Patient Information" key="1">
           <Tab1 />
         </TabPane>
         <TabPane tab="Tab 2" key="2">
