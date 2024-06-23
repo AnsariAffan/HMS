@@ -5,7 +5,6 @@ import './Dashboard.css';
 
 import { PieChart, Pie, LineChart, Line, Tooltip, Cell } from 'recharts';
 
-import Dashboard from './Dashboard';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllPateints } from '../api/api';
 const { Header, Content, Sider } = Layout;
@@ -53,10 +52,15 @@ countGender()
     const todaySessionsCount = 3;
   
     // Dummy data for charts
+    // const pieChartData = [
+    //   { name: 'Female', value: countGender().femaleCount },
+    //   { name: 'Male', value: countGender().maleCount },
+    // ];
+
     const pieChartData = [
-      { name: 'Female', value: countGender().femaleCount },
-      { name: 'Male', value: countGender().maleCount },
-    ];
+        { name: 'Female', value: countGender().femaleCount },
+        { name: 'Male', value: countGender().maleCount },
+      ];
   
     const lineChartData = [
       { name: 'Monday', sessions: 5 },

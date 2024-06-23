@@ -34,7 +34,7 @@ import { getAllPateints } from "../api/api";
 
 import { UserAddOutlined, DownOutlined, EllipsisOutlined } from "@ant-design/icons";
 import * as XLSX from "xlsx";
-
+import "./Usertable.css"
 
 
 
@@ -285,19 +285,19 @@ const Usertable = () => {
   }));
 
   return (
-    <div>
+    <div className="patint-table" style={{width:"-webkit-fill-available",paddingInline:"15px"}}>
       <Title level={3}>Patient Manager</Title>
-      <Space style={{ marginBottom: 16 }}>
-        <Link href="/UserForm"> <Button type="primary" >
+      <Space style={{ marginBottom: 16 ,}}>
+        <Link href="/UserForm" > <Button  style={{ marginBottom: 8, width: "max-content" ,height: "40px"}} type="primary" >
           Add a Patient
         </Button></Link>
        
-        <DatePicker  defaultValue={moment()} format="YYYY-MM-DD" />
+        <DatePicker   style={{ marginBottom: 8, width: "max-content" ,height: "40px"}} defaultValue={moment()} format="YYYY-MM-DD" />
    
         <Input.Search
             placeholder="Master Filter"
             onChange={(e) => handleSearch(e.target.value)}
-            style={{ marginBottom: 8, width: "max-content" ,height:10}}
+            style={{ marginBottom: 8, width: "max-content" ,height: "40px"}}
             allowClear
             className="master Search"
           />

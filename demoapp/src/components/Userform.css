@@ -41,3 +41,8 @@
 
   width: -webkit-fill-available;
 }
+
+:where(.css-dev-only-do-not-override-m4timi).ant-input-group .ant-input-affix-wrapper:not(:last-child) {
+  border-start-end-radius: 6px;
+  border-end-end-radius: 6px;
+}

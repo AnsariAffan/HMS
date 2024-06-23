@@ -1,0 +1,17 @@
+{
+    "city": "sdadd",
+    "country": "USA",
+    "email": "test@gmail.com",
+    "emergencyPhoneNumber": "435435",
+    "employer": "gdfg",
+    "firstName": "asdsad",
+    "gender": "male",
+    "lastName": "sadsad",
+    "occupation": "sdd",
+    "phoneNumber": "95484121651",
+    "prefix1": "91",
+    "prefix2": "91",
+    "state": "Maharashtra",
+    "materialStatus": ["married"],
+    "dob":"2024/05/22"
+}

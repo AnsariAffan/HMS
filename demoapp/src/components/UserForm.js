@@ -60,7 +60,7 @@ const MyForm = () => {
       <Row gutter={24}>
         <Col span={8}>
           <Form.Item label="Registration Date" name="Ragistration_Date">
-            <DatePicker className="custom-input" />
+            <DatePicker style={{    width: "-webkit-fill-available"}}  className="custom-input" />
           </Form.Item>
         </Col>
         <Col span={8}>
@@ -82,7 +82,7 @@ const MyForm = () => {
         </Col>
         <Col span={8}>
           <Form.Item label="Date of Birth" name="Date_of_Birth">
-            <DatePicker className="custom-input" />
+            <DatePicker style={{    width: "-webkit-fill-available"}}  className="custom-input" />
           </Form.Item>
         </Col>
         <Col span={8}>
