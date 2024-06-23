@@ -24,4 +24,4 @@ const NewEntrySchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now },
 });
 
-module.exports = mongoose.model('NewEntry', NewEntrySchema);
+module.exports = mongoose.model('pateintsData', NewEntrySchema);
