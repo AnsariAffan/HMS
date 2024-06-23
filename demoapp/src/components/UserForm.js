@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Tabs, Form, Input, DatePicker, Button, Row, Col, Select } from 'antd';
+import { Tabs, Form, Input, DatePicker, Button, Row, Col, Select,message } from 'antd';
 import './Userform.css'; // Import your custom CSS file
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllPateints, savePateint, updatePateint } from '../api/api'; // Import the updatePatient action
@@ -8,6 +8,7 @@ import { useParams } from 'react-router-dom';
 import moment from 'moment';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 const { TabPane } = Tabs;
+
 
 const MyForm = () => {
   const { id } = useParams();
@@ -55,10 +56,12 @@ const MyForm = () => {
     try {
       if (isEditing) {
         await dispatch(updatePateint({history,values})); // Call updatePatient if editing
+        message.success('Patient updated successfully');
         console.log('Patient updated:',values);
     
       } else {
         await dispatch(savePateint({history,values}));
+        message.success('Patient added successfully');
         console.log('Patient saved:', values);
       }
     } catch (error) {

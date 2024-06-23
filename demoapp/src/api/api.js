@@ -19,7 +19,7 @@ export const savePateint = createAsyncThunk(
       );
       console.log(response.data.message);
       // await history.push("/UserTableController");
-      window.alert(response.data.message)
+      // window.alert(response.data.message)
       history.push("/Usertable")
       return response.data
     } catch (error) {
