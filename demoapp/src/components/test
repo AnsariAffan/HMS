@@ -1,0 +1,499 @@
+import React, { useEffect, useState } from "react";
+import {
+  AutoComplete,
+  Button,
+  Cascader,
+  Checkbox,
+  Col,
+  DatePicker,
+  Dropdown,
+  Flex,
+  Form,
+  Input,
+  InputNumber,
+  Layout,
+  Row,
+  Select,
+  Space,
+  Typography,
+  notification,
+} from "antd";
+import "../components/Userform.css";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+import dayjs from "dayjs";
+import { DownOutlined, UserOutlined } from "@ant-design/icons";
+import { useDispatch, useSelector } from "react-redux";
+import { savePateint, setSuccessData } from "../api/api";
+import SuccessfullPopUp from "./SuccessfullPopUp";
+import { message } from "antd";
+dayjs.extend(customParseFormat);
+const { RangePicker } = DatePicker;
+const dateFormat = "YYYY/MM/DD";
+const weekFormat = "MM/DD";
+const monthFormat = "YYYY/MM";
+const { Option } = Select;
+const { Title } = Typography;
+
+
+const residences = [
+  {
+    value: "zhejiang",
+    label: "Zhejiang",
+    children: [
+      {
+        value: "hangzhou",
+        label: "Hangzhou",
+        children: [
+          {
+            value: "xihu",
+            label: "West Lake",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    value: "jiangsu",
+    label: "Jiangsu",
+    children: [
+      {
+        value: "nanjing",
+        label: "Nanjing",
+        children: [
+          {
+            value: "zhonghuamen",
+            label: "Zhong Hua Men",
+          },
+        ],
+      },
+    ],
+  },
+];
+
+const formItemLayout = {
+  labelCol: {
+    xs: { span: 24 },
+    sm: { span: 8 },
+  },
+  wrapperCol: {
+    xs: { span: 24 },
+    sm: { span: 16 },
+  },
+};
+
+const tailFormItemLayout = {
+  wrapperCol: {
+    xs: { span: 24, offset: 0 },
+    sm: { span: 16, offset: 8 },
+  },
+};
+
+const UserForm = React.memo(() => {
+  const { successData, isLoading, hasError, allPateint } = useSelector(
+    (state) => ({
+      ...state.products,
+    })
+  );
+  const [form] = Form.useForm();
+  const dispatch = useDispatch();
+  const [popUp, setpopUp] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
+
+  //  console.log(popUp)
+
+  // console.log( isLoading)
+  // console.log(hasError)
+  console.log(allPateint?.data?.message);
+
+  console.log("error " + hasError);
+
+  const [api, contextHolder] = notification.useNotification();
+
+  const openNotificationWithIconSuccessfully = async (type) => {
+    await api[type]({
+      message: `${allPateint?.data?.message}`,
+      duration: 2,
+    });
+  };
+
+  useEffect(() => {
+    if (allPateint?.data?.message !== undefined) {
+      openNotificationWithIconSuccessfully("success");
+    }
+  }, [allPateint]);
+
+  const onFinish = async (values) => {
+    await dispatch(savePateint({ values }));
+  };
+
+  const PhoneNumber = (
+    <Form.Item name="prefix1" noStyle>
+      <Select style={{ width: 70 }}>
+        <Option value="91">+91</Option>
+        <Option value="87">+87</Option>
+      </Select>
+    </Form.Item>
+  );
+
+  const EmergencyphoneNumber = (
+    <Form.Item name="prefix2" noStyle>
+      <Select style={{ width: 70 }}>
+        <Option value="91">+91</Option>
+        <Option value="87">+87</Option>
+      </Select>
+    </Form.Item>
+  );
+
+  const suffixSelector = (
+    <Form.Item name="suffix" noStyle>
+      <Select style={{ width: 70 }}>
+        <Option value="USD">$</Option>
+        <Option value="CNY">¥</Option>
+      </Select>
+    </Form.Item>
+  );
+
+  const onChange = (e) => {
+    console.log(`checked = ${e.target.value}`);
+  };
+
+  const processFormValues = (values) => {
+    // Process the form values here
+    console.log("Processing form values: ", values);
+  };
+
+  return (
+    <>
+      <Layout
+      className="pateintLayout"
+      style={{
+   
+        border: "1px solid #efefef",
+        padding: "10px",
+        borderRadius: "15px",
+        paddingInline: "30px",
+   
+       
+      }}
+    >
+      <Title level={5} style={{ margin: "0px", padding: "10px" }}>
+        Patient Information
+      </Title>
+      {contextHolder}
+
+      {hasError}
+   
+      <Form
+        {...formItemLayout}
+        form={form}
+        name="register"
+        sdd
+        onFinish={onFinish}
+        initialValues={{
+          prefix1: "91",
+          prefix2: "91",
+        }}
+        layout="vertical"
+        scrollToFirstError
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          textAlignLast: "justify",
+          
+        }}
+      >
+        <Row gutter={16} >
+   
+          <Col span={6} >
+
+<Form.Item
+              name="firstName"
+              label="First Name"
+        
+              rules={[
+                {
+                  type: "string",
+                  message: "The input is not valid first name!",
+                },
+                { required: false, message: "Please input your first name!" },
+              ]}
+
+              labelCol={{ span: 40 }}  // Adjust the span value according to your layout
+              wrapperCol={{ span: 19 }}  
+            >
+              <Input />
+              
+            </Form.Item>
+
+      
+           
+          </Col>
+    
+          <Col span={6}>
+            <Form.Item
+              name="lastName"
+              label="Last Name"
+              size="large"
+              rules={[
+                { required: false, message: "Please input your last name!" },
+              ]}
+              labelCol={{ span: 40 }}  // Adjust the span value according to your layout
+              wrapperCol={{ span: 19 }}  
+            >
+              <Input />
+            </Form.Item>
+          </Col>
+         
+          <Col span={6}>
+            <Form.Item
+              name="email"
+              label="E-mail ID"
+              size="large"
+              rules={[
+                { required: false, message: "Please input your E-mail ID!" },
+              ]}
+              labelCol={{ span: 40 }}  // Adjust the span value according to your layout
+              wrapperCol={{ span: 19 }}  
+            >
+              <Input />
+            </Form.Item>
+          </Col>
+          <Col span={6}>
+            <Form.Item
+              name="dob"
+              label="Date Of Birth"
+              size="large"
+              rules={[
+                {
+                  required: false,
+                  message: "Please input your date of birth!",
+                },
+              ]}
+              labelCol={{ span: 40 }}  // Adjust the span value according to your layout
+              wrapperCol={{ span: 19 }}  
+            >
+              <DatePicker
+                defaultValue={dayjs("2015/01/01", dateFormat)}
+                format={dateFormat}
+              />
+            </Form.Item>
+          </Col>
+        </Row>
+
+        <Row gutter={16}>
+          <Col span={6}>
+            <Form.Item
+              name="email"
+              label="E-mail ID"
+              size="large"
+              rules={[
+                { required: false, message: "Please input your E-mail ID!" },
+              ]}
+              labelCol={{ span: 40 }}  // Adjust the span value according to your layout
+              wrapperCol={{ span: 19 }}  
+              
+            >
+              <Input />
+            </Form.Item>
+          </Col>
+          <Col span={6}>
+            <Form.Item
+              name="phoneNumber"
+              label="Phone Number"
+              size="large"
+              rules={[
+                { required: false, message: "Please input your phone number!" },
+              ]}
+              labelCol={{ span: 40 }}  // Adjust the span value according to your layout
+              wrapperCol={{ span: 19 }}  
+            >
+              <Input addonBefore={PhoneNumber} style={{ width: "100%" }} />
+            </Form.Item>
+          </Col>
+          <Col span={6}>
+          <Form.Item
+              name="emergencyPhoneNumber"
+              label="Emergency Number"
+              size="large"
+              rules={[
+                { required: false, message: "Please input your phone number!" },
+              ]}
+              labelCol={{ span: 40 }}  // Adjust the span value according to your layout
+              wrapperCol={{ span: 19 }}  
+            >
+              <Input addonBefore={PhoneNumber} style={{ width: "100%" }} />
+            </Form.Item>
+          </Col>
+          <Col span={6}>
+            <Form.Item
+              name="city"
+              label="City"
+              size="large"
+              rules={[{ required: false, message: "Please input your city!" }]}
+              labelCol={{ span: 40 }}  // Adjust the span value according to your layout
+              wrapperCol={{ span: 19 }}  
+            >
+              <Input />
+            </Form.Item>
+          </Col>
+
+        </Row>
+
+        <Row gutter={16} >
+         
+          <Col span={6}>
+            <Form.Item
+              name="state"
+              label="State"
+              size="large"
+              rules={[
+                { required: false, message: "Please select your state!" },
+              ]}
+              labelCol={{ span: 40 }}  // Adjust the span value according to your layout
+              wrapperCol={{ span: 19 }}  
+            >
+              <Select style={{ width: "100%" }}>
+                <Option value="Maharashtra">Maharashtra</Option>
+                <Option value="Delhi">Delhi</Option>
+              </Select>
+            </Form.Item>
+          </Col>
+          <Col span={6}>
+            <Form.Item
+              name="country"
+              label="Country"
+              size="large"
+              rules={[
+                { required: false, message: "Please select your country!" },
+              ]}
+              labelCol={{ span: 40 }}  // Adjust the span value according to your layout
+              wrapperCol={{ span: 19 }}  
+            >
+              <Select style={{ width: "100%" }}>
+                <Option value="India">India</Option>
+                <Option value="USA">USA</Option>
+              </Select>
+            </Form.Item>
+          </Col>
+          <Col span={6}>
+            <Form.Item
+              name="occupation"
+              label="Occupation"
+              size="large"
+              rules={[
+                { required: false, message: "Please input your occupation!" },
+              ]}
+              labelCol={{ span: 40 }}  // Adjust the span value according to your layout
+              wrapperCol={{ span: 19 }}  
+            >
+              <Input />
+            </Form.Item>
+          </Col>
+          <Col span={6}>
+            <Form.Item
+              name="occupation"
+              label="Occupation"
+              size="large"
+              rules={[
+                { required: false, message: "Please input your occupation!" },
+              ]}
+              labelCol={{ span: 40 }}  // Adjust the span value according to your layout
+              wrapperCol={{ span: 19 }}  
+            >
+              <Input />
+            </Form.Item>
+          </Col>
+        </Row>
+
+        <Row gutter={16}>
+          <Col span={6}>
+            <Form.Item
+              name="occupation"
+              label="Occupation"
+              size="large"
+              rules={[
+                { required: false, message: "Please input your occupation!" },
+              ]}
+              labelCol={{ span: 40 }}  // Adjust the span value according to your layout
+              wrapperCol={{ span: 19 }}  
+            >
+              <Input />
+            </Form.Item>
+          </Col>
+          <Col span={6}>
+            <Form.Item
+              name="employer"
+              label="Employer"
+              size="large"
+              rules={[
+                { required: false, message: "Please input your employer!" },
+              ]}
+              labelCol={{ span: 40 }}  // Adjust the span value according to your layout
+              wrapperCol={{ span: 19 }}  
+            >
+              <Input />
+            </Form.Item>
+          </Col>
+          <Col span={6}>
+            <Form.Item
+              name="gender"
+              label="Gender"
+              size="large"
+              rules={[
+                { required: false, message: "Please select your gender!" },
+              ]}
+              labelCol={{ span: 40 }}  // Adjust the span value according to your layout
+              wrapperCol={{ span: 19 }}  
+            >
+              <Select>
+                <Option value="male">Male</Option>
+                <Option value="female">Female</Option>
+                <Option value="other">Other</Option>
+              </Select>
+            </Form.Item>
+          </Col>
+          <Col span={6}>
+            <Form.Item
+              name="materialStatus"
+              label="Material Status"
+              size="large"
+              rules={[
+                {
+                  required: false,
+                  message: "Please select your material status!",
+                },
+              ]}
+              labelCol={{ span: 40 }}  // Adjust the span value according to your layout
+              wrapperCol={{ span: 19 }}  
+            >
+              <Checkbox.Group>
+                <Checkbox value="married">Married</Checkbox>
+                <Checkbox value="single">Single</Checkbox>
+              </Checkbox.Group>
+            </Form.Item>
+          </Col>
+         
+        </Row>
+        {/* <Row gutter={[16, 16]}>
+         
+        </Row> */}
+
+        <Form.Item {...tailFormItemLayout}>
+          <Button size="large" type="primary" htmlType="submit">
+            Register
+          </Button>
+        </Form.Item>
+
+      </Form>
+     
+    </Layout>
+
+
+    
+    </>
+  
+    
+  );
+});
+
+export default UserForm;

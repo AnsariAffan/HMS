@@ -1,0 +1,43 @@
+.ant-space
+  css-dev-only-do-not-override-17seli4
+  ant-space-horizontal
+  ant-space-align-center
+  ant-space-gap-row-small
+  ant-space-gap-col-small {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.ant-form-item-required {
+  text-wrap: wrap;
+  text-align: start;
+}
+
+:where(.css-dev-only-do-not-override-m4timi).ant-input-outlined {
+  background: #ffffff;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #d9d9d9;
+}
+
+.patint-form  input{
+  height: 40px; /* Adjust the height as needed */
+ 
+}
+
+.patint-form  .custom-input{
+  height: 40px; /* Adjust the height as needed */
+ width: 100%;
+}
+
+.ant-form{
+  margin-inline: 40px;
+  position: relative;
+  top: 50px;
+}
+
+.tab-container {
+
+  width: -webkit-fill-available;
+}
