@@ -3,12 +3,12 @@ import {
   createAsyncThunk,
 } from "@reduxjs/toolkit";
 import axios from "axios";
-
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
 // Define the async thunk to fetch data
 export const savePateint = createAsyncThunk(
   "api/savePateint",
-  async ( values, { rejectWithValue }) => {
+  async ( {values,history}, { rejectWithValue }) => {
   
     try {
       const response = await axios.post(
@@ -19,7 +19,7 @@ export const savePateint = createAsyncThunk(
       );
       console.log(response);
       // await history.push("/UserTableController");
-
+      history.push("/Usertable")
       return response.data
     } catch (error) {
       console.error("Save patient error:", error);
@@ -30,7 +30,7 @@ export const savePateint = createAsyncThunk(
 
 export const updatePateint = createAsyncThunk(
   "api/updatePatient",
-  async (values, { rejectWithValue }) => {
+  async ({values,history}, { rejectWithValue }) => {
     try {
       const response = await axios.put(
         "http://localhost:8000/api/updateNewEntry",
@@ -38,8 +38,10 @@ export const updatePateint = createAsyncThunk(
           data: values
         }
       );
+      history.push("/Usertable")
       console.log(response);
       return response.data;
+          
     } catch (error) {
       console.error("Update patient error:", error);
       return rejectWithValue(error.response ? error.response.data : error.message);
@@ -58,7 +60,9 @@ export const getAllPateints = createAsyncThunk(
       const response = await axios.get(`http://localhost:8000/api/getAllPateints`);
     
       console.log(response)
+     
       return response;
+      
     } catch (error) {
       console.error("Get all patients error:", error);
       return rejectWithValue(error.response ? error.response.data : error.message);

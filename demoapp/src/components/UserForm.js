@@ -6,6 +6,7 @@ import { getAllPateints, savePateint, updatePateint } from '../api/api'; // Impo
 import { Option } from 'antd/es/mentions';
 import { useParams } from 'react-router-dom';
 import moment from 'moment';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 const { TabPane } = Tabs;
 
 const MyForm = () => {
@@ -14,7 +15,7 @@ const MyForm = () => {
   const { allPateint } = useSelector((state) => state.products);
   const [form] = Form.useForm();
   const [isEditing, setIsEditing] = useState(false);
-
+  const history = useHistory();
   useEffect(() => {
     dispatch(getAllPateints());
   }, [dispatch]);
@@ -51,10 +52,11 @@ const MyForm = () => {
   const onFinish = async (values) => {
     try {
       if (isEditing) {
-        await dispatch(updatePateint(values)); // Call updatePatient if editing
-        console.log('Patient updated:', values);
+        await dispatch(updatePateint({history,values})); // Call updatePatient if editing
+        console.log('Patient updated:',values);
+    
       } else {
-        await dispatch(savePateint(values));
+        await dispatch(savePateint({history,values}));
         console.log('Patient saved:', values);
       }
     } catch (error) {
