@@ -2,6 +2,7 @@ import React, { Children, useEffect, useState } from 'react';
 import { Layout, Menu, Table, Input, Button, DatePicker, Avatar, Flex } from 'antd';
 import { UserOutlined, SearchOutlined, CalendarOutlined, DashboardOutlined, UsergroupAddOutlined, ScheduleOutlined, AppstoreAddOutlined } from '@ant-design/icons';
 import './Dashboard.css';
+import './UserDashboard.css';
 
 import { PieChart, Pie, LineChart, Line, Tooltip, Cell } from 'recharts';
 
@@ -92,7 +93,7 @@ countGender()
   <Flex>
  
 <Content style={{ margin: '0' }}>
-        <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>
+        <div className='four-cards' >
             <div className="dashboard-status">
               <Content>
               <div className="status-card" style={{ backgroundColor: '#8ecae6' }}>

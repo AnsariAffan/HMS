@@ -161,3 +161,7 @@
     border-radius: 8px;
     margin: 15px;
 }
+
+.ant-layout-sider-children{
+    position: fixed;
+}

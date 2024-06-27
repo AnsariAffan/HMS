@@ -11,3 +11,41 @@
     border-radius: 8px;
     margin: 15px;
 }
+
+
+
+@media (min-width: 1024px) and (max-width: 1440px) {
+    .four-cards{
+        /* padding: 24;
+    background-color: '#fff';
+
+    padding: 0;
+    background: "rgb(255, 255, 255)";
+    min-height: 0; */
+}
+
+}
+
+
+
+.dashboard-status{
+    width: max-content;
+    height: max-content;
+}
+
+.dashboard-charts {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: max-content;
+    height: max-content;
+}
+
+.upcoming-section {
+    display: flex;
+    justify-content: space-evenly;
+    /* margin: 20px 0; */
+    position: absolute;
+    top: 20rem;
+    width: -webkit-fill-available;
+}

@@ -34,7 +34,7 @@
 .ant-form{
   margin-inline: 40px;
   position: relative;
-  top: 50px;
+
 }
 
 .tab-container {
@@ -49,3 +49,11 @@
 
 
 
+/* Add styles for the sticky tab navigation */
+.tab-container {
+  position: -webkit-sticky; /* For Safari */
+  position: sticky;
+  top: 0;
+  z-index: 1000; /* Adjust as needed */
+  background: #fff; /* Ensure the background is white to cover content behind */
+}

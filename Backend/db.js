@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const connectToMongo = mongoose.connect('mongodb://localhost:27017/HSMDB')
+const connectToMongo = mongoose.connect('mongodb+srv://mohammadaffan777:Anam%401234@cluster0.f68xlli.mongodb.net/HospitalManagementDatabase?retryWrites=true&w=majority')
     .then(() => {
         console.log(" connection successfull...")
     })
@@ -8,4 +8,5 @@ const connectToMongo = mongoose.connect('mongodb://localhost:27017/HSMDB')
     })
 
    
-
+// mongodb://localhost:27017
+//mongodb+srv://mohammadaffan:<password>@cluster0.fh5fk1x.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
