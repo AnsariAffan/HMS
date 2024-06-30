@@ -9,4 +9,5 @@ services:
 
 routes:
   - path: /*
-    service: client
+    staticDir: client/build
+    spa: true
