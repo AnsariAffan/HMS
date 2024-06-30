@@ -12,7 +12,7 @@ export const savePateint = createAsyncThunk(
   
     try {
       const response = await axios.post(
-        "https://hms-4-veyp.onrender.com/api/createNewEntry",
+        "https://services-uk8v.onrender.com/api/createNewEntry",
         {
           "data": values,
           
@@ -35,7 +35,7 @@ export const updatePateint = createAsyncThunk(
   async ({values,history}, { rejectWithValue }) => {
     try {
       const response = await axios.put(
-        "https://hms-4-veyp.onrender.com/api/updateNewEntry",
+        "https://services-uk8v.onrender.com/api/updateNewEntry",
         {
           data: values
         }
@@ -60,7 +60,7 @@ export const getAllPateints = createAsyncThunk(
   "api/getAllPateints",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`https://hms-4-veyp.onrender.com/api/getAllPateints`);
+      const response = await axios.get(`https://services-uk8v.onrender.com/api/getAllPateints`);
     
       console.log(response)
      

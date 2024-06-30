@@ -15,12 +15,13 @@ import "./components/Usertable.css";
 import "./components/UserDashboard.css"
 import "./components/Usertable.css"
 import "./App.css"
+import { BrowserRouter } from "react-router-dom/cjs/react-router-dom.min";
 
 
 function App() {
   return (
     <>
-      <Router >
+      <BrowserRouter>
         <Switch>
           <Route exact path="/">
           <Dashboard><UserDashboard/></Dashboard>
@@ -40,7 +41,7 @@ function App() {
           </Route>
 
         </Switch>
-      </Router>
+        </BrowserRouter>
     </>
   );
 }
