@@ -17,7 +17,7 @@ function App() {
   return (
     <Router basename={process.env.PUBLIC_URL}>
       <Switch>
-        <Route  path="/">
+        <Route exact path="/">
           <Dashboard>
             <UserDashboard />
           </Dashboard>
