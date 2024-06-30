@@ -15,7 +15,7 @@ import "./components/UserDashboard.css";
 
 function App() {
   return (
-    <Router basename="/app">
+    <Router basename={process.env.PUBLIC_URL}>
       <Switch>
         <Route exact path="/">
           <Dashboard>
