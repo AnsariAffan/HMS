@@ -1,13 +1,9 @@
-services:
-  - name: frontend
-    buildCommand: npm run build
-    startCommand: npm start
-    env:
-      - key: NODE_ENV
-        value: production
-    healthCheckPath: / # Adjust this path based on your application's routing
+# render.yaml
 
-routes:
-  - path: /*
-    staticDir: client/build
-    spa: true
+services:
+  - type: web
+    name: client
+    env: static
+    staticPublishPath: build
+    buildCommand: npm run build
+    branch: clientdeployment
