@@ -15,7 +15,7 @@ import "./components/UserDashboard.css";
 
 function App() {
   return (
-    <Router basename="/">
+    <Router basename="/app">
       <Switch>
         <Route exact path="/">
           <Dashboard>
