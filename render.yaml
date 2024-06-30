@@ -1,0 +1,12 @@
+services:
+  - name: frontend
+    buildCommand: npm run build
+    startCommand: npm start
+    env:
+      - key: NODE_ENV
+        value: production
+    healthCheckPath: / # Adjust this path based on your application's routing
+
+routes:
+  - path: /*
+    service: client
