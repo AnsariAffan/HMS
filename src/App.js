@@ -15,9 +15,9 @@ import "./components/UserDashboard.css";
 
 function App() {
   return (
-    <Router basename="https://demoapp-i02n.onrender.com">
+    <Router basename="/">
       <Switch>
-        <Route exact path="https://demoapp-i02n.onrender.com">
+        <Route exact path="/">
           <Dashboard>
             <UserDashboard />
           </Dashboard>
