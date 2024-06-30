@@ -60,16 +60,16 @@ const Dashboard = (      {children}) => {
                         <Link href="/">Dashboard</Link>
                     </Menu.Item>
                     <Menu.Item key="2" icon={<UserOutlined />}>
-                    <Link href="/Usertable"> Patients</Link> 
+                    <Link href="/usertable"> Patients</Link> 
                     </Menu.Item>
                     <Menu.Item key="3" icon={<UsergroupAddOutlined />}>
-                    <Link to="/Doctors">Doctors</Link>   
+                    <Link to="/doctors">Doctors</Link>   
                     </Menu.Item>
                     <Menu.Item key="4" icon={<ScheduleOutlined />}>
-                    <Link to="/Doctors Schedule"> Doctors Schedule</Link>  
+                    <Link to="/doctors Schedule"> Doctors Schedule</Link>  
                     </Menu.Item>
                     <Menu.Item key="5" icon={<AppstoreAddOutlined />}>
-                    <Link to="/Appointment"> Appointment</Link>
+                    <Link to="/appointment"> Appointment</Link>
                     </Menu.Item>
                     
                 </Menu>

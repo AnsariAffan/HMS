@@ -25,12 +25,12 @@ function App() {
         <Route path="/about">
           <About />
         </Route>
-        <Route path="/Usertable">
+        <Route path="/usertable">
           <Dashboard>
             <Usertable />
           </Dashboard>
         </Route>
-        <Route path="/UserForm">
+        <Route path="/userForm">
           <Dashboard>
             <UserForm />
           </Dashboard>

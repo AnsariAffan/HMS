@@ -1,20 +1,20 @@
-<<<<<<< HEAD
-# render.yaml
-=======
-services:
-  - name: frontend
-    buildCommand: npm run build
-    startCommand: npx serve -s build
-    env:
-      - key: NODE_ENV
-        value: production
-    healthCheckPath: / # Adjust this path based on your application's routing
->>>>>>> 9ada6f90d598937d31ce4d63f57f52fd59860672
+# <<<<<<< HEAD
+# # render.yaml
+# =======
+# services:
+#   - name: frontend
+#     buildCommand: npm run build
+#     startCommand: npx serve -s build
+#     env:
+#       - key: NODE_ENV
+#         value: production
+#     healthCheckPath: / # Adjust this path based on your application's routing
+# >>>>>>> 9ada6f90d598937d31ce4d63f57f52fd59860672
 
-services:
-  - type: web
-    name: client
-    env: static
-    staticPublishPath: build
-    buildCommand: npm run build
-    branch: clientdeployment
+# services:
+#   - type: web
+#     name: client
+#     env: static
+#     staticPublishPath: build
+#     buildCommand: npm run build
+#     branch: clientdeployment

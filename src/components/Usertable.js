@@ -289,7 +289,7 @@ const Usertable = () => {
     <div className="patint-table" style={{width:"-webkit-fill-available",paddingInline:"15px"}}>
       <Title level={3}>Patient Manager</Title>
       <Space style={{ marginBottom: 16 ,}}>
-        <Link href="/UserForm" > <Button  style={{ marginBottom: 8, width: "max-content" ,height: "40px"}} type="primary" >
+        <Link href="/userForm" > <Button  style={{ marginBottom: 8, width: "max-content" ,height: "40px"}} type="primary" >
           Add a Patient
         </Button></Link>
        
