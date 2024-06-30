@@ -1,0 +1,25 @@
+.ant-input-search :where(.css-dev-only-do-not-override-m4timi).ant-input-group .ant-input-affix-wrapper:not(:last-child) {
+    border-start-start-radius: 6px;
+    border-end-start-radius: 6px;
+    height: 40px;
+}
+
+:where(.css-dev-only-do-not-override-m4timi).ant-input-search >.ant-input-group >.ant-input-group-addon:last-child {
+    inset-inline-start: -1px;
+    /* padding: 1px; */
+    border: 0;
+    /* padding-left: 20px; */
+    padding: 4px;
+}
+
+.table-row-light {
+    background-color: #ffffff; 
+  }
+  
+  .table-row-dark {
+    background-color: aliceblue; 
+  }
+  
+  .custom-selected-hover-row:hover {
+    background-color: #bae0ff !important;
+  }

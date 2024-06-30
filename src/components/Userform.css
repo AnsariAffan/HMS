@@ -1,0 +1,59 @@
+.ant-space
+  css-dev-only-do-not-override-17seli4
+  ant-space-horizontal
+  ant-space-align-center
+  ant-space-gap-row-small
+  ant-space-gap-col-small {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.ant-form-item-required {
+  text-wrap: wrap;
+  text-align: start;
+}
+
+:where(.css-dev-only-do-not-override-m4timi).ant-input-outlined {
+  background: #ffffff;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #d9d9d9;
+}
+
+.custom-input{
+  height: 40px; /* Adjust the height as needed */
+ 
+}
+
+.patint-form  .custom-input{
+  height: 40px; /* Adjust the height as needed */
+ width: 100%;
+}
+
+.ant-form{
+  margin-inline: 40px;
+  position: relative;
+
+}
+
+.tab-container {
+
+  width: -webkit-fill-available;
+}
+
+:where(.css-dev-only-do-not-override-m4timi).ant-input-group .ant-input-affix-wrapper:not(:last-child) {
+  border-start-end-radius: 6px;
+  border-end-end-radius: 6px;
+}
+
+
+
+/* Add styles for the sticky tab navigation */
+.tab-container {
+  position: -webkit-sticky; /* For Safari */
+  position: sticky;
+  top: 0;
+  z-index: 1000; /* Adjust as needed */
+  background: #fff; /* Ensure the background is white to cover content behind */
+}

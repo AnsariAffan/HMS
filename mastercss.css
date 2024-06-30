@@ -1,0 +1,320 @@
+.App {
+    text-align: center;
+  }
+  .App-logo {
+    height: 40vmin;
+    pointer-events: none;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .App-logo {
+      animation: App-logo-spin 20s linear infinite;
+    }
+  }
+  .App-header {
+    align-items: center;
+    background-color: #282c34;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    font-size: calc(10px + 2vmin);
+    justify-content: center;
+    min-height: 100vh;
+  }
+  .App-link {
+    color: #61dafb;
+  }
+  @keyframes App-logo-spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(1turn);
+    }
+  }
+  .profile-container {
+    margin: 20px 0;
+    text-align: center;
+  }
+  .profile-title {
+    font-size: 16px;
+    font-weight: 700;
+    margin: 10px 0 0;
+  }
+  .profile-subtitle {
+    color: ffffff;
+    font-size: 12px;
+  }
+  .logout-btn {
+    margin-top: 10px;
+  }
+  .header-content {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+  }
+  .date-display {
+    text-align: right;
+  }
+  .dashboard-status {
+    display: flex;
+    justify-content: space-around;
+    margin: 20px 0;
+  }
+  .status-card {
+    margin: 10px;
+    padding: 12px;
+  }
+  .status-number {
+    font-size: 32px;
+    font-weight: 700;
+  }
+  .status-label {
+    font-size: 16px;
+    margin-top: 10px;
+  }
+  .upcoming-section {
+    margin: 20px 0;
+  }
+  .upcoming-appointments,
+  .upcoming-sessions {
+    width: 48%;
+  }
+  .upcoming-appointments h2,
+  .upcoming-sessions h2 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .header-fix {
+    background: #fff;
+    color: #fff;
+    line-height: 0px;
+  }
+  :where(.css-dev-only-do-not-override-m4timi).ant-layout .ant-layout-sider {
+    background: #fff;
+    min-width: 0;
+    position: relative;
+    transition: all 0.2s, background 0s;
+  }
+  :where(.css-dev-only-do-not-override-m4timi).ant-layout
+    .ant-layout-sider-trigger {
+    background: #ffffff;
+    bottom: 0;
+    color: #000;
+    cursor: pointer;
+    height: 48px;
+    line-height: 48px;
+    position: fixed;
+    text-align: center;
+    transition: all 0.2s;
+    z-index: 1;
+  }
+  :where(.css-m4timi).ant-layout .ant-layout-sider-trigger {
+      position: fixed;
+      bottom: 0;
+      z-index: 1;
+      height: 48px;
+      color: #fff;
+      line-height: 48px;
+      text-align: center;
+      background: #ffffff;
+      cursor: pointer;
+      transition: all 0.2s;
+  }
+  
+  :where(.css-m4timi).ant-flex {
+      display: flex;
+      background-color: white;
+  }
+  :where(.css-m4timi).ant-layout.ant-layout-has-sider >.ant-layout, :where(.css-m4timi).ant-layout.ant-layout-has-sider >.ant-layout-content {
+      width: 0;
+      background-color: white;
+  }
+  .patint-table{
+      width: -webkit-fill-available;
+      padding-inline: 15px;
+      background-color: white;
+  }
+  :where(.css-m4timi).ant-input-group >.ant-input-affix-wrapper:not(:last-child) .ant-input {
+      border-start-end-radius: 0;
+      border-end-end-radius: 0;
+      height: 30px;
+  }
+  
+  :where(.css-dev-only-do-not-override-m4timi).ant-input-search
+    > .ant-input-group
+    > .ant-input-group-addon:last-child {
+    padding-left: 20px;
+  }
+  :where(.css-dev-only-do-not-override-m4timi).ant-input-search
+    > .ant-input-group
+    > .ant-input-group-addon:last-child
+    .ant-input-search-button {
+    border-end-end-radius: 6px;
+    border-end-start-radius: 6px;
+    border-start-end-radius: 6px;
+    border-start-start-radius: 6px;
+    box-shadow: none;
+    margin-inline-end: -1px;
+    padding-bottom: 6px;
+    padding-top: 6px;
+  }
+  :where(.css-dev-only-do-not-override-m4timi).ant-input-group
+    .ant-input-group-addon:first-child,
+  :where(.css-dev-only-do-not-override-m4timi).ant-input-group
+    > .ant-input:first-child {
+    border-end-end-radius: 6px;
+    border-start-end-radius: 6px;
+  }
+  :where(.css-dev-only-do-not-override-m4timi).ant-layout {
+    background: #fff;
+    display: flex;
+    flex: auto;
+    flex-direction: column;
+    min-height: 0;
+  }
+  :where(.css-dev-only-do-not-override-m4timi).ant-layout [class*=" ant-layout"],
+  :where(.css-dev-only-do-not-override-m4timi).ant-layout [class^="ant-layout"] {
+    box-sizing: border-box;
+  }
+  :where(.css-m4timi).ant-layout .ant-layout-sider-has-trigger {
+      padding-bottom: 48px;
+      background-color: white;
+  }
+  
+  .ant-layout-sider-children {
+    position: fixed;
+   
+  
+  }
+  .events {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .events .ant-badge-status {
+    font-size: 12px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
+  }
+  .notes-month {
+    text-align: center;
+  }
+  .notes-month,
+  .notes-month section {
+    font-size: 28px;
+  }
+  .ant-input-search
+    :where(.css-dev-only-do-not-override-m4timi).ant-input-group
+    .ant-input-affix-wrapper:not(:last-child) {
+    border-end-start-radius: 6px;
+    border-start-start-radius: 6px;
+    height: 40px;
+  }
+  :where(.css-dev-only-do-not-override-m4timi).ant-input-search
+    > .ant-input-group
+    > .ant-input-group-addon:last-child {
+    border: 0;
+    inset-inline-start: -1px;
+    padding: 4px;
+  }
+  .table-row-light {
+    background-color: #fff;
+  }
+  .table-row-dark {
+    background-color: #f0f8ff;
+  }
+  .custom-selected-hover-row:hover {
+    background-color: #bae0ff !important;
+  }
+  .ant-space
+    css-dev-only-do-not-override-17seli4
+    ant-space-horizontal
+    ant-space-align-center
+    ant-space-gap-row-small
+    ant-space-gap-col-small {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  .ant-form-item-required {
+    text-wrap: wrap;
+    text-align: start;
+  }
+  :where(.css-dev-only-do-not-override-m4timi).ant-input-outlined {
+    background: #fff;
+    border: 1px solid #d9d9d9;
+  }
+  .custom-input {
+    height: 40px;
+  }
+  .patint-form .custom-input {
+    height: 40px;
+    width: 100%;
+  }
+  .ant-form {
+    margin-inline: 40px;
+    position: relative;
+  }
+  .tab-container {
+    width: -webkit-fill-available;
+  }
+  :where(.css-dev-only-do-not-override-m4timi).ant-input-group
+    .ant-input-affix-wrapper:not(:last-child) {
+    border-end-end-radius: 6px;
+    border-start-end-radius: 6px;
+  }
+  .tab-container {
+    background: #fff;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+  .status-card {
+    border: 1px solid #f0f0f0;
+    border-radius: 8px;
+    margin: 15px;
+    padding: 15px;
+    text-align: left;
+    width: 95%;
+  }
+  .dashboard-charts,
+  .dashboard-status {
+    height: -webkit-max-content;
+    height: max-content;
+    width: -webkit-max-content;
+    width: max-content;
+  }
+  .dashboard-charts {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
+  .upcoming-section {
+    display: flex;
+    justify-content: space-evenly;
+    position: absolute;
+    top: 20rem;
+    width: -webkit-fill-available;
+  }
+  body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+      Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+    margin: 0;
+  }
+  code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, Courier New, monospace;
+  }
+  /*# sourceMappingURL=main.71d85121.css.map*/
+
+  :where(.css-m4timi).ant-input-search >.ant-input-group >.ant-input-group-addon:last-child .ant-input-search-button:not(.ant-btn-primary) {
+    color: rgba(0, 0, 0, 0.45);
+    height: 39px;
+    width:40px
+  }
+  
