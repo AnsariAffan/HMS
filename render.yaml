@@ -1,7 +1,7 @@
 services:
   - name: frontend
     buildCommand: npm run build
-    startCommand: npm start
+    startCommand: npx serve -s build
     env:
       - key: NODE_ENV
         value: production
