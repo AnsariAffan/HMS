@@ -15,7 +15,8 @@ import "./components/Usertable.css";
 import "./components/UserDashboard.css"
 import "./components/Usertable.css"
 import "./App.css"
-import { BrowserRouter } from "react-router-dom/cjs/react-router-dom.min";
+import { BrowserRouter } from "react-router-dom/cjs/react-router-dom";
+
 
 
 function App() {
