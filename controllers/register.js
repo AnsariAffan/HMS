@@ -4,7 +4,7 @@ const User = require("../models/userloginModel");
 exports.register = async (req, res) => {
     try {
         const { username, password } = req.body;
-
+console.log(username, password );
         // Validate if username and password are provided
         if (!username || !password) {
             return res.status(400).json({ message: 'Username and password are required' });
