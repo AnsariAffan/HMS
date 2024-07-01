@@ -9,3 +9,4 @@ const connectToMongo = mongoose.connect('mongodb+srv://mohammadaffan777:Anam%401
     })
 
    
+//mongodb+srv://mohammadaffan777:Anam%401234@cluster0.f68xlli.mongodb.net/HospitalManagementDatabase?retryWrites=true&w=majority

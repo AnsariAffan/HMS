@@ -4,6 +4,7 @@ const { getAllPateints } = require('../controllers/getAllPateints')
 const { updatePateint } = require('../controllers/updatePateint')
 const { updateNewEntry } = require('../controllers/updateNewEntry')
 const { login } = require('../controllers/login')
+const { register } = require('../controllers/register')
 const router = express.Router()
 
 router.post("/createNewEntry",createNewEntry)
@@ -11,4 +12,5 @@ router.put("/updateNewEntry",updateNewEntry)
 router.get("/getAllPateints",getAllPateints)
 router.put("/updatePateint/:id",updatePateint)
 router.post("/login",login)
+router.post("/register",register)
 module.exports = router

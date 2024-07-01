@@ -4,8 +4,7 @@ const User = require("../models/userloginModel");
 exports.login = async (req, res) => {
     try {
         const { username, password } = req.body;
-        console.log("Received login request:", username);
-        console.log(username, password);
+        console.log("Received login request:",  req.body);
 
         // Ensure username and password are provided
         if (!username || !password) {
