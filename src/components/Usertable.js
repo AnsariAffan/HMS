@@ -201,7 +201,7 @@ const Usertable = () => {
     },
     {
       title: "Material Status",
-      dataIndex: "Matertal_Status",
+      dataIndex: "Material_Status",
       key: "Material Status",
       filters: [
         { text: "Single", value: "single" },
