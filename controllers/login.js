@@ -1,10 +1,9 @@
 const User = require("../models/userloginModel");
 
-
 exports.login = async (req, res) => {
     try {
         const { username, password } = req.body;
-        console.log("Received login request:",  req.body);
+        console.log("Received login request:", username);
 
         // Ensure username and password are provided
         if (!username || !password) {
@@ -19,7 +18,7 @@ exports.login = async (req, res) => {
         }
 
         // Check if the password is correct
-        const isMatch = await User.comparePassword(password);
+        const isMatch = await user.comparePassword(password);
 
         if (!isMatch) {
             return res.status(401).json({ message: "Invalid username or password" });
