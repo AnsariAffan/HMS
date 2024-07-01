@@ -49,3 +49,11 @@
     top: 20rem;
     width: -webkit-fill-available;
 }
+
+.recharts-wrapper{
+    position: relative;
+    cursor: default;
+    width: 400px;
+    height: 300px;
+    top: -2rem;
+}

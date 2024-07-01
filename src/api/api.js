@@ -60,7 +60,9 @@ export const getAllPateints = createAsyncThunk(
   "api/getAllPateints",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`https://services-uk8v.onrender.com/api/getAllPateints`);
+      const response = await axios.get(
+        `https://services-uk8v.onrender.com/api/getAllPateints`
+      );
     
       console.log(response)
      

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Tabs, Form, Input, DatePicker, Button, Row, Col, Select,message } from 'antd';
+import { Tabs, Form, Input, DatePicker, Button, Row, Col, Select,message, Spin } from 'antd';
 import './Userform.css'; // Import your custom CSS file
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllPateints, savePateint, updatePateint } from '../api/api'; // Import the updatePatient action
@@ -13,7 +13,7 @@ const { TabPane } = Tabs;
 const MyForm = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
-  const { allPateint } = useSelector((state) => state.products);
+  const { allPateint,isLoading } = useSelector((state) => state.products);
   const [form] = Form.useForm();
   const [isEditing, setIsEditing] = useState(false);
   const history = useHistory();
@@ -34,10 +34,10 @@ const MyForm = () => {
           Middle_Name: patientData.Middle_Name || '',
           Last_Name: patientData.Last_Name || '',
           Date_of_Birth: patientData.Date_of_Birth ? moment(patientData.Date_of_Birth) : null,
-          Marital_Status: patientData.Marital_Status || 'Married',
+          Material_Status: patientData.Material_Status || '',
           Age: patientData.Age || '',
           Year: patientData.Year || '',
-          Gender: patientData.Gender || 'Male',
+          Gender: patientData.Gender || '',
           Nationality: patientData.Nationality || '',
           Religion: patientData.Religion || '',
           Contact_Number: patientData.Contact_Number || '',
@@ -71,6 +71,35 @@ const MyForm = () => {
   };
 
   return (
+    <>
+
+    {isLoading ? (
+
+      <div style={{  position: "fixed",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          backgroundColor: "rgba(255, 255, 255, 0.5)", 
+          backdropFilter: "blur(8px)",
+          zIndex: 999,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          flexDirection:"column"
+      }}
+          >
+  
+      <Spin size="large" />
+      <p style={{marginLeft: "20px"}}>Loading...</p>
+      </div>
+  
+    ):""}
+
+
+
+
+   
     <Form className="patient-form" layout="vertical" form={form} onFinish={onFinish}>
       <Row gutter={24}>
         <Col span={8}>
@@ -101,7 +130,7 @@ const MyForm = () => {
           </Form.Item>
         </Col>
         <Col span={8}>
-          <Form.Item label="Marital Status" name="Marital_Status">
+          <Form.Item label="Marital Status" name="Material_Status">
             <Select className="custom-input">
               <Option value="Married">Married</Option>
               <Option value="Unmarried">Unmarried</Option>
@@ -184,6 +213,7 @@ const MyForm = () => {
         <Button type="primary" htmlType="submit">Submit</Button>
       </Form.Item>
     </Form>
+    </>
   );
 };
 

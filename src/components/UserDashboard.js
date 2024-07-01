@@ -1,5 +1,5 @@
 import React, { Children, useEffect, useState } from 'react';
-import { Layout, Menu, Table, Input, Button, DatePicker, Avatar, Flex } from 'antd';
+import { Layout, Menu, Table, Input, Button, DatePicker, Avatar, Flex, Spin } from 'antd';
 import { UserOutlined, SearchOutlined, CalendarOutlined, DashboardOutlined, UsergroupAddOutlined, ScheduleOutlined, AppstoreAddOutlined } from '@ant-design/icons';
 import './Dashboard.css';
 import './UserDashboard.css';
@@ -74,10 +74,17 @@ countGender()
     // Light color palette for pie chart
     const COLORS = ['#8ecae6', '#ff9b73'];
 
+
+    // if(isLoading ==false){
+    //    return(
+        
+    //    )
+    // }
+
+
   return (
 
-    
-
+   <>
 
 <Layout className="site-layout">
     <Header className="site-layout-background header-fix" style={{ padding: '10px' }}>
@@ -92,6 +99,30 @@ countGender()
     </Header>
   <Flex>
  
+  {isLoading? (
+
+    <div style={{  position: "fixed",
+        top: 0,
+        left: 0,
+        width: "100%",
+        height: "100%",
+        backgroundColor: "rgba(255, 255, 255, 0.5)", 
+        backdropFilter: "blur(8px)",
+        zIndex: 999,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        flexDirection:"column"
+    }}
+        >
+
+    <Spin size="large" />
+    <p style={{marginLeft: "20px"}}>Loading...</p>
+    </div>
+
+  ):""}
+
+
 <Content style={{ margin: '0' }}>
         <div className='four-cards' >
             <div className="dashboard-status">
@@ -170,7 +201,7 @@ countGender()
 </Layout>
 
 
-
+</>
   )
 }
 
