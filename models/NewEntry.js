@@ -8,7 +8,7 @@ const NewEntrySchema = new mongoose.Schema({
   Middle_Name: { type: String },
   Last_Name: { type: String },
   Date_of_Birth: { type: String },
-  Matertal_Status: { type: String },
+  Material_Status: { type: String },
   Age: { type: String },
   Year: { type: String },
   Gender: { type: String },
