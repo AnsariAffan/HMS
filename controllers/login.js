@@ -1,4 +1,5 @@
 const User = require("../models/userloginModel");
+const jwt = require("jsonwebtoken");
 
 exports.login = async (req, res) => {
     try {
@@ -24,8 +25,15 @@ exports.login = async (req, res) => {
             return res.status(401).json({ message: "Invalid username or password" });
         }
 
-        // If credentials are correct, send a success response
-        res.json({ message: "Login successful" });
+        // Generate JWT token
+        const token = jwt.sign(
+            { userId: user._id, username: user.username },
+            process.env.JWT_SECRET,
+            { expiresIn: '1h' } // Token expires in 1 hour
+        );
+
+        // If credentials are correct, send the token and success response
+        res.json({ message: "Login successful", token });
     } catch (error) {
         console.error("Error during login:", error);
         res.status(500).json({ message: "Something went wrong" });

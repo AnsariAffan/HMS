@@ -3,10 +3,10 @@ const User = require("../models/userloginModel");
 
 exports.register = async (req, res) => {
     try {
-        const { username, password,userType } = req.body;
+        const { username, password,loginType } = req.body;
 console.log(req.body );
         // Validate if username and password are provided
-        if (!username || !password || !userType) {
+        if (!username || !password || !loginType) {
             return res.status(400).json({ message: 'Username and password are required!!!' });
         }
 
@@ -18,7 +18,7 @@ console.log(req.body );
         }
 
         // Create a new user
-        const newUser = new User({ username, password,userType });
+        const newUser = new User({ username, password,loginType });
         await newUser.save();
 
         res.status(201).json({ message: 'User registered successfully' });
