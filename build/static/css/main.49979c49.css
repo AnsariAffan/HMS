@@ -324,9 +324,9 @@
     height: 300px;
     top: -3rem;
   }
-
-
-.login-background {
+  
+  
+  .login-background {
   align-items: center;
   background-color: #483d8b;
   background-image: url(https://static.vecteezy.com/system/resources/previews/006/712/985/non_2x/abstract-health-medical-science-healthcare-icon-digital-technology-science-concept-modern-innovation-treatment-medicine-on-hi-tech-future-blue-background-for-wallpaper-template-web-design-vector.jpg);
@@ -335,32 +335,32 @@
   display: flex;
   height: 100vh;
   justify-content: center;
-}
-.login-container {
+  }
+  .login-container {
   background: #fffc;
   border-radius: 8px;
   box-shadow: 0 2px 8px #0000001a;
   padding: 40px;
   text-align: center;
-}
-.login-icon {
+  }
+  .login-icon {
   margin-bottom: 20px;
-}
-#login-btn {
+  }
+  #login-btn {
   background: #1677ff;
   box-shadow: 0 2px 0 #0591ff1a;
   color: #fff;
   min-width: -webkit-fill-available;
-}
-.login-form input {
+  }
+  .login-form input {
   height: 30px;
   width: 100%;
-}
-/*# sourceMappingURL=main.49979c49.css.map*/
-:where(.css-m4timi).ant-input-outlined {
+  }
+  /*# sourceMappingURL=main.49979c49.css.map*/
+  :where(.css-m4timi).ant-input-outlined {
     background: #ffffff;
     border-width: 1px;
     border-style: solid;
     border-color: #d9d9d9;
     height: 40px;
-}
+  }
