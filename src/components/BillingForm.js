@@ -37,14 +37,14 @@ const BillingForm = () => {
       }
 
       const headerData = {
-        ipdNo: form.getFieldValue("ipdNo"),
+        PID: form.getFieldValue("PID"),
         patient: form.getFieldValue("patient"),
-        panel: form.getFieldValue("panel"),
+        PaymentDueDate: form.getFieldValue("PaymentDueDate"),
         billDate: form.getFieldValue("billDate"),
-        doaDod: form.getFieldValue("doaDod"),
-        patientType: form.getFieldValue("patientType"),
-        billTime: form.getFieldValue("billTime"),
-        head: form.getFieldValue("head"),
+        totalBillAmount: form.getFieldValue("totalBillAmount"),
+        paidAmount: form.getFieldValue("paidAmount"),
+        openAmount: form.getFieldValue("openAmount"),
+
       };
 
       console.log("Header Data:", headerData);
@@ -168,7 +168,7 @@ const BillingForm = () => {
     <Form form={form} layout="vertical">
       <Row gutter={16}>
         <Col span={6}>
-          <Form.Item label="Payment Due Date" name="doaDod">
+          <Form.Item label="Bill Date" name="billDate">
             <DatePicker style={{ width: "100%" }} className="custom-input" />
           </Form.Item>
         </Col>
@@ -178,27 +178,27 @@ const BillingForm = () => {
           </Form.Item>
         </Col>
         <Col span={6}>
-          <Form.Item label="Patient ID" name="ipdNo">
+          <Form.Item label="Patient ID" name="PID">
             <Input style={{ width: "100%" }} placeholder="IPD-29/20-21" />
           </Form.Item>
         </Col>
         <Col span={6}>
-          <Form.Item label="Payment Due Date" name="billDate">
+          <Form.Item label="Payment Due Date" name="PaymentDueDate">
             <DatePicker style={{ width: "100%" }} className="custom-input" />
           </Form.Item>
         </Col>
         <Col span={6}>
-          <Form.Item label="Total Bill Amount" name="panel">
+          <Form.Item label="Total Bill Amount" name="totalBillAmount">
             <Input style={{ width: "100%" }} placeholder="Panel" />
           </Form.Item>
         </Col>
         <Col span={6}>
-          <Form.Item label="Paid Amount" name="billTime">
+          <Form.Item label="Paid Amount" name="paidAmount">
             <Input style={{ width: "100%" }} placeholder="Hospital" />
           </Form.Item>
         </Col>
         <Col span={6}>
-          <Form.Item label="Open Amount" name="patientType">
+          <Form.Item label="Open Amount" name="openAmount">
             <Input style={{ width: "100%" }} placeholder="Hospital" />
           </Form.Item>
         </Col>
