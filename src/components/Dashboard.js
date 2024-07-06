@@ -5,9 +5,10 @@ import { Layout, Menu, Table, Input, Button, DatePicker, Avatar, Flex } from 'an
 import { UserOutlined, SearchOutlined, CalendarOutlined, DashboardOutlined, UsergroupAddOutlined, ScheduleOutlined, AppstoreAddOutlined } from '@ant-design/icons';
 import './Dashboard.css';
 import { PieChart, Pie, LineChart, Line, Tooltip } from 'recharts';
-import Link from 'antd/es/typography/Link';
+
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllPateints } from '../api/api';
+import { Link } from 'react-router-dom/cjs/react-router-dom.min';
 const { Header, Content, Sider } = Layout;
 const { Search } = Input;
 
@@ -57,10 +58,10 @@ const Dashboard = (      {children}) => {
                 </div>
                 <Menu theme="light" defaultSelectedKeys={['1']} mode="inline" >
                     <Menu.Item key="1" icon={<DashboardOutlined />}>
-                        <Link href="/">Dashboard</Link>
+                        <Link to="/dashboard">Dashboard</Link>
                     </Menu.Item>
                     <Menu.Item key="2" icon={<UserOutlined />}>
-                    <Link href="/usertable"> Patients</Link> 
+                    <Link to="/usertable"> Patients</Link> 
                     </Menu.Item>
                     <Menu.Item key="3" icon={<UsergroupAddOutlined />}>
                     <Link to="/doctors">Doctors</Link>   

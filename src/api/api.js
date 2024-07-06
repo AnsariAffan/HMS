@@ -4,28 +4,59 @@ import {
 } from "@reduxjs/toolkit";
 import axios from "axios";
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
+import api from "./apiConfigurations";
 
 // Define the async thunk to fetch data
+// export const savePateint = createAsyncThunk(
+//   "api/savePateint",
+//   async ( {values,history}, { rejectWithValue }) => {
+  
+//     try {
+//       const response = await axios.post(
+//         "https://services-uk8v.onrender.com/api/createNewEntry",
+//         {
+//           "data": values,
+          
+//       }
+//       );
+
+//       // await history.push("/UserTableController");
+//       // window.alert(response.data.message)
+//       // message.success(response.data.message);
+//       history.push("/Usertable")
+//       console.log(response.data.message);
+    
+//       return response.data
+//     } catch (error) {
+//       console.error("Save patient error:", error);
+//       return rejectWithValue(error.response ? error.response.data : error.message);
+//     }
+//   }
+// );
+
 export const savePateint = createAsyncThunk(
   "api/savePateint",
-  async ( {values,history}, { rejectWithValue }) => {
-  
+  async ({ values, history }, { rejectWithValue }) => {
     try {
-      const response = await axios.post(
+      const response = await api.post(
         "https://services-uk8v.onrender.com/api/createNewEntry",
         {
-          "data": values,
-          
-      }
+          data: values,
+        }
       );
+
+      history.push("/Usertable");
       console.log(response.data.message);
-      // await history.push("/UserTableController");
-      // window.alert(response.data.message)
-      history.push("/Usertable")
-      return response.data
+
+      return response; // Return the message from the response
     } catch (error) {
       console.error("Save patient error:", error);
-      return rejectWithValue(error.response ? error.response.data : error.message);
+      // Handle specific error when user is already added
+      if (error.response && error.response.status === 409) {
+        return rejectWithValue("User is already added.");
+      } else {
+        return rejectWithValue(error.response ? error.response.data : error.message);
+      }
     }
   }
 );
@@ -34,7 +65,7 @@ export const updatePateint = createAsyncThunk(
   "api/updatePatient",
   async ({values,history}, { rejectWithValue }) => {
     try {
-      const response = await axios.put(
+      const response = await api.put(
         "https://services-uk8v.onrender.com/api/updateNewEntry",
         {
           data: values
@@ -42,6 +73,7 @@ export const updatePateint = createAsyncThunk(
       );
       history.push("/Usertable")
       console.log(response);
+     
     
       return response.data;
           
@@ -60,7 +92,7 @@ export const getAllPateints = createAsyncThunk(
   "api/getAllPateints",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get(
+      const response = await api.get(
         `https://services-uk8v.onrender.com/api/getAllPateints`
       );
     
@@ -84,15 +116,31 @@ export const pateintSlice = createSlice({
     isLoading: false,
     hasError: null,
     allPateint: [],
-    
-
-    successData:null
+    successData:null,
+    responseMessage:""
   },
   reducers: {
   },
   extraReducers:async (builder) => {
     //fetch Single Product
      builder
+      // .addCase(savePateint.pending, (state) => {
+      //   state.isLoading = true;
+      //   state.hasError = false;
+      // })
+      // .addCase(savePateint.fulfilled, (state, action) => {
+      //   state.isLoading = false;
+      //   state.hasError = false;
+      //   state.allPateint = action.payload;
+      //   state.responseMessage=action.payload
+      //   state.successData = true
+      // })
+      // .addCase(savePateint.rejected, (state) => {
+      //   state.isLoading = false;
+      //   state.hasError = true;
+      //   state.allPateint = {};
+      // });
+
       .addCase(savePateint.pending, (state) => {
         state.isLoading = true;
         state.hasError = false;
@@ -101,16 +149,21 @@ export const pateintSlice = createSlice({
         state.isLoading = false;
         state.hasError = false;
         state.allPateint = action.payload;
- 
-        state.successData = true
+        state.successData = true;
+
+        // Check the response message to determine if user is already added
+        if (action.payload.message === "User is already added.") {
+          state.responseMessage = "User is already added."; // Set responseMessage state
+        } else {
+          state.responseMessage = action.payload.message; // Set responseMessage state from API response
+
+        }
       })
-      .addCase(savePateint.rejected, (state) => {
+      .addCase(savePateint.rejected, (state, action) => {
         state.isLoading = false;
         state.hasError = true;
-        state.allPateint = {};
+        state.responseMessage = action.payload; // Assign the error message from rejectWithValue
       });
-
-
       //getAllPateints
       builder
       .addCase(getAllPateints.pending, (state) => {

@@ -12,34 +12,24 @@ import "./components/calendar.css";
 import "./components/Dashboard.css";
 import "./components/Usertable.css";
 import "./components/UserDashboard.css";
+import Login from "./components/Login";
+import PrivateRoute from "./PrivateRoute";
 
 function App() {
   return (
     <Router basename={process.env.PUBLIC_URL}>
       <Switch>
         <Route exact path="/">
-          <Dashboard>
-            <UserDashboard />
-          </Dashboard>
+          <Login />
         </Route>
-        <Route path="/about">
-          <About />
-        </Route>
-        <Route path="/usertable">
-          <Dashboard>
-            <Usertable />
-          </Dashboard>
-        </Route>
-        <Route path="/userForm">
-          <Dashboard>
-            <UserForm />
-          </Dashboard>
-        </Route>
-        <Route path="/pateint/:id">
-          <Dashboard>
-            <UserForm />
-          </Dashboard>
-        </Route>
+        <Dashboard>
+          <Switch>
+            <PrivateRoute path="/dashboard" component={UserDashboard} />
+            <PrivateRoute path="/usertable" component={Usertable} />
+            <PrivateRoute path="/userForm" component={UserForm} />
+            <PrivateRoute path="/pateint/:id" component={UserForm } />
+          </Switch>
+        </Dashboard>
       </Switch>
     </Router>
   );

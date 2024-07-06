@@ -13,15 +13,17 @@ const { TabPane } = Tabs;
 const MyForm = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
-  const { allPateint,isLoading } = useSelector((state) => state.products);
+  const { allPateint,isLoading,responseMessage } = useSelector((state) => state.products);
+
   const [form] = Form.useForm();
   const [isEditing, setIsEditing] = useState(false);
   const history = useHistory();
   useEffect(() => {
     dispatch(getAllPateints());
+   
   }, [dispatch]);
 
-  console.log(allPateint.message)
+console.log(responseMessage);
 
   useEffect(() => {
     if (allPateint && allPateint.data && id) {
@@ -50,6 +52,7 @@ const MyForm = () => {
         });
       }
     }
+    
   }, [id, allPateint, form]);
 
   const onFinish = async (values) => {
