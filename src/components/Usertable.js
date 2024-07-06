@@ -16,9 +16,9 @@ import {
   Select,
   Flex,
 } from 'antd';
-import { EditOutlined, DeleteOutlined, EyeOutlined } from '@ant-design/icons';
+import { EditOutlined, DeleteOutlined, EyeOutlined,UserOutlined } from '@ant-design/icons';
 import moment from 'moment';
-import Link from 'antd/es/typography/Link';
+
 import {
   Dropdown,
 
@@ -35,6 +35,7 @@ import { getAllPateints } from "../api/api";
 import { UserAddOutlined, DownOutlined, EllipsisOutlined } from "@ant-design/icons";
 import * as XLSX from "xlsx";
 import "./Usertable.css"
+import { Link } from 'react-router-dom/cjs/react-router-dom.min';
 
 
 
@@ -166,7 +167,7 @@ const Usertable = () => {
       dataIndex: "_id",
       key: "patentId",
       render: (text, record) => (
-        <Link href={`pateint/${record._id}`}>{`${record._id}`}</Link>
+        <Link to={`pateint/${record._id}`}>{`${record._id}`}</Link>
       ),
     },
     {
@@ -289,8 +290,9 @@ const Usertable = () => {
     <div className="patint-table" style={{width:"-webkit-fill-available",paddingInline:"15px"}}>
       <Title level={3}>Patient Manager</Title>
       <Space style={{ marginBottom: 16 ,}}>
-        <Link href="/userForm" > <Button  style={{ marginBottom: 8, width: "max-content" ,height: "40px"}} type="primary" >
-          Add a Patient
+        <Link to="/userForm" > <Button  style={{ marginBottom: 8, width: "max-content" ,height: "40px"}} type="primary" >
+        <UserOutlined style={{fontSize:"20px"}}/>
+        Add Patient
         </Button></Link>
        
         <DatePicker   style={{ marginBottom: 8, width: "max-content" ,height: "40px"}} defaultValue={moment()} format="YYYY-MM-DD" />

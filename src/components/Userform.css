@@ -47,6 +47,19 @@
   border-end-end-radius: 6px;
 }
 
+:where(.css-dev-only-do-not-override-m4timi).ant-form-item .ant-form-item-control-input-content {
+  flex: auto;
+  max-width: 100%;
+  text-align: end;
+}
+
+:where(.css-dev-only-do-not-override-m4timi).ant-btn-primary {
+  color: #fff;
+  background: #1677ff;
+  box-shadow: 0 2px 0 rgba(5, 145, 255, 0.1);
+  width: 100px;
+  height:40px;
+}
 
 
 /* Add styles for the sticky tab navigation */

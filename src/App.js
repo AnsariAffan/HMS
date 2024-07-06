@@ -14,6 +14,7 @@ import "./components/Usertable.css";
 import "./components/UserDashboard.css";
 import Login from "./components/Login";
 import PrivateRoute from "./PrivateRoute";
+import BillingForm from "./components/BillingForm";
 
 function App() {
   return (
@@ -22,12 +23,16 @@ function App() {
         <Route exact path="/">
           <Login />
         </Route>
+        
         <Dashboard>
           <Switch>
             <PrivateRoute path="/dashboard" component={UserDashboard} />
             <PrivateRoute path="/usertable" component={Usertable} />
             <PrivateRoute path="/userForm" component={UserForm} />
             <PrivateRoute path="/pateint/:id" component={UserForm } />
+            <Route exact path="/BillingForm">
+            <BillingForm />
+          </Route>
           </Switch>
         </Dashboard>
       </Switch>

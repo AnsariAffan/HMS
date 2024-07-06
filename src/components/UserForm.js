@@ -7,6 +7,8 @@ import { Option } from 'antd/es/mentions';
 import { useParams } from 'react-router-dom';
 import moment from 'moment';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
+import BillingForm from './BillingForm';
+import { UserOutlined, DollarOutlined,FileTextFilled,FileTextTwoTone  ,SearchOutlined, CalendarOutlined, DashboardOutlined, UsergroupAddOutlined, ScheduleOutlined, AppstoreAddOutlined } from '@ant-design/icons';
 const { TabPane } = Tabs;
 
 
@@ -222,15 +224,15 @@ console.log(responseMessage);
 
 const Tab1 = () => (
   <div>
-    <h3>Patient Information</h3>
+    
     <MyForm />
   </div>
 );
 
 const Tab2 = () => (
   <div>
-    <h3>Tab 2 Content</h3>
-    {/* Add Tab 2 specific content */}
+    
+    <BillingForm/>
   </div>
 );
 
@@ -247,10 +249,11 @@ const UserForm = () => {
   return (
     <div className="tab-container">
       <Tabs activeKey={activeTab} onChange={(key) => setActiveTab(key)} centered>
-        <TabPane tab="Patient Information" key="1">
+    
+        <TabPane tab="Patient Information" key="1" icon={<UserOutlined style={{fontSize:"20px"}}/>}>
           <Tab1 />
         </TabPane>
-        <TabPane tab="Tab 2" key="2">
+        <TabPane tab="Billing" key="2" icon={<FileTextTwoTone style={{fontSize:"20px"}}/>}>
           <Tab2 />
         </TabPane>
         <TabPane tab="Tab 3" key="3">

@@ -28,3 +28,8 @@
     min-width: -webkit-fill-available;
     
 }
+
+.login-form input{
+  height: 30px; /* Adjust the height as needed */
+ width: 100%;
+}
