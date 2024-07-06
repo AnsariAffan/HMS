@@ -311,7 +311,7 @@
     font-family: source-code-pro, Menlo, Monaco, Consolas, Courier New, monospace;
   }
   /*# sourceMappingURL=main.71d85121.css.map*/
-
+  
   :where(.css-m4timi).ant-input-search >.ant-input-group >.ant-input-group-addon:last-child .ant-input-search-button:not(.ant-btn-primary) {
     color: rgba(0, 0, 0, 0.45);
     height: 39px;
@@ -323,4 +323,4 @@
     width: 400px;
     height: 300px;
     top: -3rem;
-}
+  }
