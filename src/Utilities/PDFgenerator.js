@@ -34,7 +34,7 @@ const PDFgenerator = (headerData, data,billingDetails, totalAmount ) => {
     // Add images and text to the PDF
     // const callImage = "/Calling.png";
     // const imageUrl = "/aalam.png";
-    pdf.addImage(imageUrl, 'JPEG', 10, 5, 40, 12);
+    // pdf.addImage(imageUrl, 'JPEG', 10, 5, 40, 12);
     pdf.setFontSize(10);
     pdf.setFont('helvetica', 'bold');  // Using default font 'helvetica'
     pdf.text('REQUEST FOR QUOTATION', 150, 12);
@@ -48,7 +48,7 @@ const PDFgenerator = (headerData, data,billingDetails, totalAmount ) => {
     pdf.text('Contact Person', 13, 23)
     pdf.setFont('helvetica', 'normal');
     pdf.text("Nithish Kumar CP", 13, 28)
-    pdf.addImage(callImage, 'PNG', 13, 29, 3, 3);
+    // pdf.addImage(callImage, 'PNG', 13, 29, 3, 3);
     pdf.text("9078382732", 16, 32)
     pdf.setFont('times', 'bold')  // Using default font 'times'
     pdf.text('RFQ No      :', 130, 23)
@@ -77,7 +77,7 @@ const PDFgenerator = (headerData, data,billingDetails, totalAmount ) => {
     pdf.text('Contact Person', 13, 56)
     pdf.setFont('times', 'normal')
     pdf.text(`${vendorData?.contactPerson}`, 13, 60);
-    pdf.addImage(callImage, 'PNG', 13, 61, 3, 3);
+    // pdf.addImage(callImage, 'PNG', 13, 61, 3, 3);
     pdf.text(`  ${vendorData?.contactPersonMobNo || "N/A"}`, 16, 64);
     pdf.setFont('times', 'bold')
     pdf.text('Dear Sir,', 13, 72)
