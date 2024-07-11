@@ -32,8 +32,8 @@ const PDFgenerator = (headerData, data,billingDetails, totalAmount ) => {
     });
 
     // Add images and text to the PDF
-    const callImage = "/Calling.png";
-    const imageUrl = "/aalam.png";
+    // const callImage = "/Calling.png";
+    // const imageUrl = "/aalam.png";
     pdf.addImage(imageUrl, 'JPEG', 10, 5, 40, 12);
     pdf.setFontSize(10);
     pdf.setFont('helvetica', 'bold');  // Using default font 'helvetica'
