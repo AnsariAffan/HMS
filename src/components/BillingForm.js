@@ -1,16 +1,29 @@
 import React, { useState, useEffect } from "react";
 import { Form, Input, Button, Table, Row, Col, Popconfirm, DatePicker } from "antd";
+import jsPDF from "jspdf";
+import "jspdf-autotable";
 import "./BillingForm.css";
+import PDFgenerator from "../Utilities/PDFgenerator";
 
 const BillingForm = () => {
   const [form] = Form.useForm();
   const [data, setData] = useState([]);
   const [editingKey, setEditingKey] = useState("");
   const [totalAmount, setTotalAmount] = useState(0);
+  const [paidAmount, setPaidAmount] = useState(0);
+  const [openAmount, setOpenAmount] = useState(0);
 
   useEffect(() => {
     calculateTotalAmount();
   }, [data]);
+
+  useEffect(() => {
+    setOpenAmount(totalAmount - paidAmount);
+    form.setFieldsValue({
+      totalBillAmount: totalAmount,
+      openAmount: totalAmount - paidAmount,
+    });
+  }, [totalAmount, paidAmount]);
 
   const isEditing = (record) => record.key === editingKey;
 
@@ -35,16 +48,16 @@ const BillingForm = () => {
         setData(newData);
         setEditingKey("");
       }
-
+      
       const headerData = {
         PID: form.getFieldValue("PID"),
         patient: form.getFieldValue("patient"),
         PaymentDueDate: form.getFieldValue("PaymentDueDate"),
         billDate: form.getFieldValue("billDate"),
-        totalBillAmount: form.getFieldValue("totalBillAmount"),
+        itemName: form.getFieldValue("itemName"),
+        totalBillAmount: totalAmount,
         paidAmount: form.getFieldValue("paidAmount"),
-        openAmount: form.getFieldValue("openAmount"),
-
+        openAmount: totalAmount - form.getFieldValue("paidAmount"),
       };
 
       console.log("Header Data:", headerData);
@@ -52,6 +65,32 @@ const BillingForm = () => {
     } catch (errInfo) {
       console.log("Validate Failed:", errInfo);
     }
+  };
+
+  const handleGenerateBill = () => {
+    const headerData = {
+      PID: form.getFieldValue("PID"),
+        patient: form.getFieldValue("patient"),
+        PaymentDueDate: form.getFieldValue("PaymentDueDate"),
+        billDate: form.getFieldValue("billDate"),
+        itemName: form.getFieldValue("itemName"),
+        totalBillAmount: totalAmount,
+        paidAmount: form.getFieldValue("paidAmount"),
+        openAmount: totalAmount - form.getFieldValue("paidAmount"),
+    };
+
+    const billingDetails = data.map((item) => ({
+      srNo: item.srNo,
+      head: item.head,
+      qty: item.qty,
+      amount: item.amount,
+      discount: item.discount,
+      netAmount: item.netAmount,
+      itemName:item.itemName
+    }));
+
+    PDFgenerator(headerData, data,billingDetails, totalAmount);
+  
   };
 
   const handleDelete = (key) => {
@@ -63,12 +102,11 @@ const BillingForm = () => {
     const newRow = {
       key: data.length + 1,
       srNo: data.length + 1,
-      head: "",
-      rate: "",
       qty: "",
       amount: "",
       discount: "",
       netAmount: "",
+      itemName:""
     };
     setData([...data, newRow]);
     setEditingKey(newRow.key);
@@ -90,9 +128,9 @@ const BillingForm = () => {
       key: "srNo",
     },
     {
-      title: "Asset Name",
-      dataIndex: "head",
-      key: "head",
+      title: "Item Name",
+      dataIndex: "itemName",
+      key: "itemName",
       editable: true,
     },
     {
@@ -137,11 +175,11 @@ const BillingForm = () => {
             <Button disabled={editingKey !== ""} onClick={() => edit(record)} type="link">
               Edit
             </Button>
-            <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record.key)}>
-              <Button type="link" danger>
+
+              <Button type="link" danger onClick={() => handleDelete(record.key)}>
                 Delete
               </Button>
-            </Popconfirm>
+        
           </span>
         );
       },
@@ -189,17 +227,22 @@ const BillingForm = () => {
         </Col>
         <Col span={6}>
           <Form.Item label="Total Bill Amount" name="totalBillAmount">
-            <Input style={{ width: "100%" }} placeholder="Panel" />
+            <Input style={{ width: "100%" }} placeholder="0" disabled value={totalAmount} />
           </Form.Item>
         </Col>
         <Col span={6}>
           <Form.Item label="Paid Amount" name="paidAmount">
-            <Input style={{ width: "100%" }} placeholder="Hospital" />
+            <Input
+              style={{ width: "100%" }}
+              placeholder="0"
+              value={paidAmount}
+              onChange={(e) => setPaidAmount(parseFloat(e.target.value) || 0)}
+            />
           </Form.Item>
         </Col>
         <Col span={6}>
           <Form.Item label="Open Amount" name="openAmount">
-            <Input style={{ width: "100%" }} placeholder="Hospital" />
+            <Input style={{ width: "100%" }} placeholder="0" disabled value={openAmount} />
           </Form.Item>
         </Col>
       </Row>
@@ -257,6 +300,11 @@ const BillingForm = () => {
         <Col span={4}>
           <Button type="primary" onClick={() => save(editingKey)}>
             Save
+          </Button>
+        </Col>
+        <Col span={4}>
+          <Button type="primary" onClick={handleGenerateBill}>
+            Generate Bill
           </Button>
         </Col>
       </Row>

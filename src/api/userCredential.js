@@ -46,6 +46,21 @@ export const login = createAsyncThunk(
   }
 );
 
+
+export const logout = createAsyncThunk('auth/logout', async (history, { rejectWithValue }) => {
+  try {
+    // Clear JWT from local storage
+    localStorage.removeItem('token');
+history.push("/")
+    // Optionally, call your API endpoint to handle server-side logout if needed
+    // await api.post('/logout');
+
+    return true;
+  } catch (error) {
+    return rejectWithValue(error.response.data);
+  }
+});
+
 // Define the slice of the store
 export const userSlice = createSlice({
   name: "user",
@@ -56,12 +71,7 @@ export const userSlice = createSlice({
     token: null,
   },
   reducers: {
-    logout: (state) => {
-      state.user = null;
-      state.token = null;
-      localStorage.removeItem("token");
-      message.success("Logged out");
-    },
+  
   },
   extraReducers: (builder) => {
     builder
@@ -82,6 +92,4 @@ export const userSlice = createSlice({
   },
 });
 
-// Export the reducer and the async thunk
-export const { logout } = userSlice.actions;
 export const { reducer: userLogin } = userSlice;

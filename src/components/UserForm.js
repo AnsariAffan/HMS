@@ -215,7 +215,12 @@ console.log(responseMessage);
         </Col>
       </Row>
       <Form.Item>
-        <Button type="primary" htmlType="submit">Submit</Button>
+        <Button type="primary" htmlType="submit">
+        
+        {isEditing?"Update":"Submit"}
+   
+        
+        </Button>
       </Form.Item>
     </Form>
     </>

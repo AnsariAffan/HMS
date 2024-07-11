@@ -16,7 +16,9 @@ import {
   Select,
   Flex,
 } from 'antd';
-import { EditOutlined, DeleteOutlined, EyeOutlined,UserOutlined } from '@ant-design/icons';
+import { EditOutlined, DeleteOutlined, EyeOutlined,UserOutlined,
+  ExportOutlined
+ } from '@ant-design/icons';
 import moment from 'moment';
 
 import {
@@ -124,7 +126,7 @@ const Usertable = () => {
   const dispatch = useDispatch();
 
   const { isLoading, allPateint,message } = useSelector((state) => state.products);
-
+  const patientCount = allPateint.data?.length;
   const [searchText, setSearchText] = useState("");
   const [filteredData, setFilteredData] = useState([]);
   const [uniqueNames2, setUniqueNames2] = useState([]);
@@ -288,14 +290,41 @@ const Usertable = () => {
 
   return (
     <div className="patint-table" style={{width:"-webkit-fill-available",paddingInline:"15px"}}>
-      <Title level={3}>Patient Manager</Title>
-      <Space style={{ marginBottom: 16 ,}}>
-        <Link to="/userForm" > <Button  style={{ marginBottom: 8, width: "max-content" ,height: "40px"}} type="primary" >
+     
+    <Title level={3}>Patient Manager</Title>
+    
+    <Space style={{ marginBottom: 16 ,}}>
+  
+    <Dropdown
+    
+    overlay={
+      
+      <Menu>
+        <Menu.Item key="print" onClick={handlePrint}>
+          Print
+        </Menu.Item>
+        <Menu.Item key="export" onClick={handleExportToExcel}>
+          Export to Excel
+        </Menu.Item>
+      </Menu>
+    }
+    placement="bottomLeft"
+    trigger={["click"]}
+  >
+    <a onClick={(e) => e.preventDefault()} style={{ cursor: "pointer" }}>
+      <Space>
+        Export Report <EllipsisOutlined />
+      </Space>
+    </a>
+  </Dropdown>  
+  <ExportOutlined   style={{fontSize:"20px"}}/>  
+    <Link to="/userForm" > <Button  style={{ marginBottom: 8, width: "max-content" ,height: "40px"}} type="primary" >
+     
         <UserOutlined style={{fontSize:"20px"}}/>
         Add Patient
         </Button></Link>
        
-        <DatePicker   style={{ marginBottom: 8, width: "max-content" ,height: "40px"}} defaultValue={moment()} format="YYYY-MM-DD" />
+        <DatePicker   style={{ marginBottom: 8, width: "15rem" ,height: "40px"}} defaultValue={moment()} format="YYYY-MM-DD" />
    
         <Input.Search
             placeholder="Master Filter"
@@ -306,7 +335,8 @@ const Usertable = () => {
           />
       </Space>
 
-      <Title level={4}>All Patient (1)</Title>
+      <Title level={4}>All Patient ({patientCount})</Title>
+    
       {/* <Table
         components={{
           body: {
@@ -356,26 +386,7 @@ const Usertable = () => {
             allowClear
             className="master Search"
           /> */}
-                    <Dropdown
-      overlay={
-        <Menu>
-          <Menu.Item key="print" onClick={handlePrint}>
-            Print
-          </Menu.Item>
-          <Menu.Item key="export" onClick={handleExportToExcel}>
-            Export to Excel
-          </Menu.Item>
-        </Menu>
-      }
-      placement="bottomLeft"
-      trigger={["click"]}
-    >
-      <a onClick={(e) => e.preventDefault()} style={{ cursor: "pointer" }}>
-        <Space>
-          Export Report <EllipsisOutlined />
-        </Space>
-      </a>
-    </Dropdown>
+
         </Flex>
 
         
@@ -391,6 +402,7 @@ const Usertable = () => {
             ...patient,
             key: patient._id,
           }))}
+          
           
         />
       </Flex>

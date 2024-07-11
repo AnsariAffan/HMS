@@ -47,7 +47,7 @@ countGender()
     const [sessions, setSessions] = useState([]);
   
     // Dummy data
-    const doctorCount = 10;
+    const doctorCount = 17;
     const patientCount = allPateint.data?.length;
     const newBookingCount = 5;
     const todaySessionsCount = 3;
@@ -72,7 +72,7 @@ countGender()
     ];
   
     // Light color palette for pie chart
-    const COLORS = ['#8ecae6', '#ff9b73'];
+    const COLORS = ['rgb(239 128 136)', 'rgb(133 222 180)'];
 
 
     // if(isLoading ==false){

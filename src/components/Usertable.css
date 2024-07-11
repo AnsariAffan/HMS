@@ -23,3 +23,15 @@
   .custom-selected-hover-row:hover {
     background-color: #bae0ff !important;
   }
+
+  :where(.css-dev-only-do-not-override-m4timi).ant-space {
+    display: inline-flex;
+    flex-direction: row-reverse;
+}
+
+.ant-input-search :where(.css-dev-only-do-not-override-m4timi).ant-input-group .ant-input-affix-wrapper:not(:last-child) {
+  border-start-start-radius: 6px;
+  border-end-start-radius: 6px;
+  height: 40px;
+  width: 25rem;
+}

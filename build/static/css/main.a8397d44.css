@@ -5,6 +5,17 @@
     height: 40vmin;
     pointer-events: none;
   }
+  .ant-btn{
+    height: 40px;
+  }
+
+  * {
+    user-select: none;
+  }
+  
+  input, textarea {
+    user-select: auto; /* Input fields mein user select ko allow karo */
+  }
   @media (prefers-reduced-motion: no-preference) {
     .App-logo {
       animation: App-logo-spin 20s linear infinite;
@@ -364,3 +375,14 @@
     border-color: #d9d9d9;
     height: 40px;
   }
+  .logout-btn {
+    margin-top: 10px;
+    height: 40px;
+}
+.ant-space{
+
+    margin-bottom: 16px;
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+}
