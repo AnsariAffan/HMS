@@ -39,18 +39,18 @@ console.log(responseMessage);
           Last_Name: patientData.Last_Name || '',
           Date_of_Birth: patientData.Date_of_Birth ? moment(patientData.Date_of_Birth) : null,
           Material_Status: patientData.Material_Status || '',
-          Age: patientData.Age || '',
-          Year: patientData.Year || '',
+          Emergency_Contact_Name: patientData. Emergency_Contact_Name || '',
+          mergency_Contact_Number: patientData.mergency_Contact_Number || '',
           Gender: patientData.Gender || '',
-          Nationality: patientData.Nationality || '',
+          Email: patientData.Email || '',
           Religion: patientData.Religion || '',
           Contact_Number: patientData.Contact_Number || '',
           Permanent_address: patientData.Permanent_address || '',
           Occupation: patientData.Occupation || '',
           AdharCard_Number: patientData.AdharCard_Number || '',
           PadCard_Number: patientData.PadCard_Number || '',
-          Self_Annual_Income: patientData.Self_Annual_Income || '',
-          Familty_Annual_Income: patientData.Familty_Annual_Income || '',
+          Insurance_Provider: patientData.Insurance_Provider || '',
+          Insurance_Policy_Number: patientData.Insurance_Policy_Number || '',
         });
       }
     }
@@ -145,12 +145,12 @@ console.log(responseMessage);
       </Row>
       <Row gutter={24}>
         <Col span={8}>
-          <Form.Item label="Age" name="Age">
+          <Form.Item label="Emergency Contact Name" name="Emergency_Contact_Name">
             <Input className="custom-input" />
           </Form.Item>
         </Col>
         <Col span={8}>
-          <Form.Item label="Year" name="Year">
+          <Form.Item label="Emergency Contact Number" name="Emergency_Contact_Number">
             <Input className="custom-input" />
           </Form.Item>
         </Col>
@@ -165,7 +165,7 @@ console.log(responseMessage);
       </Row>
       <Row gutter={24}>
         <Col span={8}>
-          <Form.Item label="Nationality" name="Nationality">
+          <Form.Item label="Email" name="Email">
             <Input className="custom-input" />
           </Form.Item>
         </Col>
@@ -204,12 +204,12 @@ console.log(responseMessage);
           </Form.Item>
         </Col>
         <Col span={8}>
-          <Form.Item label="Self Annual Income" name="Self_Annual_Income">
+          <Form.Item label="Insurance Provider" name="Self_Annual_Income">
             <Input className="custom-input" />
           </Form.Item>
         </Col>
         <Col span={8}>
-          <Form.Item label="Family Annual Income" name="Familty_Annual_Income">
+          <Form.Item label="Insurance Policy Number" name="Familty_Annual_Income">
             <Input className="custom-input" />
           </Form.Item>
         </Col>
