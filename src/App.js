@@ -15,6 +15,7 @@ import "./components/UserDashboard.css";
 import Login from "./components/Login";
 import PrivateRoute from "./PrivateRoute";
 import BillingForm from "./components/BillingForm";
+import BillManager from "./components/BillManager";
 
 function App() {
   return (
@@ -23,16 +24,18 @@ function App() {
         <Route exact path="/">
           <Login />
         </Route>
-        
+
         <Dashboard>
           <Switch>
             <PrivateRoute path="/dashboard" component={UserDashboard} />
             <PrivateRoute path="/usertable" component={Usertable} />
             <PrivateRoute path="/userForm" component={UserForm} />
-            <PrivateRoute path="/pateint/:id" component={UserForm } />
-            <Route exact path="/BillingForm">
-            <BillingForm />
-          </Route>
+            <PrivateRoute path="/pateint/:id" component={UserForm} />
+            <PrivateRoute path="/billManager" component={BillManager} />
+            <PrivateRoute path="/BillingForm/:id" component={BillingForm} />
+            <Route path="/BillingForm">
+              <BillingForm />
+            </Route>
           </Switch>
         </Dashboard>
       </Switch>

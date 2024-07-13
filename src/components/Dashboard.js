@@ -71,7 +71,7 @@ console.log("logout");
                     <Link to="/usertable"> Patients</Link> 
                     </Menu.Item>
                     <Menu.Item key="3" icon={<UsergroupAddOutlined />}>
-                    <Link to="/doctors">Doctors</Link>   
+                    <Link to="/billManager">Bill Manager</Link>   
                     </Menu.Item>
                     <Menu.Item key="4" icon={<ScheduleOutlined />}>
                     <Link to="/doctors Schedule"> Doctors Schedule</Link>  

@@ -1,31 +1,53 @@
-import React, { useEffect, useState } from 'react';
-import { Tabs, Form, Input, DatePicker, Button, Row, Col, Select,message, Spin } from 'antd';
-import './Userform.css'; // Import your custom CSS file
-import { useDispatch, useSelector } from 'react-redux';
-import { getAllPateints, savePateint, updatePateint } from '../api/api'; // Import the updatePatient action
-import { Option } from 'antd/es/mentions';
-import { useParams } from 'react-router-dom';
-import moment from 'moment';
-import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
-import BillingForm from './BillingForm';
-import { UserOutlined, DollarOutlined,FileTextFilled,FileTextTwoTone  ,SearchOutlined, CalendarOutlined, DashboardOutlined, UsergroupAddOutlined, ScheduleOutlined, AppstoreAddOutlined } from '@ant-design/icons';
+import React, { useEffect, useState } from "react";
+import {
+  Tabs,
+  Form,
+  Input,
+  DatePicker,
+  Button,
+  Row,
+  Col,
+  Select,
+  message,
+  Spin,
+} from "antd";
+import "./Userform.css"; // Import your custom CSS file
+import { useDispatch, useSelector } from "react-redux";
+import { getAllPateints, savePateint, updatePateint } from "../api/api"; // Import the updatePatient action
+import { Option } from "antd/es/mentions";
+import { useParams } from "react-router-dom";
+import moment from "moment";
+import { Link, useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import BillingForm from "./BillingForm";
+import {
+  UserOutlined,
+  DollarOutlined,
+  FileTextFilled,
+  FileTextTwoTone,
+  SearchOutlined,
+  CalendarOutlined,
+  DashboardOutlined,
+  UsergroupAddOutlined,
+  ScheduleOutlined,
+  AppstoreAddOutlined,
+} from "@ant-design/icons";
 const { TabPane } = Tabs;
-
 
 const MyForm = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
-  const { allPateint,isLoading,responseMessage } = useSelector((state) => state.products);
+  const { allPateint, isLoading, responseMessage } = useSelector(
+    (state) => state.products
+  );
 
   const [form] = Form.useForm();
   const [isEditing, setIsEditing] = useState(false);
   const history = useHistory();
   useEffect(() => {
     dispatch(getAllPateints());
-   
   }, [dispatch]);
 
-console.log(responseMessage);
+  console.log(responseMessage);
 
   useEffect(() => {
     if (allPateint && allPateint.data && id) {
@@ -33,213 +55,230 @@ console.log(responseMessage);
       if (patientData) {
         setIsEditing(true);
         form.setFieldsValue({
-          Ragistration_Date: patientData.Ragistration_Date ? moment(patientData.Ragistration_Date) : null,
-          First_Name: patientData.First_Name || '',
-          Middle_Name: patientData.Middle_Name || '',
-          Last_Name: patientData.Last_Name || '',
-          Date_of_Birth: patientData.Date_of_Birth ? moment(patientData.Date_of_Birth) : null,
-          Material_Status: patientData.Material_Status || '',
-          Emergency_Contact_Name: patientData. Emergency_Contact_Name || '',
-          Emergency_Contact_Number: patientData.Emergency_Contact_Number || '',
-          Gender: patientData.Gender || '',
-          Email: patientData.Email || '',
-          Religion: patientData.Religion || '',
-          Contact_Number: patientData.Contact_Number || '',
-          Permanent_address: patientData.Permanent_address || '',
-          Occupation: patientData.Occupation || '',
-          AdharCard_Number: patientData.AdharCard_Number || '',
-          PadCard_Number: patientData.PadCard_Number || '',
-          Insurance_Provider: patientData.Insurance_Provider || '',
-          Insurance_Policy_Number: patientData.Insurance_Policy_Number || '',
+          Ragistration_Date: patientData.Ragistration_Date
+            ? moment(patientData.Ragistration_Date)
+            : null,
+          First_Name: patientData.First_Name || "",
+          Middle_Name: patientData.Middle_Name || "",
+          Last_Name: patientData.Last_Name || "",
+          Date_of_Birth: patientData.Date_of_Birth
+            ? moment(patientData.Date_of_Birth)
+            : null,
+          Material_Status: patientData.Material_Status || "",
+          Emergency_Contact_Name: patientData.Emergency_Contact_Name || "",
+          Emergency_Contact_Number: patientData.Emergency_Contact_Number || "",
+          Gender: patientData.Gender || "",
+          Email: patientData.Email || "",
+          Religion: patientData.Religion || "",
+          Contact_Number: patientData.Contact_Number || "",
+          Permanent_address: patientData.Permanent_address || "",
+          Occupation: patientData.Occupation || "",
+          AdharCard_Number: patientData.AdharCard_Number || "",
+          PadCard_Number: patientData.PadCard_Number || "",
+          Insurance_Provider: patientData.Insurance_Provider || "",
+          Insurance_Policy_Number: patientData.Insurance_Policy_Number || "",
         });
       }
     }
-    
   }, [id, allPateint, form]);
 
   const onFinish = async (values) => {
     try {
       if (isEditing) {
-        await dispatch(updatePateint({history,values})); // Call updatePatient if editing
-        message.success('Patient updated successfully');
-        console.log('Patient updated:',values);
-    
+        await dispatch(updatePateint({ history, values })); // Call updatePatient if editing
+        message.success("Patient updated successfully");
+        console.log("Patient updated:", values);
       } else {
-        await dispatch(savePateint({history,values}));
-        
-        message.success('Patient added successfully');
-        console.log('Patient saved:', values);
+        await dispatch(savePateint({ history, values }));
+
+        message.success("Patient added successfully");
+        console.log("Patient saved:", values);
       }
     } catch (error) {
-      console.error('Error saving/updating patient:', error);
+      console.error("Error saving/updating patient:", error);
     }
   };
 
   return (
     <>
+      {isLoading ? (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            backgroundColor: "rgba(255, 255, 255, 0.5)",
+            backdropFilter: "blur(8px)",
+            zIndex: 999,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            flexDirection: "column",
+          }}
+        >
+          <Spin size="large" />
+          <p style={{ marginLeft: "20px" }}>Loading...</p>
+        </div>
+      ) : (
+        ""
+      )}
 
-    {isLoading ? (
-
-      <div style={{  position: "fixed",
-          top: 0,
-          left: 0,
-          width: "100%",
-          height: "100%",
-          backgroundColor: "rgba(255, 255, 255, 0.5)", 
-          backdropFilter: "blur(8px)",
-          zIndex: 999,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          flexDirection:"column"
-      }}
-          >
-  
-      <Spin size="large" />
-      <p style={{marginLeft: "20px"}}>Loading...</p>
-      </div>
-  
-    ):""}
-
-
-
-
-   
-    <Form className="patient-form" layout="vertical" form={form} onFinish={onFinish}>
-      <Row gutter={24}>
-        <Col span={8}>
-          <Form.Item label="Registration Date" name="Ragistration_Date">
-            <DatePicker style={{ width: "-webkit-fill-available" }} className="custom-input" />
-          </Form.Item>
-        </Col>
-        <Col span={8}>
-          <Form.Item label="First Name" name="First_Name">
-            <Input className="custom-input" />
-          </Form.Item>
-        </Col>
-        <Col span={8}>
-          <Form.Item label="Middle Name" name="Middle_Name">
-            <Input className="custom-input" />
-          </Form.Item>
-        </Col>
-      </Row>
-      <Row gutter={24}>
-        <Col span={8}>
-          <Form.Item label="Last Name" name="Last_Name">
-            <Input className="custom-input" />
-          </Form.Item>
-        </Col>
-        <Col span={8}>
-          <Form.Item label="Date of Birth" name="Date_of_Birth">
-            <DatePicker style={{ width: "-webkit-fill-available" }} className="custom-input" />
-          </Form.Item>
-        </Col>
-        <Col span={8}>
-          <Form.Item label="Marital Status" name="Material_Status">
-            <Select className="custom-input">
-              <Option value="Married">Married</Option>
-              <Option value="Unmarried">Unmarried</Option>
-            </Select>
-          </Form.Item>
-        </Col>
-      </Row>
-      <Row gutter={24}>
-        <Col span={8}>
-          <Form.Item label="Emergency Contact Name" name="Emergency_Contact_Name">
-            <Input className="custom-input" />
-          </Form.Item>
-        </Col>
-        <Col span={8}>
-          <Form.Item label="Emergency Contact Number" name="Emergency_Contact_Number">
-            <Input className="custom-input" />
-          </Form.Item>
-        </Col>
-        <Col span={8}>
-          <Form.Item label="Gender" name="Gender">
-            <Select className="custom-input">
-              <Option value="Male">Male</Option>
-              <Option value="Female">Female</Option>
-            </Select>
-          </Form.Item>
-        </Col>
-      </Row>
-      <Row gutter={24}>
-        <Col span={8}>
-          <Form.Item label="Email" name="Email">
-            <Input className="custom-input" />
-          </Form.Item>
-        </Col>
-        <Col span={8}>
-          <Form.Item label="Religion" name="Religion">
-            <Input className="custom-input" />
-          </Form.Item>
-        </Col>
-        <Col span={8}>
-          <Form.Item label="Contact Number" name="Contact_Number">
-            <Input className="custom-input" />
-          </Form.Item>
-        </Col>
-      </Row>
-      <Row gutter={24}>
-        <Col span={8}>
-          <Form.Item label="Permanent Address" name="Permanent_address">
-            <Input className="custom-input" />
-          </Form.Item>
-        </Col>
-        <Col span={8}>
-          <Form.Item label="Occupation" name="Occupation">
-            <Input className="custom-input" />
-          </Form.Item>
-        </Col>
-        <Col span={8}>
-          <Form.Item  label="Aadhar Card Number" name="AdharCard_Number">
-            <Input disabled={isEditing?true:false} className="custom-input" />
-          </Form.Item>
-        </Col>
-      </Row>
-      <Row gutter={24}>
-        <Col span={8}>
-          <Form.Item label="PAN Card Number" name="PadCard_Number">
-            <Input className="custom-input" />
-          </Form.Item>
-        </Col>
-        <Col span={8}>
-          <Form.Item label="Insurance Provider" name="Insurance_Provider">
-            <Input className="custom-input" />
-          </Form.Item>
-        </Col>
-        <Col span={8}>
-          <Form.Item label="Insurance Policy Number" name="Insurance_Policy_Number">
-            <Input className="custom-input" />
-          </Form.Item>
-        </Col>
-      </Row>
-      <Form.Item>
-        <Button type="primary" htmlType="submit">
-        
-        {isEditing?"Update":"Submit"}
-   
-        
-        </Button>
-      </Form.Item>
-    </Form>
+      <Form
+        className="patient-form"
+        layout="vertical"
+        form={form}
+        onFinish={onFinish}
+      >
+        <Row gutter={24}>
+          <Col span={8}>
+            <Form.Item label="Registration Date" name="Ragistration_Date">
+              <DatePicker
+                style={{ width: "-webkit-fill-available" }}
+                className="custom-input"
+              />
+            </Form.Item>
+          </Col>
+          <Col span={8}>
+            <Form.Item label="First Name" name="First_Name">
+              <Input className="custom-input" />
+            </Form.Item>
+          </Col>
+          <Col span={8}>
+            <Form.Item label="Middle Name" name="Middle_Name">
+              <Input className="custom-input" />
+            </Form.Item>
+          </Col>
+        </Row>
+        <Row gutter={24}>
+          <Col span={8}>
+            <Form.Item label="Last Name" name="Last_Name">
+              <Input className="custom-input" />
+            </Form.Item>
+          </Col>
+          <Col span={8}>
+            <Form.Item label="Date of Birth" name="Date_of_Birth">
+              <DatePicker
+                style={{ width: "-webkit-fill-available" }}
+                className="custom-input"
+              />
+            </Form.Item>
+          </Col>
+          <Col span={8}>
+            <Form.Item label="Marital Status" name="Material_Status">
+              <Select className="custom-input">
+                <Option value="Married">Married</Option>
+                <Option value="Unmarried">Unmarried</Option>
+              </Select>
+            </Form.Item>
+          </Col>
+        </Row>
+        <Row gutter={24}>
+          <Col span={8}>
+            <Form.Item
+              label="Emergency Contact Name"
+              name="Emergency_Contact_Name"
+            >
+              <Input className="custom-input" />
+            </Form.Item>
+          </Col>
+          <Col span={8}>
+            <Form.Item
+              label="Emergency Contact Number"
+              name="Emergency_Contact_Number"
+            >
+              <Input className="custom-input" />
+            </Form.Item>
+          </Col>
+          <Col span={8}>
+            <Form.Item label="Gender" name="Gender">
+              <Select className="custom-input">
+                <Option value="Male">Male</Option>
+                <Option value="Female">Female</Option>
+              </Select>
+            </Form.Item>
+          </Col>
+        </Row>
+        <Row gutter={24}>
+          <Col span={8}>
+            <Form.Item label="Email" name="Email">
+              <Input className="custom-input" />
+            </Form.Item>
+          </Col>
+          <Col span={8}>
+            <Form.Item label="Religion" name="Religion">
+              <Input className="custom-input" />
+            </Form.Item>
+          </Col>
+          <Col span={8}>
+            <Form.Item label="Contact Number" name="Contact_Number">
+              <Input className="custom-input" />
+            </Form.Item>
+          </Col>
+        </Row>
+        <Row gutter={24}>
+          <Col span={8}>
+            <Form.Item label="Permanent Address" name="Permanent_address">
+              <Input className="custom-input" />
+            </Form.Item>
+          </Col>
+          <Col span={8}>
+            <Form.Item label="Occupation" name="Occupation">
+              <Input className="custom-input" />
+            </Form.Item>
+          </Col>
+          <Col span={8}>
+            <Form.Item label="Aadhar Card Number" name="AdharCard_Number">
+              <Input
+                disabled={isEditing ? true : false}
+                className="custom-input"
+              />
+            </Form.Item>
+          </Col>
+        </Row>
+        <Row gutter={24}>
+          <Col span={8}>
+            <Form.Item label="PAN Card Number" name="PadCard_Number">
+              <Input className="custom-input" />
+            </Form.Item>
+          </Col>
+          <Col span={8}>
+            <Form.Item label="Insurance Provider" name="Insurance_Provider">
+              <Input className="custom-input" />
+            </Form.Item>
+          </Col>
+          <Col span={8}>
+            <Form.Item
+              label="Insurance Policy Number"
+              name="Insurance_Policy_Number"
+            >
+              <Input className="custom-input" />
+            </Form.Item>
+          </Col>
+        </Row>
+        <Form.Item>
+          <Button type="primary" htmlType="submit">
+            {isEditing ? "Update" : "Submit"}
+          </Button>
+        </Form.Item>
+      </Form>
     </>
   );
 };
 
 const Tab1 = () => (
   <div>
-    
     <MyForm />
   </div>
 );
 
-const Tab2 = () => (
+const Tab2 = ({ id }) => (
   <div>
-    
-    <BillingForm/>
+    <BillingForm id={id} />
   </div>
 );
+
 
 const Tab3 = () => (
   <div>
@@ -248,25 +287,37 @@ const Tab3 = () => (
   </div>
 );
 
+
+
 const UserForm = () => {
-  const [activeTab, setActiveTab] = useState('1');
+  const { id } = useParams(); // Fetch the id from the URL
+  const [activeTab, setActiveTab] = useState("1");
 
   return (
     <div className="tab-container">
       <Tabs activeKey={activeTab} onChange={(key) => setActiveTab(key)} centered>
-    
-        <TabPane tab="Patient Information" key="1" icon={<UserOutlined style={{fontSize:"20px"}}/>}>
-          <Tab1 />
+        <TabPane
+          tab="Patient Information"
+          key="1"
+          icon={<UserOutlined style={{ fontSize: "20px" }} />}
+        >
+          <MyForm />
         </TabPane>
-        <TabPane tab="Billing" key="2" icon={<FileTextTwoTone style={{fontSize:"20px"}}/>}>
-          <Tab2 />
-        </TabPane>
+          {id? ( <TabPane
+          tab="Billing"
+          key="2"
+          icon={<FileTextTwoTone style={{ fontSize: "20px" }} />}
+        >
+          {/* Pass the id to Tab2 */}
+      <Tab2 id={id} />
+         
+        </TabPane>) :""}
+       
         <TabPane tab="Tab 3" key="3">
-          <Tab3 />
+          {/* Add content for Tab 3 */}
         </TabPane>
       </Tabs>
     </div>
   );
 };
-
 export default UserForm;

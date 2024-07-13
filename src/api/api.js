@@ -86,8 +86,6 @@ export const updatePateint = createAsyncThunk(
 
 
 
-// 
-
 export const getAllPateints = createAsyncThunk(
   "api/getAllPateints",
   async (_, { rejectWithValue }) => {
@@ -107,7 +105,50 @@ export const getAllPateints = createAsyncThunk(
   }
 );
 
+export const saveBill = createAsyncThunk(
+  "api/saveBill",
+  async ( billData , { rejectWithValue }) => {
+    try {
+      console.log(billData);
+      const response = await api.post(
+        "https://services-uk8v.onrender.com/api/createNewBill",
+        billData
+      );
 
+      // history.push("/Usertable");
+      console.log(response.data.message);
+
+      return response; // Return the message from the response
+    } catch (error) {
+      console.error("Save patient error:", error);
+      // Handle specific error when user is already added
+      if (error.response && error.response.status === 409) {
+        return rejectWithValue("User is already added.");
+      } else {
+        return rejectWithValue(error.response ? error.response.data : error.message);
+      }
+    }
+  }
+);
+
+export const getAllBills = createAsyncThunk(
+  "api/getAllBills",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await api.get(
+        `https://services-uk8v.onrender.com/api/getAllBills`
+      );
+    
+      console.log(response)
+     
+      return response;
+      
+    } catch (error) {
+      console.error("Get all patients error:", error);
+      return rejectWithValue(error.response ? error.response.data : error.message);
+    }
+  }
+);
 
 // Define the slice of the store
 export const pateintSlice = createSlice({
@@ -117,7 +158,8 @@ export const pateintSlice = createSlice({
     hasError: null,
     allPateint: [],
     successData:null,
-    responseMessage:""
+    responseMessage:"",
+    BillDetails:[]
   },
   reducers: {
   },
@@ -182,7 +224,46 @@ export const pateintSlice = createSlice({
         state.hasError = true;
         state.allPateint = [];
       });
-  },
+  
+  //Billing
+
+  builder
+  .addCase(saveBill.pending, (state) => {
+    state.isLoading = true;
+    state.hasError = false;
+  })
+  .addCase(saveBill.fulfilled, (state, action) => {
+    state.isLoading = false;
+    state.hasError = false;
+    state.BillDetails = action.payload;
+    state.successData = true
+  })
+  .addCase(saveBill.rejected, (state) => {
+    state.isLoading = false;
+    state.hasError = true;
+    state.BillDetails = [];
+
+  });
+  
+ //getAllPateints
+ builder
+ .addCase(getAllBills.pending, (state) => {
+   state.isLoading = true;
+   state.hasError = false;
+ })
+ .addCase(getAllBills.fulfilled, (state, action) => {
+   state.isLoading = false;
+   state.hasError = false;
+   state.BillDetails = action.payload;
+   state.successData = true
+ })
+ .addCase(getAllBills.rejected, (state) => {
+   state.isLoading = false;
+   state.hasError = true;
+   state.BillDetails = [];
+ });
+
+    },
 });
 
 // Export the reducer and the async thunk
