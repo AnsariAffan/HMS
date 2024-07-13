@@ -1,1 +1,4 @@
 cd backend
+git add .
+git commit -m "SV1.0.8 New fields added"
+git push origin backendDeployment
