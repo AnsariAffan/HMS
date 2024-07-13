@@ -13,7 +13,7 @@ const LineItemSchema = new Schema({
 
 // Define the main bill schema
 const BillSchema = new Schema({
-  Bill_ID: { type: String, default: undefined },
+
   FIRST_NAME: { type: String, required: true },
   PaymentDueDate: { type: Date, required: true },
   Tax: { type: String, required: true },

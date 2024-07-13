@@ -9,7 +9,7 @@ exports.createBillingEntry = async (req, res) => {
         console.log("Received table data:", tableData);
 
         // Ensure headerData and tableData are defined
-        if (!headerData || !headerData.Bill_ID || !headerData.patient_id) {
+        if (!headerData || !headerData.patient_id) {
             return res.status(400).json({ message: "Invalid header data format" });
         }
         if (!tableData || !Array.isArray(tableData) || tableData.length === 0) {
