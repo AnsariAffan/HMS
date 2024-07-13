@@ -40,7 +40,7 @@ console.log(responseMessage);
           Date_of_Birth: patientData.Date_of_Birth ? moment(patientData.Date_of_Birth) : null,
           Material_Status: patientData.Material_Status || '',
           Emergency_Contact_Name: patientData. Emergency_Contact_Name || '',
-          mergency_Contact_Number: patientData.mergency_Contact_Number || '',
+          Emergency_Contact_Number: patientData.Emergency_Contact_Number || '',
           Gender: patientData.Gender || '',
           Email: patientData.Email || '',
           Religion: patientData.Religion || '',
@@ -204,12 +204,12 @@ console.log(responseMessage);
           </Form.Item>
         </Col>
         <Col span={8}>
-          <Form.Item label="Insurance Provider" name="Self_Annual_Income">
+          <Form.Item label="Insurance Provider" name="Insurance_Provider">
             <Input className="custom-input" />
           </Form.Item>
         </Col>
         <Col span={8}>
-          <Form.Item label="Insurance Policy Number" name="Familty_Annual_Income">
+          <Form.Item label="Insurance Policy Number" name="Insurance_Policy_Number">
             <Input className="custom-input" />
           </Form.Item>
         </Col>

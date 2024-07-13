@@ -1,2 +1,4 @@
 cd client  
 git add .
+git commit -m "BV1.0.10 New fields added"
+git push -u  origin clientdeployment
