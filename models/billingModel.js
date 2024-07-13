@@ -20,6 +20,9 @@ const BillSchema = new Schema({
   billDate: { type: Date, required: true },
   totalBillAmount: { type: String, default: undefined },
   lineItems: [LineItemSchema],
+  Contact_Number:{
+    type:String
+  },
   patient_id: { type: Schema.Types.ObjectId, ref: 'Patient', required: true }
 }, { timestamps: true });
 
