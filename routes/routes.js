@@ -17,10 +17,10 @@ router.post("/register", register);
 
 // Protected routes
 router.post("/createNewEntry", authMiddleware, createNewEntry);
-router.put("/updateNewEntry", authMiddleware, updateNewEntry);
-router.get("/getAllPateints", authMiddleware, getAllPateints);
+router.put("/updateNewEntry", authMiddleware, updateNewEntry);   
+router.get("/getAllPateints", authMiddleware,getAllPateints);
 router.put("/updatePateint/:id", authMiddleware, updatePateint);
-router.post("/createNewBill", createBillingEntry);
-router.post("/getAllBills", getAllBills);
+router.post("/createNewBill", authMiddleware,createBillingEntry);
+router.get("/getAllBills", authMiddleware,getAllBills);
 
 module.exports = router;
