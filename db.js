@@ -4,7 +4,7 @@ const mongoose = require('mongoose')
 const mongoDBURL = 'mongodb+srv://mohammadaffan777:Anam%401234@cluster0.f68xlli.mongodb.net/HospitalManagementDatabase?retryWrites=true&w=majority'
 const localURL = "mongodb://localhost:27017/HSMDB"
 
-const connectToMongo = mongoose.connect(localURL)
+const connectToMongo = mongoose.connect(mongoDBURL)
     .then(() => {
         console.log(" connection successfull...")
     })

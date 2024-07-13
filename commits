@@ -1,4 +1,4 @@
 cd backend
 git add .
-git commit -m "SV1.0.8 New fields added"
+git commit -m "SV1.0.10 New bill model added"
 git push origin backendDeployment
