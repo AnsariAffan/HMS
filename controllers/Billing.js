@@ -21,21 +21,15 @@ exports.createBillingEntry = async (req, res) => {
             return res.status(404).json({ message: "Patient not found" });
         }
 
-        // Check if there's already an existing entry with the same Bill_ID
-        const existingEntry = await billingModel.findOne();
-        if (existingEntry) {
-            return res.json({ message: "Bill is already added" });
-        } else {
-            // Create a new billing entry
-            const newBillingEntry = new billingModel({
-                ...headerData,
-                lineItems: tableData,
-                createdAt: new Date().toISOString(),
-            });
+        // Create a new billing entry
+        const newBillingEntry = new billingModel({
+            ...headerData,
+            lineItems: tableData,
+            createdAt: new Date().toISOString(),
+        });
 
-            await newBillingEntry.save();
-            res.json({ message: "Bill added successfully" });
-        }
+        await newBillingEntry.save();
+        res.json({ message: "Bill added successfully" });
     } catch (error) {
         console.error("Error creating billing entry:", error);
         if (error.name === "MongoError" && error.code === 11000) {
