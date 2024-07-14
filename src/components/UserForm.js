@@ -13,7 +13,7 @@ import {
 } from "antd";
 import "./Userform.css"; // Import your custom CSS file
 import { useDispatch, useSelector } from "react-redux";
-import { getAllPateints, savePateint, updatePateint } from "../api/api"; // Import the updatePatient action
+import { getAllBills, getAllPateints, savePateint, updatePateint } from "../api/api"; // Import the updatePatient action
 import { Option } from "antd/es/mentions";
 import { useParams } from "react-router-dom";
 import moment from "moment";
@@ -36,7 +36,7 @@ const { TabPane } = Tabs;
 const MyForm = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
-  const { allPateint, isLoading, responseMessage } = useSelector(
+  const { allPateint, isLoading, responseMessage,BillDetails } = useSelector(
     (state) => state.products
   );
 
@@ -45,6 +45,7 @@ const MyForm = () => {
   const history = useHistory();
   useEffect(() => {
     dispatch(getAllPateints());
+    dispatch(getAllBills())
   }, [dispatch]);
 
   console.log(responseMessage);
@@ -290,7 +291,32 @@ const Tab3 = () => (
 
 
 const UserForm = () => {
+   const { allPateint, isLoading,BillDetails } = useSelector((state) => state.products);
   const { id } = useParams(); // Fetch the id from the URL
+
+
+
+  // useEffect(() => {
+  //   if (id && BillDetails.data) {
+  //     console.log('BillDetails.data:', BillDetails.data);
+  //     console.log('id:', id);
+
+  //     // Find the index of the bill in BillDetails.data based on _id
+  //     const index = BillDetails.data.findIndex((bill) => bill.patient_id === id);
+
+  //     if (index !== -1) {
+  //       // Handle the index here, e.g., set state or update components
+  //       console.log(`Index of bill with id ${id} is ${index}`);
+  //       const billAtIndex = BillDetails.data[index];
+  //       console.log('Bill at index:', billAtIndex._id);
+  //     } else {
+  //       console.log(`No bill found for id: ${id}`);
+  //     }
+  //   }
+  // }, [id, BillDetails]);
+
+
+
   const [activeTab, setActiveTab] = useState("1");
 
   return (

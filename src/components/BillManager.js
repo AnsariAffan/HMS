@@ -180,14 +180,7 @@ const BillManager = () => {
         <Link to={`BillingForm/${record._id}`}>{`${record._id}`}</Link>
       ),
     },
-    {
-      title: "Patient ID",
-      dataIndex: "patient_id",
-      key: "patient_id",
-      render: (text, record) => (
-        <Link to={`pateint/${record._id}`}>{`${record._id}`}</Link>
-      ),
-    },
+  
     {
       title: "Phone Number",
       dataIndex: "Contact_Number",

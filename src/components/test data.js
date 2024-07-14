@@ -72,58 +72,33 @@ const BillingForm = ({ id }) => {
     }
   }, [id, allPateint.data]);
 
-  // useEffect(() => {
-  //   if (billId && BillDetails?.data || undefined) {
-  //     console.log("BillDetails.data:", BillDetails?.data);
-  //     console.log("billId:", billId.id);
+  useEffect(() => {
+    if (billId && BillDetails?.data || undefined) {
+      console.log("BillDetails.data:", BillDetails?.data);
+      console.log("billId:", billId.id);
 
-  //     // Find the index of the bill in BillDetails.data based on _id
-  //     const index = BillDetails?.data?.findIndex(
-  //       (bill) => bill?._id === billId?.id
-  //     );
-  //     console.log(index);
-  //     if (index !== -1) {
-  //       // Handle the index here, e.g., set state or update components
-  //       console.log(`Index of bill with id ${billId} is ${index}`);
-  //       const billAtIndex = BillDetails?.data[index];
-  //       console.log("Bill at index:", billAtIndex);
-  //       if (billAtIndex) {
-  //         setPatientDetails({
-  //           patientId: billAtIndex.patient_id,
-  //           FIRST_NAME: billAtIndex.FIRST_NAME,
-  //           Bill_ID: billAtIndex._id,
-  //         });
-  //       }
-  //     } else {
-  //       console.log(`No bill found for id: ${billId}`);
-  //     }
-  //   }
-  // }, [billId, BillDetails]);
-
-useEffect(() => {
-  if (billId && Array.isArray(BillDetails?.data)) { // Check if BillDetails.data is an array
-    const index = BillDetails.data.findIndex((bill) => bill._id === billId.id);
-    console.log(index);
-    if (index !== -1) {
-      const billAtIndex = BillDetails.data[index];
-      console.log("Bill at index:", billAtIndex);
-      if (billAtIndex) {
-        setPatientDetails({
-          patientId: billAtIndex.patient_id,
-          FIRST_NAME: billAtIndex.FIRST_NAME,
-          Bill_ID: billAtIndex._id,
-        });
+      // Find the index of the bill in BillDetails.data based on _id
+      const index = BillDetails?.data?.findIndex(
+        (bill) => bill._id === billId.id
+      );
+      console.log(index);
+      if (index !== -1) {
+        // Handle the index here, e.g., set state or update components
+        console.log(`Index of bill with id ${billId} is ${index}`);
+        const billAtIndex = BillDetails?.data[index];
+        console.log("Bill at index:", billAtIndex);
+        if (billAtIndex) {
+          setPatientDetails({
+            patientId: billAtIndex.patient_id,
+            FIRST_NAME: billAtIndex.FIRST_NAME,
+            Bill_ID: billAtIndex._id,
+          });
+        }
+      } else {
+        console.log(`No bill found for id: ${billId}`);
       }
-    } else {
-      console.log(`No bill found for id: ${billId}`);
     }
-  } else {
-    console.log('BillDetails.data is not an array or is undefined/null');
-    // Handle the case where BillDetails.data is not usable, perhaps set default values or show an error message
-  }
-}, [billId, BillDetails]);
-
-  
+  }, [billId, BillDetails]);
 
   const isEditing = (record) => record.key === editingKey;
 
@@ -165,11 +140,6 @@ useEffect(() => {
   //     console.log("Validate Failed:", errInfo);
   //   }
   // };
-  
-
-const [billHeader,setBillheader] = useState()
-const [billtable,setbilltable] = useState()
-
   const save = async (key) => {
     try {
       const rowData = await form.validateFields();
@@ -183,6 +153,17 @@ const [billtable,setbilltable] = useState()
         setEditingKey("");
       }
 
+      const headerData = {
+        Bill_ID: form.getFieldValue("Bill_ID"),
+        PaymentDueDate: form.getFieldValue("PaymentDueDate"),
+        Tax: form.getFieldValue("Tax"),
+        billDate: form.getFieldValue("billDate"),
+        totalBillAmount: totalAmount,
+        patient_id: patientDetails.patientId,
+        FIRST_NAME: patientDetails.FIRST_NAME,
+        Contact_Number: patientDetails.Contact_Number,
+      };
+
       const formattedTableData = newData.map((item) => ({
         key: item.key,
         srNo: item.srNo,
@@ -190,32 +171,15 @@ const [billtable,setbilltable] = useState()
         amount: item.amount,
         discount: item.discount,
       }));
-  
-      const headerData = {
-        // Bill_ID: form.getFieldValue("Bill_ID"),
-        PaymentDueDate: form.getFieldValue("PaymentDueDate"),
-        Tax: form.getFieldValue("Tax"),
-        billDate: form.getFieldValue("billDate"),
-        totalBillAmount: totalAmount,
-        patient_id: patientDetails.patientId,
-        FIRST_NAME: patientDetails.FIRST_NAME,
-        // Contact_Number: patientDetails.Contact_Number,
-      };
-      setBillheader(headerData)
-      setbilltable(formattedTableData)
+
       console.log("Header Data:", headerData);
       console.log("Table Data:", formattedTableData);
-    
-      
+      dispatch(saveBill({ headerData, tableData: formattedTableData }));
     } catch (errInfo) {
       console.log("Validate Failed:", errInfo);
     }
   };
 
-  const saveBillData=()=>{
-    dispatch(saveBill({ headerData:{...billHeader,totalBillAmount:totalAmount}, tableData: billtable }));
-  }
-  
   const handleGenerateBill = () => {
     const headerData = {
       Bill_ID: form.getFieldValue("Bill_ID"),
@@ -255,7 +219,7 @@ const [billtable,setbilltable] = useState()
     };
     setData([...data, newRow]);
     setEditingKey(newRow.key);
-    form.resetFields(['qty', 'amount', 'discount', 'netAmount', 'itemName']); // Reset only row fields
+    form.resetFields();
   };
 
   const calculateTotalAmount = () => {
@@ -514,7 +478,7 @@ const [billtable,setbilltable] = useState()
           </Row>
           <Row gutter={16} style={{ marginTop: 16 }}>
             <Col span={4}>
-              <Button type="primary" onClick={() => saveBillData(editingKey)}>
+              <Button type="primary" onClick={() => save(editingKey)}>
                 Save
               </Button>
             </Col>

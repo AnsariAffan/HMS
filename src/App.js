@@ -33,7 +33,7 @@ function App() {
             <PrivateRoute path="/pateint/:id" component={UserForm} />
             <PrivateRoute path="/billManager" component={BillManager} />
             <PrivateRoute path="/BillingForm/:id" component={BillingForm} />
-            <Route path="/BillingForm">
+         <Route path="/BillingForm">
               <BillingForm />
             </Route>
           </Switch>
