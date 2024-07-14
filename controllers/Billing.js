@@ -22,7 +22,7 @@ exports.createBillingEntry = async (req, res) => {
         }
 
         // Check if there's already an existing entry with the same Bill_ID
-        const existingEntry = await billingModel.findOne({ Bill_ID: headerData.Bill_ID });
+        const existingEntry = await billingModel.findOne();
         if (existingEntry) {
             return res.json({ message: "Bill is already added" });
         } else {
