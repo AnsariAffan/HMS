@@ -1,6 +1,7 @@
 .App {
   text-align: center;
 }
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -101,13 +102,13 @@ input, textarea {
   color: #fff;
   line-height: 0px;
 }
-:where(.css-dev-only-do-not-override-m4timi).ant-layout .ant-layout-sider {
+:where(.css-dev-only-do-not-override-p8b6i).ant-layout .ant-layout-sider {
   background: #fff;
   min-width: 0;
   position: relative;
   transition: all 0.2s, background 0s;
 }
-:where(.css-dev-only-do-not-override-m4timi).ant-layout
+:where(.css-dev-only-do-not-override-p8b6i).ant-layout
   .ant-layout-sider-trigger {
   background: #ffffff;
   bottom: 0;
@@ -120,7 +121,7 @@ input, textarea {
   transition: all 0.2s;
   z-index: 1;
 }
-:where(.css-m4timi).ant-layout .ant-layout-sider-trigger {
+:where(.css-p8b6i).ant-layout .ant-layout-sider-trigger {
     position: fixed;
     bottom: 0;
     z-index: 1;
@@ -133,11 +134,11 @@ input, textarea {
     transition: all 0.2s;
 }
 
-:where(.css-m4timi).ant-flex {
+:where(.css-p8b6i).ant-flex {
     display: flex;
     background-color: white;
 }
-:where(.css-m4timi).ant-layout.ant-layout-has-sider >.ant-layout, :where(.css-m4timi).ant-layout.ant-layout-has-sider >.ant-layout-content {
+:where(.css-p8b6i).ant-layout.ant-layout-has-sider >.ant-layout, :where(.css-p8b6i).ant-layout.ant-layout-has-sider >.ant-layout-content {
     width: 0;
     background-color: white;
 }
@@ -146,18 +147,18 @@ input, textarea {
     padding-inline: 15px;
     background-color: white;
 }
-:where(.css-m4timi).ant-input-group >.ant-input-affix-wrapper:not(:last-child) .ant-input {
+:where(.css-p8b6i).ant-input-group >.ant-input-affix-wrapper:not(:last-child) .ant-input {
     border-start-end-radius: 0;
     border-end-end-radius: 0;
     height: 30px;
 }
 
-:where(.css-dev-only-do-not-override-m4timi).ant-input-search
+:where(.css-dev-only-do-not-override-p8b6i).ant-input-search
   > .ant-input-group
   > .ant-input-group-addon:last-child {
   padding-left: 20px;
 }
-:where(.css-dev-only-do-not-override-m4timi).ant-input-search
+:where(.css-dev-only-do-not-override-p8b6i).ant-input-search
   > .ant-input-group
   > .ant-input-group-addon:last-child
   .ant-input-search-button {
@@ -170,25 +171,25 @@ input, textarea {
   padding-bottom: 6px;
   padding-top: 6px;
 }
-:where(.css-dev-only-do-not-override-m4timi).ant-input-group
+:where(.css-dev-only-do-not-override-p8b6i).ant-input-group
   .ant-input-group-addon:first-child,
-:where(.css-dev-only-do-not-override-m4timi).ant-input-group
+:where(.css-dev-only-do-not-override-p8b6i).ant-input-group
   > .ant-input:first-child {
   border-end-end-radius: 6px;
   border-start-end-radius: 6px;
 }
-:where(.css-dev-only-do-not-override-m4timi).ant-layout {
+:where(.css-dev-only-do-not-override-p8b6i).ant-layout {
   background: #fff;
   display: flex;
   flex: auto;
   flex-direction: column;
   min-height: 0;
 }
-:where(.css-dev-only-do-not-override-m4timi).ant-layout [class*=" ant-layout"],
-:where(.css-dev-only-do-not-override-m4timi).ant-layout [class^="ant-layout"] {
+:where(.css-dev-only-do-not-override-p8b6i).ant-layout [class*=" ant-layout"],
+:where(.css-dev-only-do-not-override-p8b6i).ant-layout [class^="ant-layout"] {
   box-sizing: border-box;
 }
-:where(.css-m4timi).ant-layout .ant-layout-sider-has-trigger {
+:where(.css-p8b6i).ant-layout .ant-layout-sider-has-trigger {
     padding-bottom: 48px;
     background-color: white;
 }
@@ -218,13 +219,13 @@ input, textarea {
   font-size: 28px;
 }
 .ant-input-search
-  :where(.css-dev-only-do-not-override-m4timi).ant-input-group
+  :where(.css-dev-only-do-not-override-p8b6i).ant-input-group
   .ant-input-affix-wrapper:not(:last-child) {
   border-end-start-radius: 6px;
   border-start-start-radius: 6px;
   height: 40px;
 }
-:where(.css-dev-only-do-not-override-m4timi).ant-input-search
+:where(.css-dev-only-do-not-override-p8b6i).ant-input-search
   > .ant-input-group
   > .ant-input-group-addon:last-child {
   border: 0;
@@ -254,7 +255,7 @@ input, textarea {
   text-wrap: wrap;
   text-align: start;
 }
-:where(.css-dev-only-do-not-override-m4timi).ant-input-outlined {
+:where(.css-dev-only-do-not-override-p8b6i).ant-input-outlined {
   background: #fff;
   border: 1px solid #d9d9d9;
 }
@@ -272,7 +273,7 @@ input, textarea {
 .tab-container {
   width: -webkit-fill-available;
 }
-:where(.css-dev-only-do-not-override-m4timi).ant-input-group
+:where(.css-dev-only-do-not-override-p8b6i).ant-input-group
   .ant-input-affix-wrapper:not(:last-child) {
   border-end-end-radius: 6px;
   border-start-end-radius: 6px;
@@ -323,7 +324,7 @@ code {
 }
 /*# sourceMappingURL=main.71d85121.css.map*/
 
-:where(.css-m4timi).ant-input-search >.ant-input-group >.ant-input-group-addon:last-child .ant-input-search-button:not(.ant-btn-primary) {
+:where(.css-p8b6i).ant-input-search >.ant-input-group >.ant-input-group-addon:last-child .ant-input-search-button:not(.ant-btn-primary) {
   color: rgba(0, 0, 0, 0.45);
   height: 39px;
   width:40px
@@ -368,7 +369,7 @@ height: 30px;
 width: 100%;
 }
 /*# sourceMappingURL=main.49979c49.css.map*/
-:where(.css-m4timi).ant-input-outlined {
+:where(.css-p8b6i).ant-input-outlined {
   background: #ffffff;
   border-width: 1px;
   border-style: solid;
