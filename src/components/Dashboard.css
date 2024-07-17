@@ -1,5 +1,8 @@
 
-
+/* :where(.css-dev-only-do-not-override-p8b6i).ant-layout .ant-layout-sider-has-trigger {
+    padding-bottom: 48px;
+    background-color: white;
+} */
 .profile-container {
     text-align: center;
     margin: 20px 0;
@@ -86,14 +89,14 @@
 }
 
 
-:where(.css-dev-only-do-not-override-m4timi).ant-layout .ant-layout-sider {
+:where(.css-dev-only-do-not-override-p8b6i).ant-layout .ant-layout-sider {
     position: relative;
     min-width: 0;
     background: #ffffff;
     transition: all 0.2s, background 0s;
 }
 
-:where(.css-dev-only-do-not-override-m4timi).ant-layout .ant-layout-sider-trigger {
+:where(.css-dev-only-do-not-override-p8b6i).ant-layout .ant-layout-sider-trigger {
     position: fixed;
     bottom: 0;
     z-index: 1;
@@ -106,14 +109,14 @@
     transition: all 0.2s;
 }
 
-:where(.css-dev-only-do-not-override-m4timi).ant-input-search >.ant-input-group >.ant-input-group-addon:last-child {
+:where(.css-dev-only-do-not-override-p8b6i).ant-input-search >.ant-input-group >.ant-input-group-addon:last-child {
     inset-inline-start: -1px;
     /* padding: 1px; */
     border: 0;
     padding-left: 20px;
 }
 
-:where(.css-dev-only-do-not-override-m4timi).ant-input-search >.ant-input-group >.ant-input-group-addon:last-child .ant-input-search-button {
+:where(.css-dev-only-do-not-override-p8b6i).ant-input-search >.ant-input-group >.ant-input-group-addon:last-child .ant-input-search-button {
     margin-inline-end: -1px;
     padding-top: 6px;
     padding-bottom: 6px;
@@ -124,12 +127,12 @@
     box-shadow: none;
 }
 
-:where(.css-dev-only-do-not-override-m4timi).ant-input-group >.ant-input:first-child, :where(.css-dev-only-do-not-override-m4timi).ant-input-group .ant-input-group-addon:first-child {
+:where(.css-dev-only-do-not-override-p8b6i).ant-input-group >.ant-input:first-child, :where(.css-dev-only-do-not-override-p8b6i).ant-input-group .ant-input-group-addon:first-child {
     border-start-end-radius: 6px;
     border-end-end-radius: 6px;
 }
 
-:where(.css-dev-only-do-not-override-m4timi).ant-layout {
+:where(.css-dev-only-do-not-override-p8b6i).ant-layout {
     display: flex;
     flex: auto;
     flex-direction: column;
@@ -144,7 +147,7 @@
 }
 
 
-:where(.css-dev-only-do-not-override-m4timi).ant-layout [class^="ant-layout"], :where(.css-dev-only-do-not-override-m4timi).ant-layout [class*=" ant-layout"] {
+:where(.css-dev-only-do-not-override-p8b6i).ant-layout [class^="ant-layout"], :where(.css-dev-only-do-not-override-p8b6i).ant-layout [class*=" ant-layout"] {
     box-sizing: border-box;
 
 }

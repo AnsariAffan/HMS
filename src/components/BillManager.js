@@ -180,11 +180,11 @@ const BillManager = () => {
         <Link to={`BillingForm/${record._id}`}>{`${record._id}`}</Link>
       ),
     },
-  
+
+
     {
-      title: "Phone Number",
+      title: "Contact Number",
       dataIndex: "Contact_Number",
-      key: "Contact_Number",
     },
     {
       title: "Total Bill Amount",

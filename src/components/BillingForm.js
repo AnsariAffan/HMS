@@ -19,6 +19,7 @@ import PDFgenerator from "../Utilities/PDFgenerator";
 import { getAllBills, getAllPateints, saveBill } from "../api/api";
 import { FileTextTwoTone } from "@ant-design/icons";
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
+import moment from "moment";
 const { Option } = Select;
 
 const BillingForm = ({ id }) => {
@@ -55,6 +56,8 @@ const BillingForm = ({ id }) => {
     });
   }, [totalAmount, patientDetails]);
 
+
+  // defualting Login on bill screen
   useEffect(() => {
     if (id || billId || null) {
       const selectedPatient = allPateint?.data?.find(
@@ -67,6 +70,7 @@ const BillingForm = ({ id }) => {
           patientId: selectedPatient._id,
           FIRST_NAME: selectedPatient.First_Name,
           Bill_ID: index?._id,
+          Contact_Number: index?.Contact_Number,
         });
       }
     }
@@ -100,6 +104,10 @@ const BillingForm = ({ id }) => {
   //   }
   // }, [billId, BillDetails]);
 
+
+
+
+// defualting Login on bill screen
 useEffect(() => {
   if (billId && Array.isArray(BillDetails?.data)) { // Check if BillDetails.data is an array
     const index = BillDetails.data.findIndex((bill) => bill._id === billId.id);
@@ -112,6 +120,7 @@ useEffect(() => {
           patientId: billAtIndex.patient_id,
           FIRST_NAME: billAtIndex.FIRST_NAME,
           Bill_ID: billAtIndex._id,
+          Contact_Number: billAtIndex.Contact_Number,
         });
       }
     } else {
@@ -199,7 +208,7 @@ const [billtable,setbilltable] = useState()
         totalBillAmount: totalAmount,
         patient_id: patientDetails.patientId,
         FIRST_NAME: patientDetails.FIRST_NAME,
-        // Contact_Number: patientDetails.Contact_Number,
+        Contact_Number: patientDetails.Contact_Number,
       };
       setBillheader(headerData)
       setbilltable(formattedTableData)
@@ -224,6 +233,7 @@ const [billtable,setbilltable] = useState()
       totalBillAmount: totalAmount,
       patient_id: patientDetails.patientId,
       FIRST_NAME: patientDetails.FIRST_NAME,
+      
     };
 
     const billingDetails = data.map((item) => ({
@@ -274,6 +284,7 @@ const [billtable,setbilltable] = useState()
       setPatientDetails({
         patientId: selectedPatient._id,
         FIRST_NAME: selectedPatient.First_Name,
+        Contact_Number: selectedPatient.Contact_Number,
       });
     }
   };
@@ -372,7 +383,7 @@ const [billtable,setbilltable] = useState()
 
   return (
     <>
-      <Flex vertical>
+      <Flex vertical className="billForm">
         <flex style={{ display: "flex" }}>
           <FileTextTwoTone style={{ fontSize: "20px" }} />
           <h2 style={{ paddingLeft: "10px" }}>
@@ -392,13 +403,17 @@ const [billtable,setbilltable] = useState()
             </Col>
             <Col span={6}>
               <Form.Item label="Contact Number" name="Contact_Number">
-                <Input style={{ width: "100%" }} placeholder="Bill ID" />
+                <Input style={{ width: "100%" }} placeholder="Contact Number" 
+              value={patientDetails.Contact_Number}
+                 
+                />
               </Form.Item>
             </Col>
 
             <Col span={6}>
-              <Form.Item label="Bill Date" name="billDate">
+              <Form.Item label="Bill Date" name="billDate" >
                 <DatePicker
+              
                   style={{ width: "100%" }}
                   className="custom-input"
                 />

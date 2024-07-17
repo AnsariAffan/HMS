@@ -14,7 +14,7 @@
   text-align: start;
 }
 
-:where(.css-dev-only-do-not-override-m4timi).ant-input-outlined {
+:where(.css-dev-only-do-not-override-p8b6i).ant-input-outlined {
   background: #ffffff;
   border-width: 1px;
   border-style: solid;
@@ -42,18 +42,22 @@
   width: -webkit-fill-available;
 }
 
-:where(.css-dev-only-do-not-override-m4timi).ant-input-group .ant-input-affix-wrapper:not(:last-child) {
+.ant-input-search :where(.css-dev-only-do-not-override-p8b6i).ant-input-group .ant-input-affix-wrapper:not(:last-child) {
+  border-start-start-radius: 6px;
+  border-end-start-radius: 6px;
   border-start-end-radius: 6px;
   border-end-end-radius: 6px;
+  height: 40px;
 }
 
-:where(.css-dev-only-do-not-override-m4timi).ant-form-item .ant-form-item-control-input-content {
+
+:where(.css-dev-only-do-not-override-p8b6i).ant-form-item .ant-form-item-control-input-content {
   flex: auto;
   max-width: 100%;
   text-align: end;
 }
 
-:where(.css-dev-only-do-not-override-m4timi).ant-btn-primary {
+:where(.css-dev-only-do-not-override-p8b6i).ant-btn-primary {
   color: #fff;
   background: #1677ff;
   box-shadow: 0 2px 0 rgba(5, 145, 255, 0.1);

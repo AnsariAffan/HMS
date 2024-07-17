@@ -1,10 +1,13 @@
-.ant-input-search :where(.css-dev-only-do-not-override-m4timi).ant-input-group .ant-input-affix-wrapper:not(:last-child) {
+.ant-input-search :where(.css-dev-only-do-not-override-p8b6i).ant-input-group .ant-input-affix-wrapper:not(:last-child) {
     border-start-start-radius: 6px;
     border-end-start-radius: 6px;
     height: 40px;
 }
 
-:where(.css-dev-only-do-not-override-m4timi).ant-input-search >.ant-input-group >.ant-input-group-addon:last-child {
+.patint-table{
+  background-color: white;
+}
+:where(.css-dev-only-do-not-override-p8b6i).ant-input-search >.ant-input-group >.ant-input-group-addon:last-child {
     inset-inline-start: -1px;
     /* padding: 1px; */
     border: 0;
@@ -24,12 +27,12 @@
     background-color: #bae0ff !important;
   }
 
-  :where(.css-dev-only-do-not-override-m4timi).ant-space {
+  :where(.css-dev-only-do-not-override-p8b6i) .ant-space {
     display: inline-flex;
     flex-direction: row-reverse;
 }
 
-.ant-input-search :where(.css-dev-only-do-not-override-m4timi).ant-input-group .ant-input-affix-wrapper:not(:last-child) {
+.ant-input-search :where(.css-dev-only-do-not-override-p8b6i).ant-input-group .ant-input-affix-wrapper:not(:last-child) {
   border-start-start-radius: 6px;
   border-end-start-radius: 6px;
   height: 40px;

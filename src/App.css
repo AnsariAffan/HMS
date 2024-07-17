@@ -2,9 +2,12 @@
 
 .App {
   text-align: center;
-  
+  background-color: white;
 }
-
+:where(.css-dev-only-do-not-override-p8b6i).ant-layout [class^="ant-layout"], :where(.css-dev-only-do-not-override-p8b6i).ant-layout [class*=" ant-layout"] {
+  box-sizing: border-box;
+  background-color: white;
+}
 
 .App-logo {
   height: 40vmin;
