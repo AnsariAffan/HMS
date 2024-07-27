@@ -48,7 +48,7 @@ export const savePateint = createAsyncThunk(
       history.push("/Usertable");
       console.log(response.data.message);
 
-      return response; // Return the message from the response
+      return response; // Return the message from the responsfde
     } catch (error) {
       console.error("Save patient error:", error);
       // Handle specific error when user is already added
@@ -115,7 +115,7 @@ export const saveBill = createAsyncThunk(
         billData
       );
 
-      // history.push("/Usertable");
+      // history.push("/BillManager");
       console.log(response.data.message);
 
       return response; // Return the message from the response

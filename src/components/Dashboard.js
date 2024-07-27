@@ -1,95 +1,70 @@
-
-
-import React, { Children,  useEffect, useState } from 'react';
-import { Layout, Menu, Table, Input, Button, DatePicker, Avatar, Flex } from 'antd';
-import { UserOutlined, SearchOutlined, CalendarOutlined, DashboardOutlined, UsergroupAddOutlined, ScheduleOutlined, AppstoreAddOutlined } from '@ant-design/icons';
+import React, { useState } from 'react';
+import { Layout, Menu, Avatar, Button } from 'antd';
+import { UserOutlined, DashboardOutlined, UsergroupAddOutlined, ScheduleOutlined, AppstoreAddOutlined } from '@ant-design/icons';
+import { Link } from 'react-router-dom';
 import './Dashboard.css';
-import { PieChart, Pie, LineChart, Line, Tooltip } from 'recharts';
-
-import { useDispatch, useSelector } from 'react-redux';
-import { getAllPateints } from '../api/api';
-import { Link, useHistory } from 'react-router-dom/cjs/react-router-dom.min';
+import { useDispatch } from 'react-redux';
 import { logout } from '../api/userCredential';
+import SearchDropdown from './SearchDropdown'; // Import the SearchDropdown component
+
 const { Header, Content, Sider } = Layout;
-const { Search } = Input;
 
-const Dashboard = (      {children}) => {
+const Dashboard = ({ children }) => {
+    const [selectedTab, setSelectedTab] = useState('Dashboard');
 
-  const dispatch =   useDispatch()
-    const { isLoading, allPateint,message } = useSelector((state) => state.products);
+    const dispatch = useDispatch();
 
-    
+    const handleLogout = () => {
+        dispatch(logout());
+        console.log("logout");
+    };
 
+    const handleMenuClick = (e) => {
+        setSelectedTab(e.key);
+    };
 
-    const today = new Date().toISOString().slice(0, 10);
-    const [appointments, setAppointments] = useState([]);
-    const [sessions, setSessions] = useState([]);
-
-    // Dummy data
-    const doctorCount = 6;
-    const patientCount = 50;
-    const newBookingCount = 5;
-    const todaySessionsCount = 3;
-
-
-    // Dummy data for charts
-    const pieChartData = [
-        { name: 'Doctors', value: 10 },
-        { name: 'Patients', value: 50 },
-    ];
-
-    const lineChartData = [
-        { name: 'Monday', sessions: 5 },
-        { name: 'Tuesday', sessions: 10 },
-        { name: 'Wednesday', sessions: 8 },
-        { name: 'Thursday', sessions: 15 },
-        { name: 'Friday', sessions: 12 },
-    ];
-
-const history = useHistory()
-
-const handlelogout =()=>{
-dispatch(logout(history));
-console.log("logout");
-
-}
     return (
-        <Layout style={{ minHeight: '100vh' }} >
-         
-            <Sider  collapsible >
-                <div  className="profile-container" >
-                    <Avatar size={64} icon={<UserOutlined />}  />
+        <Layout style={{ minHeight: '100vh' }}>
+            <Sider collapsible>
+                <div className="profile-container">
+                    <Avatar size={64} icon={<UserOutlined />} />
                     <p className="profile-title">Administrator</p>
                     <p className="profile-subtitle">admin@edoc.com</p>
-                    <Button type="primary" className="logout-btn" onClick={handlelogout}>Log out</Button>
+                    <Button type="primary" className="logout-btn" onClick={handleLogout}>Log out</Button>
                 </div>
-                <Menu theme="light" defaultSelectedKeys={['1']} mode="inline" >
-                    <Menu.Item key="1" icon={<DashboardOutlined />}>
+                <Menu theme="light" defaultSelectedKeys={['1']} mode="inline" onClick={handleMenuClick}>
+                    <Menu.Item key="Dashboard" icon={<DashboardOutlined />}>
                         <Link to="/dashboard">Dashboard</Link>
                     </Menu.Item>
-                    <Menu.Item key="2" icon={<UserOutlined />}>
-                    <Link to="/usertable"> Patients</Link> 
+                    <Menu.Item key="Patients Manager" icon={<UserOutlined />}>
+                        <Link to="/usertable">Patients Manager</Link>
                     </Menu.Item>
-                    <Menu.Item key="3" icon={<UsergroupAddOutlined />}>
-                    <Link to="/billManager">Bill Manager</Link>   
+                    <Menu.Item key="Bill Manager" icon={<UsergroupAddOutlined />}>
+                        <Link to="/billManager">Bill Manager</Link>
                     </Menu.Item>
-                    <Menu.Item key="4" icon={<ScheduleOutlined />}>
-                    <Link to="/doctors Schedule"> Doctors Schedule</Link>  
+                    <Menu.Item key="Doctors Schedule" icon={<ScheduleOutlined />}>
+                        <Link to="/doctorsSchedule">Doctors Schedule</Link>
                     </Menu.Item>
-                    <Menu.Item key="5" icon={<AppstoreAddOutlined />}>
-                    <Link to="/appointment"> Appointment</Link>
+                    <Menu.Item key="Appointment" icon={<AppstoreAddOutlined />}>
+                        <Link to="/appointment">Appointment</Link>
                     </Menu.Item>
-                    
                 </Menu>
             </Sider>
-       
-          
-
-{children}
-       
+            <Layout style={{ marginLeft: 0 }}> {/* Adjust margin-left based on Sider width */}
+                <Header style={{ background: '#fff', padding: 0, position: 'fixed', top: 0, left: 200, width: 'calc(100% - 200px)', zIndex: 1 }}>
+                    <div style={{ padding: '0 24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <h1 style={{ marginTop: 0 }}>{selectedTab}</h1>
+                        <SearchDropdown />
+                    </div>
+                </Header>
+                <Content style={{ padding: '24x', marginTop: 64, minHeight: 280, overflowY: 'auto' }}>
+                    <div style={{ position: 'relative', height: '100%' }}>
+                        {children}
+                    </div>
+                </Content>
+            </Layout>
         </Layout>
     );
 };
 
 export default Dashboard;
-

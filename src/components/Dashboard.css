@@ -170,3 +170,10 @@
 .ant-layout-sider-children{
     position: fixed;
 }
+.ant-input-search :where(.css-dev-only-do-not-override-p8b6i).ant-input-group .ant-input-affix-wrapper:not(:last-child) {
+    border-start-start-radius: 6px;
+    border-end-start-radius: 6px;
+    height: 40px;
+    width: 12rem;
+}
+

@@ -23,7 +23,7 @@ const data = allPateint.data
 function countGender() {
     let maleCount = 0;
     let femaleCount = 0;
-
+    if (!Array.isArray(data)) {
     data?.forEach(record => {
         if (record.Gender === 'Male') {
             maleCount++;
@@ -31,9 +31,22 @@ function countGender() {
             femaleCount++;
         }
     });
+}
 // console.log(maleCount, femaleCount )
     return { maleCount, femaleCount };
 }
+
+// const countGender = (data) => {
+//     if (!Array.isArray(data)) {
+//       console.error('Expected an array but got:', data);
+//       return;
+//     }
+
+//     // Example logic
+//     data.forEach(item => {
+//       // Process each item
+//     });
+//   };
 
 // console.log(countGender())
 

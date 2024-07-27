@@ -45,3 +45,11 @@
 }
 
 
+.ant-input-search :where(.css-dev-only-do-not-override-p8b6i).ant-input-group .ant-input-affix-wrapper:not(:last-child) {
+  border-start-start-radius: 6px;
+  border-end-start-radius: 6px;
+  border-start-end-radius: 6px;
+  border-end-end-radius: 6px;
+  height: 40px;
+  width: -webkit-fill-available;
+}

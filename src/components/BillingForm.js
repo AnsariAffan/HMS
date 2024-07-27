@@ -10,7 +10,10 @@ import {
   DatePicker,
   Select,
   Flex,
+  message
 } from "antd";
+import Cascader from 'antd/es/cascader';
+
 import { useDispatch, useSelector } from "react-redux";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
@@ -18,7 +21,7 @@ import "./BillingForm.css";
 import PDFgenerator from "../Utilities/PDFgenerator";
 import { getAllBills, getAllPateints, saveBill } from "../api/api";
 import { FileTextTwoTone } from "@ant-design/icons";
-import { useParams } from "react-router-dom/cjs/react-router-dom.min";
+import { useParams,Link ,useHistory} from "react-router-dom/cjs/react-router-dom.min";
 import moment from "moment";
 const { Option } = Select;
 
@@ -29,17 +32,18 @@ const BillingForm = ({ id }) => {
   const [data, setData] = useState([]);
   const [editingKey, setEditingKey] = useState("");
   const [totalAmount, setTotalAmount] = useState(0);
+  const [patientBillDetails,setpatientBillDetails] = useState()
   const [patientDetails, setPatientDetails] = useState({
     patientId: "",
     FIRST_NAME: "",
   });
   const [BillData, setBillData] = useState();
-
+const history = useHistory()
   const dispatch = useDispatch();
   const { allPateint, isLoading, BillDetails } = useSelector(
     (state) => state.products
   );
-  // console.log(BillDetails);
+  console.log(BillDetails);
   useEffect(() => {
     dispatch(getAllPateints());
     dispatch(getAllBills());
@@ -57,7 +61,7 @@ const BillingForm = ({ id }) => {
   }, [totalAmount, patientDetails]);
 
 
-  // defualting Login on bill screen
+  // defualting Login on bill screen from patient table
   useEffect(() => {
     if (id || billId || null) {
       const selectedPatient = allPateint?.data?.find(
@@ -65,63 +69,47 @@ const BillingForm = ({ id }) => {
       );
       const index = BillDetails?.data?.find((bid) => bid.patient_id === id);
       console.log(index);
-      if (selectedPatient) {
+      if (selectedPatient && index) {
         setPatientDetails({
           patientId: selectedPatient._id,
           FIRST_NAME: selectedPatient.First_Name,
           Bill_ID: index?._id,
           Contact_Number: index?.Contact_Number,
+          Tax:index?.Tax
         });
+
+        setData(index.lineItems || []); // Assuming `lineItems` is the field with the line item data
+
       }
     }
-  }, [id, allPateint.data]);
+  }, [id, allPateint.data,BillDetails]);
 
-  // useEffect(() => {
-  //   if (billId && BillDetails?.data || undefined) {
-  //     console.log("BillDetails.data:", BillDetails?.data);
-  //     console.log("billId:", billId.id);
+  
 
-  //     // Find the index of the bill in BillDetails.data based on _id
-  //     const index = BillDetails?.data?.findIndex(
-  //       (bill) => bill?._id === billId?.id
-  //     );
-  //     console.log(index);
-  //     if (index !== -1) {
-  //       // Handle the index here, e.g., set state or update components
-  //       console.log(`Index of bill with id ${billId} is ${index}`);
-  //       const billAtIndex = BillDetails?.data[index];
-  //       console.log("Bill at index:", billAtIndex);
-  //       if (billAtIndex) {
-  //         setPatientDetails({
-  //           patientId: billAtIndex.patient_id,
-  //           FIRST_NAME: billAtIndex.FIRST_NAME,
-  //           Bill_ID: billAtIndex._id,
-  //         });
-  //       }
-  //     } else {
-  //       console.log(`No bill found for id: ${billId}`);
-  //     }
-  //   }
-  // }, [billId, BillDetails]);
-
-
-
-
-// defualting Login on bill screen
+// defaulting logic from Billing table
 useEffect(() => {
-  if (billId && Array.isArray(BillDetails?.data)) { // Check if BillDetails.data is an array
+  if (billId && Array.isArray(BillDetails?.data)) {
     const index = BillDetails.data.findIndex((bill) => bill._id === billId.id);
     console.log(index);
+    setpatientBillDetails(index)
     if (index !== -1) {
       const billAtIndex = BillDetails.data[index];
       console.log("Bill at index:", billAtIndex);
       if (billAtIndex) {
+        // Set the header details
         setPatientDetails({
           patientId: billAtIndex.patient_id,
           FIRST_NAME: billAtIndex.FIRST_NAME,
           Bill_ID: billAtIndex._id,
           Contact_Number: billAtIndex.Contact_Number,
+          Tax: billAtIndex.Tax,
+          PaymentDueDate: form.getFieldValue("PaymentDueDate"),
+          billDate: form.getFieldValue("billDate"),
+   
         });
+
+        // Set the line items
+        setData(billAtIndex.lineItems || []); // Assuming `lineItems` is the field with the line item data
       }
     } else {
       console.log(`No bill found for id: ${billId}`);
@@ -131,8 +119,6 @@ useEffect(() => {
     // Handle the case where BillDetails.data is not usable, perhaps set default values or show an error message
   }
 }, [billId, BillDetails]);
-
-  
 
   const isEditing = (record) => record.key === editingKey;
 
@@ -145,39 +131,29 @@ useEffect(() => {
     setEditingKey("");
   };
 
-  // const save = async (key) => {
-  //   try {
-  //     const rowData = await form.validateFields();
-  //     rowData.netAmount = rowData.qty * rowData.amount;
-  //     const newData = [...data];
-  //     const index = newData.findIndex((item) => key === item.key);
-  //     if (index > -1) {
-  //       const item = newData[index];
-  //       newData.splice(index, 1, { ...item, ...rowData });
-  //       setData(newData);
-  //       setEditingKey("");
-  //     }
 
-  //     const headerData = {
-  //       Bill_ID: form.getFieldValue("Bill_ID"),
-  //       PaymentDueDate: form.getFieldValue("PaymentDueDate"),
-  //       billDate: form.getFieldValue("billDate"),
-  //       totalBillAmount: totalAmount,
-  //       patient_id: patientDetails.patientId,
-  //       FIRST_NAME: patientDetails.FIRST_NAME,
-  //     };
-
-  //     console.log("Header Data:", headerData);
-  //     console.log("Table Data:", newData);
-  //      dispatch(saveBill({ headerData:headerData, tableData: newData }));
-  //   } catch (errInfo) {
-  //     console.log("Validate Failed:", errInfo);
-  //   }
-  // };
-  
 
 const [billHeader,setBillheader] = useState()
 const [billtable,setbilltable] = useState()
+
+const handlePatientSelect = (value, option) => {
+  const selectedPatient = allPateint.data.find(
+    (patient) => patient._id === value
+  );
+  if (selectedPatient) {
+
+    //retained header detail here based on table add data
+    setPatientDetails({
+      patientId: selectedPatient._id,
+      FIRST_NAME: selectedPatient.First_Name,
+      Contact_Number: selectedPatient.Contact_Number,
+   
+
+    });
+
+    // history.push(`BillingForm/${patientDetails.patientId}`)
+  }
+};
 
   const save = async (key) => {
     try {
@@ -191,6 +167,17 @@ const [billtable,setbilltable] = useState()
         setData(newData);
         setEditingKey("");
       }
+      const headerData = {
+        // Bill_ID: form.getFieldValue("Bill_ID"),
+        PaymentDueDate: form.getFieldValue("PaymentDueDate"),
+        billDate: form.getFieldValue("billDate"),
+
+        Tax: form.getFieldValue("Tax"),
+        totalBillAmount: totalAmount,
+        patient_id: patientDetails.patientId,
+        FIRST_NAME: patientDetails.FIRST_NAME,
+        Contact_Number: patientDetails.Contact_Number,
+      };
 
       const formattedTableData = newData.map((item) => ({
         key: item.key,
@@ -198,18 +185,11 @@ const [billtable,setbilltable] = useState()
         qty: item.qty,
         amount: item.amount,
         discount: item.discount,
+        netAmount:item.netAmount,
+        itemName:item.itemName
       }));
   
-      const headerData = {
-        // Bill_ID: form.getFieldValue("Bill_ID"),
-        PaymentDueDate: form.getFieldValue("PaymentDueDate"),
-        Tax: form.getFieldValue("Tax"),
-        billDate: form.getFieldValue("billDate"),
-        totalBillAmount: totalAmount,
-        patient_id: patientDetails.patientId,
-        FIRST_NAME: patientDetails.FIRST_NAME,
-        Contact_Number: patientDetails.Contact_Number,
-      };
+     
       setBillheader(headerData)
       setbilltable(formattedTableData)
       console.log("Header Data:", headerData);
@@ -221,8 +201,10 @@ const [billtable,setbilltable] = useState()
     }
   };
 
+  
   const saveBillData=()=>{
     dispatch(saveBill({ headerData:{...billHeader,totalBillAmount:totalAmount}, tableData: billtable }));
+    message.success("Bill added successfully");
   }
   
   const handleGenerateBill = () => {
@@ -261,7 +243,7 @@ const [billtable,setbilltable] = useState()
       amount: "",
       discount: "",
       netAmount: "",
-      itemName: "",
+      itemName: [],
     };
     setData([...data, newRow]);
     setEditingKey(newRow.key);
@@ -276,18 +258,9 @@ const [billtable,setbilltable] = useState()
     setTotalAmount(total);
   };
 
-  const handlePatientSelect = (value, option) => {
-    const selectedPatient = allPateint.data.find(
-      (patient) => patient._id === value
-    );
-    if (selectedPatient) {
-      setPatientDetails({
-        patientId: selectedPatient._id,
-        FIRST_NAME: selectedPatient.First_Name,
-        Contact_Number: selectedPatient.Contact_Number,
-      });
-    }
-  };
+
+
+
 
   const columns = [
     {
@@ -299,7 +272,15 @@ const [billtable,setbilltable] = useState()
       title: "Item Name",
       dataIndex: "itemName",
       key: "itemName",
-      editable: true,
+      render: (text, record) => (
+        <Cascader
+          options={options}
+          onChange={(value) => handleCascaderChange(value, record)}
+          value={record.itemName}
+          placeholder="Select Item"
+          style={{ width: '100%' }}
+        />
+      ),
     },
     {
       title: "Qty",
@@ -360,6 +341,49 @@ const [billtable,setbilltable] = useState()
       },
     },
   ];
+  const options = [
+    {
+      value: 'category1',
+      label: 'Category 1',
+      children: [
+        {
+          value: 'item1',
+          label: 'Item 1',
+        },
+        {
+          value: 'item2',
+          label: 'Item 2',
+        },
+      ],
+    },
+    {
+      value: 'category2',
+      label: 'Category 2',
+      children: [
+        {
+          value: 'item3',
+          label: 'Item 3',
+        },
+        {
+          value: 'item4',
+          label: 'Item 4',
+        },
+      ],
+    },
+  ];
+  
+  const handleCascaderChange = (value, record) => {
+    const newData = [...data];
+    const index = newData.findIndex((item) => record.key === item.key);
+    if (index > -1) {
+      const item = newData[index];
+      newData.splice(index, 1, { ...item, itemName: value });
+      setData(newData);
+    }
+  };
+  
+
+  
 
   const mergedColumns = columns.map((col) => {
     if (!col.editable) {
@@ -384,11 +408,14 @@ const [billtable,setbilltable] = useState()
   return (
     <>
       <Flex vertical className="billForm">
+      <flex style={{ display: "flex" ,justifyContent:"space-between"}}>
         <flex style={{ display: "flex" }}>
           <FileTextTwoTone style={{ fontSize: "20px" }} />
           <h2 style={{ paddingLeft: "10px" }}>
-            {id ? "Edit Bill" : "New Bill"}
+            {id || patientDetails.patientId ? "Edit Bill" : "New Bill"}
           </h2>
+        </flex>
+        <Link to={`/pateint/${patientDetails.patientId}`} style={{padding: "20px"}}>{patientDetails.patientId}</Link>
         </flex>
         <Form form={form} layout="vertical">
           <Row gutter={16}>
@@ -428,9 +455,7 @@ const [billtable,setbilltable] = useState()
                   optionFilterProp="children"
                   onChange={handlePatientSelect}
                   filterOption={(input, option) =>
-                    option.children
-                      .toLowerCase()
-                      .indexOf(input.toLowerCase()) >= 0
+                    option.children?.toLowerCase()?.indexOf(input?.toLowerCase()) >= 0
                   }
                   value={patientDetails?.patientId}
                   disabled={billId.id} 
@@ -443,16 +468,7 @@ const [billtable,setbilltable] = useState()
                 </Select>
               </Form.Item>
             </Col>
-            <Col span={6}>
-              <Form.Item label="Patient ID" name="patientId">
-                <Input
-                  disabled
-                  style={{ width: "100%" }}
-                  placeholder="Patient ID"
-                  value={patientDetails.patientId}
-                />
-              </Form.Item>
-            </Col>
+         
             <Col span={6}>
               <Form.Item label="Tax" name="Tax">
                 <Input style={{ width: "100%" }} placeholder="0" />

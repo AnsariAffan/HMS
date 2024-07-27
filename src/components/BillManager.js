@@ -193,6 +193,7 @@ const BillManager = () => {
     },
     {
       title: "Due Date",
+      
       dataIndex: "PaymentDueDate",
       key: "PaymentDueDate",
     
@@ -267,8 +268,7 @@ const BillManager = () => {
 
   return (
     <div className="patint-table" style={{width:"-webkit-fill-available",paddingInline:"15px"}}>
-     
-    <Title level={3}>Billing Manager</Title>
+    
     
     <Space style={{ marginBottom: 16 ,}}>
   
@@ -380,7 +380,12 @@ const BillManager = () => {
             key: patient._id,
           }))}
           
-          
+          pagination={{
+            pageSize: 50,
+          }}
+          scroll={{
+            y: 310,
+          }}
         />
       </Flex>
   

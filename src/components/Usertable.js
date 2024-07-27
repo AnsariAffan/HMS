@@ -291,9 +291,9 @@ const Usertable = () => {
   return (
     <div className="patint-table" style={{width:"-webkit-fill-available",paddingInline:"15px"}}>
      
-    <Title level={3}>Patient Manager</Title>
+ 
     
-    <Space style={{ marginBottom: 16 ,}}>
+    <Space style={{ marginBottom: 0 ,}}>
   
     <Dropdown
     
@@ -402,7 +402,12 @@ const Usertable = () => {
             ...patient,
             key: patient._id,
           }))}
-          
+          pagination={{
+            pageSize: 50,
+          }}
+          scroll={{
+            y: 310,
+          }}
           
         />
       </Flex>
