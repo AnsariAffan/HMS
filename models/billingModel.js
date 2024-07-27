@@ -8,6 +8,8 @@ const LineItemSchema = new Schema({
   qty: { type: String, required: true },
   amount: { type: String, required: true },
   discount: { type: String, required: true },
+  netAmount: { type: String, required: true },
+  itemName:{type:[], required: true }
   // Add other necessary fields for line items
 });
 
