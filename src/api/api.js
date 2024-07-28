@@ -39,7 +39,7 @@ export const savePateint = createAsyncThunk(
   async ({ values, history }, { rejectWithValue }) => {
     try {
       const response = await api.post(
-        `${apiUrl}/api/createNewEntry`,
+        `https://services-uk8v.onrender.com/api/createNewEntry`,
         {
           data: values,
         }
@@ -66,7 +66,7 @@ export const updatePateint = createAsyncThunk(
   async ({values,history}, { rejectWithValue }) => {
     try {
       const response = await api.put(
-       `${apiUrl}/api/updateNewEntry`,
+       `https://services-uk8v.onrender.com/api/updateNewEntry`,
         {
           data: values
         }
@@ -91,7 +91,7 @@ export const getAllPateints = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await api.get(
-        `${apiUrl}/api/getAllPateints`
+        `https://services-uk8v.onrender.com/api/getAllPateints`
       );
     
       console.log(response)
@@ -111,7 +111,7 @@ export const saveBill = createAsyncThunk(
     try {
       console.log(billData);
       const response = await api.post(
-        `${apiUrl}/api/createNewBill`,
+        `https://services-uk8v.onrender.com/api/createNewBill`,
         billData
       );
 

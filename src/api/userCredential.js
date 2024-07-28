@@ -14,7 +14,7 @@ export const login = createAsyncThunk(
       await new Promise((resolve) => setTimeout(resolve, 3000));
 
       const response = await axios.post(
-        `${apiUrl}/api/login`,
+        `https://services-uk8v.onrender.com/api/login`,
         {
           username: values.username,
           password: values.password,
