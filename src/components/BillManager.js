@@ -177,7 +177,7 @@ const BillManager = () => {
       dataIndex: "_id",
       key: "bill_ID",
       render: (text, record) => (
-        <Link to={`BillingForm/${record._id}`}>{`${record._id}`}</Link>
+        <Link to={`/NewBillingForm/${record._id}`}>{`${record._id}`}</Link>
       ),
     },
 
@@ -295,7 +295,7 @@ const BillManager = () => {
     </a>
   </Dropdown>  
   <ExportOutlined   style={{fontSize:"20px"}}/>  
-    <Link to="/BillingForm" > <Button  style={{ marginBottom: 8, width: "max-content" ,height: "40px"}} type="primary" >
+    <Link to="/NewBillingForm" > <Button  style={{ marginBottom: 8, width: "max-content" ,height: "40px"}} type="primary" >
 
         <FileTextTwoTone style={{fontSize:"20px"}}/>
         Add Bill

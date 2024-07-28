@@ -25,26 +25,26 @@ import { useParams,Link ,useHistory} from "react-router-dom/cjs/react-router-dom
 import moment from "moment";
 const { Option } = Select;
 
-const BillingForm = () => {
-  const {id} = useParams();
-  console.log(id);
+const NewBillscreen = ({ id }) => {
+  const billId = useParams();
+  console.log(billId);
   const [form] = Form.useForm();
   const [data, setData] = useState([]);
   const [editingKey, setEditingKey] = useState("");
   const [totalAmount, setTotalAmount] = useState(0);
+  const [patientBillDetails,setpatientBillDetails] = useState()
+  const [hasBill, setHasBill] = useState(false); // Track if a bill exists
   const [patientDetails, setPatientDetails] = useState({
     patientId: "",
     FIRST_NAME: "",
   });
-
+  const [BillData, setBillData] = useState();
 const history = useHistory()
-
-console.log(id);
   const dispatch = useDispatch();
   const { allPateint, isLoading, BillDetails } = useSelector(
     (state) => state.products
   );
-
+  console.log(BillDetails);
 
   const [billHeader,setBillheader] = useState()
 const [billtable,setbilltable] = useState()
@@ -79,6 +79,31 @@ const [billtable,setbilltable] = useState()
   };
 
 
+
+
+
+const handlePatientSelect = (value, option) => {
+  const selectedPatient = allPateint.data.find(
+    (patient) => patient._id === value
+  );
+  if (selectedPatient) {
+
+    //retained header detail here based on table add data
+    setPatientDetails({
+      patientId: selectedPatient._id,
+      FIRST_NAME: selectedPatient.First_Name,
+      Contact_Number: selectedPatient.Contact_Number,
+   
+
+    });
+
+    // history.push(`BillingForm/${patientDetails.patientId}`)
+  }
+};
+
+
+
+
   const saveHeaderData = () => {
     const headerData = {
       PaymentDueDate: form.getFieldValue("PaymentDueDate"),
@@ -86,15 +111,13 @@ const [billtable,setbilltable] = useState()
       Tax: form.getFieldValue("Tax"),
       totalBillAmount: totalAmount,
       patient_id:  patientDetails.patientId,
-      FIRST_NAME: patientDetails.FIRST_NAME,
-      Contact_Number: patientDetails.Contact_Number,
-};
+      FIRST_NAME: form.getFieldValue("FIRST_NAME"),
+      Contact_Number: form.getFieldValue("Contact_Number"),
+    };
   
     setBillheader(headerData);
     console.log("Header Data:", headerData);
   };
-
-  
   const saveTableData = async (key) => {
     try {
       const rowData = await form.validateFields();
@@ -128,44 +151,45 @@ const [billtable,setbilltable] = useState()
   };
 
 
-  useEffect(() => {
-    dispatch(getAllPateints());
-    dispatch(getAllBills());
-  
-    if (allPateint && allPateint.data && id) {
-      const patientData = allPateint.data.find((patient) => patient?._id === id);
-      const BillData = BillDetails.data.find((bill) => bill.patient_id === id);
-      console.log(BillData);
-      if (patientData) {
-        const contactNumber = form.getFieldValue("Contact_Number") || patientData.Contact_Number          // Bill_ID: BillData?._id,
 
-        //defaulting login on tabe data save /row data save
+
+// defaulting logic from Billing table
+useEffect(() => {
+  if (billId && Array.isArray(BillDetails?.data)) {
+    const index = BillDetails.data.findIndex((bill) => bill._id === billId.id);
+    console.log(index);
+    setpatientBillDetails(index)
+    
+    if (index !== -1) {
+      const billAtIndex = BillDetails.data[index];
+      console.log("Bill at index:", billAtIndex);
+      if (billAtIndex) {
+        // Set the header details
         setPatientDetails({
-          patientId: patientData?._id,
-          FIRST_NAME: patientData?.First_Name,
-          Contact_Number: contactNumber,
-          Bill_ID: BillData?._id,
-          //  Tax:BillData?.Tax
-          // add other fields if necessary
+          patientId: billAtIndex.patient_id,
+          FIRST_NAME: billAtIndex.FIRST_NAME,
+          Bill_ID: billAtIndex._id,
+          Contact_Number: billAtIndex.Contact_Number,
+          Tax: billAtIndex.Tax,
+          PaymentDueDate: form.getFieldValue("PaymentDueDate"),
+          billDate: form.getFieldValue("billDate"),
+   
         });
 
-
-        //defaulting logic on screen after save
-        form.setFieldsValue({
-          FIRST_NAME: patientData.First_Name,
-          Contact_Number: patientData.Contact_Numbe ,
-          Tax:BillData?.Tax,
-       
-
-        });
-
-        setData(BillData?.lineItems || []);
+        // Set the line items
+        setData(billAtIndex.lineItems || []); // Assuming `lineItems` is the field with the line item data
+        setHasBill(true); // Set flag if a bill exists
       }
+    } else {
+      setHasBill(false); // No bill found for the given ID
+      console.log(`No bill found for id: ${billId}`);
     }
-  }, [dispatch, id]);
-
-
-
+  } else {
+    setHasBill(false); // No bill found for the given ID
+    console.log('BillDetails.data is not an array or is undefined/null');
+    // Handle the case where BillDetails.data is not usable, perhaps set default values or show an error message
+  }
+}, [billId, BillDetails]);
 
     
   const [shouldDispatch, setShouldDispatch] = useState(false); // Track if we should dispatch
@@ -427,13 +451,28 @@ const [billtable,setbilltable] = useState()
                 />
               </Form.Item>
             </Col>
-
             <Col span={6}>
-            <Form.Item label="Patient" name="FIRST_NAME" >
-            <Input disabled={true} style={{ width: "100%" }} placeholder="Patient" />
-            </Form.Item>
-          </Col>
-           
+              <Form.Item label="Patient" name="FIRST_NAME">
+                <Select
+                  showSearch
+                  style={{ width: "100%", height: 40 }}
+                  placeholder="Select a patient"
+                  optionFilterProp="children"
+                  onChange={handlePatientSelect}
+                  filterOption={(input, option) =>
+                    option.children?.toLowerCase()?.indexOf(input?.toLowerCase()) >= 0
+                  }
+                  value={patientDetails?.patientId}
+                  disabled={billId.id} 
+                >
+                  {allPateint?.data?.map((patient) => (
+                    <Option key={patient._id} value={patient._id}>
+                      {patient.First_Name}
+                    </Option>
+                  ))}
+                </Select>
+              </Form.Item>
+            </Col>
          
             <Col span={6}>
               <Form.Item label="Tax" name="Tax">
@@ -528,4 +567,4 @@ const [billtable,setbilltable] = useState()
   );
 };
 
-export default BillingForm;
+export default NewBillscreen;

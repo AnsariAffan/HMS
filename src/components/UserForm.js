@@ -31,6 +31,7 @@ import {
   ScheduleOutlined,
   AppstoreAddOutlined,
 } from "@ant-design/icons";
+
 const { TabPane } = Tabs;
 
 const MyForm = () => {
@@ -134,15 +135,22 @@ const MyForm = () => {
       >
         <Row gutter={24}>
           <Col span={8}>
-            <Form.Item label="Registration Date" name="Ragistration_Date">
+            <Form.Item label="Registration Date" name="Ragistration_Date"
+            rules={[{ required: true, message: 'Registration Date is required' }]} // Add this line to make the field mandatory
+
+            >
               <DatePicker
                 style={{ width: "-webkit-fill-available" }}
                 className="custom-input"
+                value={new Date()}
               />
             </Form.Item>
           </Col>
           <Col span={8}>
-            <Form.Item label="First Name" name="First_Name">
+            <Form.Item label="First Name" name="First_Name"
+            rules={[{ required: true, message: 'First Namer is required' }]} // Add this line to make the field mandatory
+
+            >
               <Input className="custom-input" />
             </Form.Item>
           </Col>
@@ -159,7 +167,10 @@ const MyForm = () => {
             </Form.Item>
           </Col>
           <Col span={8}>
-            <Form.Item label="Date of Birth" name="Date_of_Birth">
+            <Form.Item label="Date of Birth" name="Date_of_Birth"
+            rules={[{ required: true, message: 'Date of Birth is required' }]} // Add this line to make the field mandatory
+    
+            >
               <DatePicker
                 style={{ width: "-webkit-fill-available" }}
                 className="custom-input"
@@ -167,8 +178,12 @@ const MyForm = () => {
             </Form.Item>
           </Col>
           <Col span={8}>
-            <Form.Item label="Marital Status" name="Material_Status">
-              <Select className="custom-input">
+            <Form.Item label="Marital Status" name="Material_Status"
+            rules={[{ required: true, message: 'Marital Status is required' }]} // Add this line to make the field mandatory
+
+            >
+              <Select className="custom-input"
+              >
                 <Option value="Married">Married</Option>
                 <Option value="Unmarried">Unmarried</Option>
               </Select>
@@ -188,12 +203,16 @@ const MyForm = () => {
             <Form.Item
               label="Emergency Contact Number"
               name="Emergency_Contact_Number"
+              
             >
               <Input className="custom-input" />
             </Form.Item>
           </Col>
           <Col span={8}>
-            <Form.Item label="Gender" name="Gender">
+            <Form.Item label="Gender" name="Gender"
+            rules={[{ required: true, message: 'Gender is required' }]} // Add this line to make the field mandatory
+
+            >
               <Select className="custom-input">
                 <Option value="Male">Male</Option>
                 <Option value="Female">Female</Option>
@@ -213,14 +232,22 @@ const MyForm = () => {
             </Form.Item>
           </Col>
           <Col span={8}>
-            <Form.Item label="Contact Number" name="Contact_Number">
-              <Input className="custom-input" />
+            <Form.Item label="Contact Number" name="Contact_Number"
+            rules={[{ required: true, message: 'Contact Number is required' }]} // Add this line to make the field mandatory
+
+            >
+              <Input className="custom-input"
+              
+              />
             </Form.Item>
           </Col>
         </Row>
         <Row gutter={24}>
           <Col span={8}>
-            <Form.Item label="Permanent Address" name="Permanent_address">
+            <Form.Item label="Permanent Address" name="Permanent_address"
+            rules={[{ required: true, message: 'Permanent Address is required' }]} // Add this line to make the field mandatory
+  
+            >
               <Input className="custom-input" />
             </Form.Item>
           </Col>
@@ -230,7 +257,10 @@ const MyForm = () => {
             </Form.Item>
           </Col>
           <Col span={8}>
-            <Form.Item label="Aadhar Card Number" name="AdharCard_Number">
+            <Form.Item label="Aadhar Card Number" name="AdharCard_Number"
+            rules={[{ required: true, message: 'Aadhar Number is required' }]} // Add this line to make the field mandatory
+
+            >
               <Input
                 disabled={isEditing ? true : false}
                 className="custom-input"
@@ -274,9 +304,12 @@ const Tab1 = () => (
   </div>
 );
 
-const Tab2 = ({ id }) => (
+const Tab2 = () => (
+
+
   <div>
-    <BillingForm id={id} />
+  
+    <BillingForm  />
   </div>
 );
 

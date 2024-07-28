@@ -17,6 +17,7 @@ import "./components/calendar.css";
 import "./components/Dashboard.css";
 import "./components/Usertable.css";
 import "./components/UserDashboard.css";
+import NewBillscreen from "./components/NewBillscreen";
 
 
 
@@ -35,9 +36,11 @@ function App() {
             <PrivateRoute path="/userForm" component={UserForm} />
             <PrivateRoute path="/pateint/:id" component={UserForm} />
             <PrivateRoute path="/billManager" component={BillManager} />
-            <PrivateRoute path="/BillingForm/:id" component={BillingForm} />
+            <PrivateRoute path="/NewBillingForm/:id" component={NewBillscreen} />
             <Route path="/BillingForm" component={BillingForm} />
+            <Route path="/NewBillingForm" component={NewBillscreen} />
           </Switch>
+          
         </Dashboard>
       </Switch>
     </Router>
