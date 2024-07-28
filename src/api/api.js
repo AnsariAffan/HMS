@@ -136,7 +136,7 @@ export const getAllBills = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await api.get(
-        `${apiUrl}/api/getAllBills`
+        `https://services-uk8v.onrender.com/api/getAllBills`
       );
     
       console.log(response)

@@ -133,8 +133,8 @@ const [billtable,setbilltable] = useState()
     dispatch(getAllBills());
   
     if (allPateint && allPateint.data && id) {
-      const patientData = allPateint.data.find((patient) => patient?._id === id);
-      const BillData = BillDetails.data.find((bill) => bill.patient_id === id);
+      const patientData = allPateint.data?.find((patient) => patient?._id === id);
+      const BillData = BillDetails.data?.find((bill) => bill.patient_id === id);
       console.log(BillData);
       if (patientData) {
         const contactNumber = form.getFieldValue("Contact_Number") || patientData.Contact_Number          // Bill_ID: BillData?._id,
