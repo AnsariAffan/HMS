@@ -8,6 +8,7 @@ const { register } = require('../controllers/register');
 const authMiddleware = require('../middleware/authMiddleware');
 const { createBillingEntry } = require('../controllers/Billing');
 const { getAllBills } = require('../controllers/getAllBills');
+const { updateBillingEntry } = require('../controllers/updateBillingEntry');
 
 const router = express.Router();
 
@@ -22,5 +23,6 @@ router.get("/getAllPateints", authMiddleware,getAllPateints);
 router.put("/updatePateint/:id", authMiddleware, updatePateint);
 router.post("/createNewBill",authMiddleware,createBillingEntry);
 router.get("/getAllBills", authMiddleware,getAllBills);
+router.get("/updateBill/:id", authMiddleware,updateBillingEntry);
 
 module.exports = router;
