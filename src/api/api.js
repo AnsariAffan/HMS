@@ -5,7 +5,7 @@ import {
 import axios from "axios";
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import api from "./apiConfigurations";
-const apiUrl = process.env.REACT_APP_ENV;
+const apiUrl = process.env.PROD_ENV;
 // Define the async thunk to fetch data
 // export const savePateint = createAsyncThunk(
 //   "api/savePateint",
@@ -136,7 +136,7 @@ export const getAllBills = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await api.get(
-        `${apiUrl}api/getAllBills`
+        `${apiUrl}/api/getAllBills`
       );
     
       console.log(response)

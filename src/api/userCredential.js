@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { message } from "antd";
 import axios from "axios";
-
+const apiUrl = process.env.PROD_ENV;
 // Define the async thunk to fetch data
 export const login = createAsyncThunk(
   "auth/login",
@@ -14,7 +14,7 @@ export const login = createAsyncThunk(
       await new Promise((resolve) => setTimeout(resolve, 3000));
 
       const response = await axios.post(
-        "https://services-uk8v.onrender.com/api/login",
+        `${apiUrl}/api/login`,
         {
           username: values.username,
           password: values.password,
