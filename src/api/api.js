@@ -5,7 +5,7 @@ import {
 import axios from "axios";
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import api from "./apiConfigurations";
-
+const apiUrl = process.env.REACT_APP_ENV;
 // Define the async thunk to fetch data
 // export const savePateint = createAsyncThunk(
 //   "api/savePateint",
@@ -39,7 +39,7 @@ export const savePateint = createAsyncThunk(
   async ({ values, history }, { rejectWithValue }) => {
     try {
       const response = await api.post(
-        "https://services-uk8v.onrender.com/api/createNewEntry",
+        `${apiUrl}/api/createNewEntry`,
         {
           data: values,
         }
@@ -66,7 +66,7 @@ export const updatePateint = createAsyncThunk(
   async ({values,history}, { rejectWithValue }) => {
     try {
       const response = await api.put(
-        "https://services-uk8v.onrender.com/api/updateNewEntry",
+       `${apiUrl}/api/updateNewEntry`,
         {
           data: values
         }
@@ -91,7 +91,7 @@ export const getAllPateints = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await api.get(
-        `https://services-uk8v.onrender.com/api/getAllPateints`
+        `${apiUrl}/api/getAllPateints`
       );
     
       console.log(response)
@@ -111,7 +111,7 @@ export const saveBill = createAsyncThunk(
     try {
       console.log(billData);
       const response = await api.post(
-        "https://services-uk8v.onrender.com/api/createNewBill",
+        `${apiUrl}/api/createNewBill`,
         billData
       );
 
@@ -136,7 +136,7 @@ export const getAllBills = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await api.get(
-        `https://services-uk8v.onrender.com/api/getAllBills`
+        `${apiUrl}api/getAllBills`
       );
     
       console.log(response)
