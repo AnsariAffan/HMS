@@ -23,6 +23,6 @@ router.get("/getAllPateints", authMiddleware,getAllPateints);
 router.put("/updatePateint/:id", authMiddleware, updatePateint);
 router.post("/createNewBill",authMiddleware,createBillingEntry);
 router.get("/getAllBills", authMiddleware,getAllBills);
-router.put("/updateBill/:id", authMiddleware,updateBillingEntry);
+router.put("/updateBill", authMiddleware,updateBillingEntry);
 
 module.exports = router;
