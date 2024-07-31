@@ -19,7 +19,7 @@ import jsPDF from "jspdf";
 import "jspdf-autotable";
 import "./BillingForm.css";
 import PDFgenerator from "../Utilities/PDFgenerator";
-import { getAllBills, getAllPateints, saveBill } from "../api/api";
+import { getAllBills, getAllPateints, saveBill, updateBill } from "../api/api";
 import { FileTextTwoTone } from "@ant-design/icons";
 import { useParams,Link ,useHistory} from "react-router-dom/cjs/react-router-dom.min";
 import moment from "moment";
@@ -30,12 +30,11 @@ const BillingForm = () => {
   console.log(id);
   const [form] = Form.useForm();
   const [data, setData] = useState([]);
+  const [billEdit, setbillEdit] = useState("");
   const [editingKey, setEditingKey] = useState("");
   const [totalAmount, setTotalAmount] = useState(0);
-  const [patientDetails, setPatientDetails] = useState({
-    patientId: "",
-    FIRST_NAME: "",
-  });
+  const [patientBillData ,setpatientBillData]=useState()
+ 
 
 const history = useHistory()
 
@@ -45,13 +44,10 @@ console.log(id);
     (state) => state.products
   );
 
-
-  const [billHeader,setBillheader] = useState()
+// console.log(BillDetails?.data);
+  const [billHeader,setBillheader] = useState({})
 const [billtable,setbilltable] = useState()
-  useEffect(() => {
-    dispatch(getAllPateints());
-    dispatch(getAllBills());
-  }, [dispatch]);
+
 
   useEffect(() => {
     calculateTotalAmount();
@@ -60,9 +56,46 @@ const [billtable,setbilltable] = useState()
   useEffect(() => {
     form.setFieldsValue({
       totalBillAmount: totalAmount,
-      ...patientDetails,
+     
     });
-  }, [totalAmount, patientDetails]);
+  }, [totalAmount]);
+
+  useEffect(() => {
+    dispatch(getAllBills());
+  }, [dispatch]);
+
+
+  useEffect(() => {
+    if (id && BillDetails?.data) {
+      const billData = Array.isArray(BillDetails?.data) ? BillDetails.data.find((bill) => bill?.patient_id === id) : null;
+
+      setpatientBillData(billData)
+     console.log(billData);
+      if (billData) {
+        setBillheader(billData.headerData || {});
+        setbilltable(billData.tableData || []);
+        form.setFieldsValue({
+          // ...billData.headerData,
+           patient_id: billData.patient_id,
+      // PaymentDueDate: billData.PaymentDueDate ,
+      // billDate: billData.billDate,
+      Tax: billData.Tax,
+      totalBillAmount: totalAmount,
+      FIRST_NAME: billData.FIRST_NAME,
+      Contact_Number:billData.Contact_Number
+
+        });
+        setData(billData?.lineItems || []);
+        calculateTotalAmount();
+      }
+    }
+  }, [id, BillDetails, form,dispatch]);
+
+  useEffect(() => {
+    // console.log('BillDetails?.data:', BillDetails?.data);
+  }, [BillDetails]);
+
+
 
 
   //defualting Login on bill screen from patient table
@@ -78,21 +111,58 @@ const [billtable,setbilltable] = useState()
     setEditingKey("");
   };
 
+  const handleGenerateBill = () => {
+   
+  };
+
+  const handleDelete = (key) => {
+    const newData = data.filter((item) => item.key !== key);
+    setData(newData);
+  };
+  const handleAdd = () => {
+    const newRow = {
+      key: data.length + 1,
+      srNo: data.length + 1,
+      qty: "",
+      amount: "",
+      discount: "",
+      netAmount: "",
+      itemName: [],
+    };
+    setData([...data, newRow]);
+    setEditingKey(newRow.key);
+    form.resetFields(['qty', 'amount', 'discount', 'netAmount', 'itemName']); // Reset only row fields
+  };
+  
+
+  const calculateTotalAmount = () => {
+    let total = 0;
+    data.forEach((item) => {
+      total += parseFloat(item.netAmount) || 0;
+    });
+    setTotalAmount(total);
+  };
 
   const saveHeaderData = () => {
     const headerData = {
-      PaymentDueDate: form.getFieldValue("PaymentDueDate"),
+      patient_id: id,
+      PaymentDueDate: form.getFieldValue("PaymentDueDate") ,
       billDate: form.getFieldValue("billDate"),
       Tax: form.getFieldValue("Tax"),
       totalBillAmount: totalAmount,
-      patient_id:  patientDetails.patientId,
-      FIRST_NAME: patientDetails.FIRST_NAME,
-      Contact_Number: patientDetails.Contact_Number,
-};
-  
+      FIRST_NAME: form.getFieldValue("FIRST_NAME"),
+      Contact_Number: form.getFieldValue("Contact_Number"),
+    };
     setBillheader(headerData);
     console.log("Header Data:", headerData);
+    return headerData;
   };
+
+  // useEffect(()=>{
+  //   saveHeaderData()
+  // },[dispatch])
+  
+
 
   
   const saveTableData = async (key) => {
@@ -127,118 +197,53 @@ const [billtable,setbilltable] = useState()
     }
   };
 
+  //below is working
 
-  useEffect(() => {
-    dispatch(getAllPateints());
-    dispatch(getAllBills());
+  // const handleSaveBill = async () => {
+  //   try {
+  //     const headerData = saveHeaderData();
+  //     await saveTableData(editingKey);
+  //     dispatch(saveBill({ headerData: headerData, tableData: billtable }));
+  //     message.success("Bill saved successfully.");
+  //   } catch (err) {
+  //     console("Failed to save bill:", err);
+  //     message("Failed to save bill.");
+  //   }
+  // };
+
+
+  // useEffect(()=>{
+  //   if(id && )
+  //   handleSaveBill()
+  // },[id])
   
-    if (allPateint && allPateint.data && id) {
-      const patientData = allPateint.data?.find((patient) => patient?._id === id);
-      const BillData = BillDetails.data?.find((bill) => bill.patient_id === id);
-      console.log(BillData);
-      if (patientData) {
-        const contactNumber = form.getFieldValue("Contact_Number") || patientData.Contact_Number          // Bill_ID: BillData?._id,
-
-        //defaulting login on tabe data save /row data save
-        setPatientDetails({
-          patientId: patientData?._id,
-          FIRST_NAME: patientData?.First_Name,
-          Contact_Number: contactNumber,
-          Bill_ID: BillData?._id,
-          //  Tax:BillData?.Tax
-          // add other fields if necessary
-        });
-
-
-        //defaulting logic on screen after save
-        form.setFieldsValue({
-          FIRST_NAME: patientData.First_Name,
-          Contact_Number: patientData.Contact_Numbe ,
-          Tax:BillData?.Tax,
+  const handleSaveBill = async () => {
+  
+      const headerData = saveHeaderData();
+      await saveTableData(editingKey);
+  //     console.log("headerData");
+  // console.log(headerData);
+      if (id && patientBillData ) {
+        // Update existing bill
+     dispatch(updateBill({
        
-
-        });
-
-        setData(BillData?.lineItems || []);
+          headerData: {...headerData,_id:patientBillData._id},
+          tableData: billtable
+        }));
+        console.log("Bill updated successfully.");
+        message.success("Bill updated successfully.");
+      } else {
+        // Add new bill
+        dispatch(saveBill({
+          headerData: headerData,
+          tableData: billtable
+        }));
+        console.log("Bill added successfully.");
+        message.success("Bill added successfully.");
       }
-    }
-  }, [dispatch, id]);
-
-
-
-
     
-  const [shouldDispatch, setShouldDispatch] = useState(false); // Track if we should dispatch
-  // Effect to handle dispatching
-  useEffect(() => {
-    if (shouldDispatch && billHeader && billtable.length > 0) {
-      console.log("Dispatching Bill Data:", { headerData: billHeader, tableData: billtable });
-      dispatch(saveBill({ headerData: billHeader, tableData: billtable }));
-      message.success("Bill added successfully");
-      setShouldDispatch(false); // Reset flag after dispatch
-    }
-  }, [shouldDispatch, billHeader, billtable, dispatch]);
-
-  const handleSaveBill = async (key) => {
-    saveHeaderData();
-    await saveTableData(key);
-    setShouldDispatch(true); // Trigger dispatch via effect
   };
-
-
-  const handleGenerateBill = () => {
-    const headerData = {
-      Bill_ID: form.getFieldValue("Bill_ID"),
-      PaymentDueDate: form.getFieldValue("PaymentDueDate"),
-      billDate: form.getFieldValue("billDate"),
-      totalBillAmount: totalAmount,
-      patient_id: patientDetails.patientId,
-      FIRST_NAME: patientDetails.FIRST_NAME,
-      
-    };
-
-    const billingDetails = data.map((item) => ({
-      srNo: item.srNo,
-      qty: item.qty,
-      amount: item.amount,
-      discount: item.discount,
-      netAmount: item.netAmount,
-      itemName: item.itemName,
-    }));
-
-    PDFgenerator(headerData, data, billingDetails, totalAmount);
-  };
-
-  const handleDelete = (key) => {
-    const newData = data.filter((item) => item.key !== key);
-    setData(newData);
-  };
-
-  const handleAdd = () => {
-    const newRow = {
-      key: data.length + 1,
-      srNo: data.length + 1,
-      qty: "",
-      amount: "",
-      discount: "",
-      netAmount: "",
-      itemName: [],
-    };
-    setData([...data, newRow]);
-    setEditingKey(newRow.key);
-    form.resetFields(['qty', 'amount', 'discount', 'netAmount', 'itemName']); // Reset only row fields
-  };
-
-  const calculateTotalAmount = () => {
-    let total = 0;
-    data.forEach((item) => {
-      total += parseFloat(item.netAmount) || 0;
-    });
-    setTotalAmount(total);
-  };
-
-
-
+  
 
 
   const columns = [
@@ -393,17 +398,17 @@ const [billtable,setbilltable] = useState()
         <flex style={{ display: "flex" }}>
           <FileTextTwoTone style={{ fontSize: "20px" }} />
           <h2 style={{ paddingLeft: "10px" }}>
-            {id || patientDetails.patientId ? "Edit Bill" : "New Bill"}
+           New Bill
           </h2>
         </flex>
-        <Link to={`/pateint/${patientDetails.patientId}`} style={{padding: "20px"}}>{patientDetails.patientId}</Link>
+        <Link to="" style={{padding: "20px"}}>Test Data </Link>
         </flex>
         <Form form={form} layout="vertical">
           <Row gutter={16}>
             <Col span={6}>
               <Form.Item label="Bill ID" name="Bill_ID">
                 <Input
-                  disabled
+                
                   style={{ width: "100%" }}
                   placeholder="Bill ID"
                 />
@@ -412,7 +417,7 @@ const [billtable,setbilltable] = useState()
             <Col span={6}>
               <Form.Item label="Contact Number" name="Contact_Number">
                 <Input style={{ width: "100%" }} placeholder="Contact Number" 
-              value={patientDetails.Contact_Number}
+   
                  
                 />
               </Form.Item>
@@ -430,7 +435,7 @@ const [billtable,setbilltable] = useState()
 
             <Col span={6}>
             <Form.Item label="Patient" name="FIRST_NAME" >
-            <Input disabled={true} style={{ width: "100%" }} placeholder="Patient" />
+            <Input  style={{ width: "100%" }} placeholder="Patient" />
             </Form.Item>
           </Col>
            

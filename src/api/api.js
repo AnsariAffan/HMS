@@ -150,6 +150,28 @@ export const getAllBills = createAsyncThunk(
   }
 );
 
+export const updateBill = createAsyncThunk(
+  "api/updateBills",
+  async (billData, { rejectWithValue }) => {
+    try {
+      const response = await api.put(
+        `https://services-uk8v.onrender.com/api/updateBill`,
+        billData
+       
+      );
+    
+      console.log(response)
+     
+      return response;
+      
+    } catch (error) {
+      console.error("Get all patients error:", error);
+      return rejectWithValue(error.response ? error.response.data : error.message);
+    }
+  }
+);
+
+
 // Define the slice of the store
 export const pateintSlice = createSlice({
   name: "products",
