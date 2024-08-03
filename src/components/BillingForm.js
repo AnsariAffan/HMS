@@ -129,10 +129,7 @@ const [billtable,setbilltable] = useState()
    
   };
 
-  const handleDelete = (key) => {
-    const newData = data.filter((item) => item.key !== key);
-    setData(newData);
-  };
+
   const handleAdd = () => {
     const newRow = {
       key: data.length + 1,
@@ -146,6 +143,29 @@ const [billtable,setbilltable] = useState()
     setData([...data, newRow]);
     setEditingKey(newRow.key);
     form.resetFields(['qty', 'amount', 'discount', 'netAmount', 'itemName']); // Reset only row fields
+  };
+
+  const handleDelete = (key) => {
+    // Remove the item from the local state
+    const newData = data.filter((item) => item.key !== key);
+    setData(newData);
+  
+    // Update the table data state
+    const formattedTableData = newData.map((item) => ({
+      key: item.key,
+      srNo: item.srNo,
+      qty: item.qty,
+      amount: item.amount,
+      discount: item.discount,
+      netAmount: item.netAmount,
+      itemName: item.itemName,
+    }));
+    
+    setbilltable(formattedTableData);
+    console.log("Table Data after delete:", formattedTableData);
+  
+    // Optionally, you can show a success message
+    message.success("Item deleted successfully.");
   };
   
 
