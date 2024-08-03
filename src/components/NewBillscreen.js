@@ -37,17 +37,17 @@ const NewBillscreen = () => {
 const [patientDetail ,setpatientDetail] = useState()
 
 
-
+console.log(patientDetail);
 
 const history = useHistory()
 
-console.log(id);
+
   const dispatch = useDispatch();
   const { allPateint, isLoading, BillDetails } = useSelector(
     (state) => state.products
   );
 
-console.log(BillDetails.data);
+
   const [billHeader,setBillheader] = useState({})
 const [billtable,setbilltable] = useState()
 
@@ -70,6 +70,7 @@ const [billtable,setbilltable] = useState()
 
   }, [dispatch]);
 
+ 
 
 
   useEffect(() => {
@@ -97,7 +98,7 @@ console.log(pid);
         calculateTotalAmount();
       }
     }
-  }, [id, BillDetails, form,dispatch]);
+  }, [id, BillDetails,dispatch]);
 
   useEffect(() => {
     // console.log('BillDetails?.data:', BillDetails?.data);
@@ -163,12 +164,12 @@ console.log(pid);
       totalBillAmount: totalAmount,
       // FIRST_NAME:form.setFieldValue("FIRST_NAME"),
       FIRST_NAME:   form.setFieldsValue({
-        FIRST_NAME: patientData.First_Name
+        FIRST_NAME: patientDetail?.First_Name
      
       }),
       // Contact_Number: form.getFieldValue("Contact_Number"),
       Contact_Number:   form.setFieldsValue({
-        Contact_Number: patientData.Contact_Number 
+        Contact_Number: patientDetail?.Contact_Number 
      
       })
     };
@@ -220,6 +221,26 @@ console.log(pid);
   },[id && patientBillData])
   
 
+ 
+
+  useEffect(() => {
+    if (BillDetails?.data && allPateint?.data) {
+      // Extract patient IDs from BillDetails.data
+      const patientIdsFromBills = BillDetails.data.map(bill => bill.patient_id);
+  
+      // Find the first patient from allPateint.data with an ID in patientIdsFromBills
+      const patient = allPateint.data.find(patient =>
+        patientIdsFromBills.includes(patient._id)
+      );
+  
+      console.log('Found Patient:', patient);
+      setpatientDetail(patient)
+      // If you need to do something specific with the patient, you can add that logic here
+    }
+  }, [BillDetails?.data, allPateint?.data]);
+  
+  
+  
    const handleSaveBill = async () => {
   
       const headerData = saveHeaderData();
@@ -406,7 +427,7 @@ console.log(pid);
            New Bill
           </h2>
         </flex>
-        <Link to="" style={{padding: "20px"}}>{patientBillData?.patient_id}</Link>
+        <Link to="" style={{padding: "20px"}}>{patientDetail?._id}</Link>
         </flex>
         <Form form={form} layout="vertical">
           <Row gutter={16}>
