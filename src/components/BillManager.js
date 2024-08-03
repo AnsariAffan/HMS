@@ -149,10 +149,12 @@ const BillManager = () => {
       // Create a map of patient IDs to names
       const patientNameMap = new Map();
       allPateint.data.forEach(patient => {
-        patientNameMap.set(patient._id, patient.First_Name);
+        if (patient._id && patient.First_Name) {
+          patientNameMap.set(patient._id, patient.First_Name);
+        }
       });
   
-      // Update BillDetails with patient names
+      // Update BillDetails with patient names and filter based on searchText
       const updatedBillDetails = BillDetails.data
         .map(bill => ({
           ...bill,
@@ -176,6 +178,7 @@ const BillManager = () => {
       setNameFilters(nameFilterOptions);
     }
   }, [BillDetails, allPateint, searchText]);
+  
 
   const columns = [
    
