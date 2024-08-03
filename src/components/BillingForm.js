@@ -95,7 +95,7 @@ const [billtable,setbilltable] = useState()
       Bill_ID: billData._id,
       Tax: billData.Tax,
       totalBillAmount: totalAmount,
-      FIRST_NAME: billData.FIRST_NAME,
+      FIRST_NAME: billData.First_Name,
       Contact_Number:billData.Contact_Number
 
         });
@@ -157,33 +157,63 @@ const [billtable,setbilltable] = useState()
     setTotalAmount(total);
   };
 
+  // const saveHeaderData = () => {
+  //   const patientData = allPateint?.data?.find((patient) => patient?._id === id);
+  //   const headerData = {
+   
+   
+  //     patient_id: id,
+  //     PaymentDueDate: form.getFieldValue("PaymentDueDate") ,
+  //     billDate: form.getFieldValue("billDate"),
+  //     Tax: form.getFieldValue("Tax"),
+  //     totalBillAmount: totalAmount,
+
+  //      FIRST_NAME:   form.setFieldsValue({
+  //       FIRST_NAME: patientData.First_Name
+     
+  //     }),
+    
+  //     // Contact_Number: form.getFieldValue("Contact_Number"),
+  //     Contact_Number:   form.setFieldsValue({
+  //       Contact_Number: patientData.Contact_Number 
+     
+  //     })
+  //   };
+
+    
+   
+  //   setBillheader(headerData);
+  //   console.log("Header Data:", headerData);
+  //   return headerData;
+  // };
+
   const saveHeaderData = () => {
-    const patientData = allPateint.data.find((patient) => patient._id === id);
-    const headerData = {
-   
-   
-      patient_id: id,
-      PaymentDueDate: form.getFieldValue("PaymentDueDate") ,
-      billDate: form.getFieldValue("billDate"),
-      Tax: form.getFieldValue("Tax"),
-      totalBillAmount: totalAmount,
-      // FIRST_NAME:form.setFieldValue("FIRST_NAME"),
-      FIRST_NAME:   form.setFieldsValue({
-        FIRST_NAME: patientData.First_Name
-     
-      }),
-      // Contact_Number: form.getFieldValue("Contact_Number"),
-      Contact_Number:   form.setFieldsValue({
-        Contact_Number: patientData.Contact_Number 
-     
-      })
-    };
-    setBillheader(headerData);
-    console.log("Header Data:", headerData);
-    return headerData;
+      const patientData = allPateint?.data?.find((patient) => patient?._id === id);
+
+       // Default the form fields if needed
+  form.setFieldsValue({
+    FIRST_NAME: patientData.First_Name,
+    Contact_Number: patientData.Contact_Number,
+  });
+
+console.log(patientData);
+  const headerData = {
+    patient_id: id,
+    PaymentDueDate: form.getFieldValue("PaymentDueDate"),
+    billDate: form.getFieldValue("billDate"),
+    Tax: form.getFieldValue("Tax"),
+    totalBillAmount: totalAmount,
+    FIRST_NAME: patientData.First_Name,// Directly assign patient data
+    Contact_Number: patientData.Contact_Number // Directly assign patient data
   };
 
+  // Set bill header data
+  setBillheader(headerData);
+  console.log("Header Data:", headerData);
 
+  // Return header data
+  return headerData;
+};
 
 
   
