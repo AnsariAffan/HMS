@@ -34,7 +34,8 @@ const BillingForm = () => {
   const [editingKey, setEditingKey] = useState("");
   const [totalAmount, setTotalAmount] = useState(0);
   const [patientBillData ,setpatientBillData]=useState()
- 
+const [patientDetail ,setpatientDetail] = useState()
+
 
 const history = useHistory()
 
@@ -64,11 +65,23 @@ const [billtable,setbilltable] = useState()
     dispatch(getAllBills());
   }, [dispatch]);
 
+  // useEffect(() => {
+  //   if (allPateint && allPateint.data && id) {
+  //     const patientData = allPateint.data.find((patient) => patient._id === id);
+  //     if (patientData) {
+  //   console.log(patientData);
+  //       form.setFieldsValue({
+  //         FIRST_NAME: patientData.First_Name
+       
+  //       });
+  //     }
+  //   }
+  // }, [id, allPateint, form]);
 
   useEffect(() => {
     if (id && BillDetails?.data) {
       const billData = Array.isArray(BillDetails?.data) ? BillDetails.data.find((bill) => bill?.patient_id === id) : null;
-
+    
       setpatientBillData(billData)
      console.log(billData);
       if (billData) {
@@ -144,24 +157,30 @@ const [billtable,setbilltable] = useState()
   };
 
   const saveHeaderData = () => {
+    const patientData = allPateint.data.find((patient) => patient._id === id);
     const headerData = {
       patient_id: id,
       PaymentDueDate: form.getFieldValue("PaymentDueDate") ,
       billDate: form.getFieldValue("billDate"),
       Tax: form.getFieldValue("Tax"),
       totalBillAmount: totalAmount,
-      FIRST_NAME: form.getFieldValue("FIRST_NAME"),
-      Contact_Number: form.getFieldValue("Contact_Number"),
+      // FIRST_NAME:form.setFieldValue("FIRST_NAME"),
+      FIRST_NAME:   form.setFieldsValue({
+        FIRST_NAME: patientData.First_Name
+     
+      }),
+      // Contact_Number: form.getFieldValue("Contact_Number"),
+      Contact_Number:   form.setFieldsValue({
+        Contact_Number: patientData.Contact_Number 
+     
+      })
     };
     setBillheader(headerData);
     console.log("Header Data:", headerData);
     return headerData;
   };
 
-  // useEffect(()=>{
-  //   saveHeaderData()
-  // },[dispatch])
-  
+
 
 
   
@@ -191,44 +210,33 @@ const [billtable,setbilltable] = useState()
       }));
   
       setbilltable(formattedTableData);
+     
       console.log("Table Data:", formattedTableData);
     } catch (errInfo) {
       console.log("Validate Failed:", errInfo);
     }
   };
 
-  //below is working
-
-  // const handleSaveBill = async () => {
-  //   try {
-  //     const headerData = saveHeaderData();
-  //     await saveTableData(editingKey);
-  //     dispatch(saveBill({ headerData: headerData, tableData: billtable }));
-  //     message.success("Bill saved successfully.");
-  //   } catch (err) {
-  //     console("Failed to save bill:", err);
-  //     message("Failed to save bill.");
-  //   }
-  // };
-
-
-  // useEffect(()=>{
-  //   if(id && )
-  //   handleSaveBill()
-  // },[id])
+  useEffect(()=>{
+    saveHeaderData();
+     saveTableData(editingKey);
+  },[id && patientBillData])
   
-  const handleSaveBill = async () => {
+
+   const handleSaveBill = async () => {
   
       const headerData = saveHeaderData();
       await saveTableData(editingKey);
+      form.getFieldValue(['qty', 'amount', 'discount', 'netAmount', 'itemName']); 
   //     console.log("headerData");
   // console.log(headerData);
       if (id && patientBillData ) {
         // Update existing bill
+    
      dispatch(updateBill({
        
           headerData: {...headerData,_id:patientBillData._id},
-          tableData: billtable
+          tableData:billtable
         }));
         console.log("Bill updated successfully.");
         message.success("Bill updated successfully.");
@@ -435,7 +443,7 @@ const [billtable,setbilltable] = useState()
 
             <Col span={6}>
             <Form.Item label="Patient" name="FIRST_NAME" >
-            <Input  style={{ width: "100%" }} placeholder="Patient" />
+            <Input disabled style={{ width: "100%" }} placeholder="Patient" />
             </Form.Item>
           </Col>
            
