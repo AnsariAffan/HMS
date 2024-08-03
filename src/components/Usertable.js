@@ -158,10 +158,14 @@ const Usertable = () => {
     }
   }, [allPateint, searchText]);
 
+
+  //column filter
   const allPatientData = allPateint?.data;
-  const uniqueNames = allPatientData && Array.isArray(allPatientData) ? [...new Set(allPatientData.map((patient) => patient.FIRST_NAME))] : [];
-  
+  const uniqueNames = allPatientData && Array.isArray(allPatientData) ? [...new Set(allPatientData.map((patient) => patient.First_Name))] : [];
+  const uniqueDate = allPatientData && Array.isArray(allPatientData) ? [...new Set(allPatientData.map((patient) => patient.createdAt))] : [];
+
   const nameFilters = uniqueNames.map((name) => ({ text: name, value: name }));
+  const dateFilters = uniqueDate.map((name) => ({ text: name, value: name }));
 
   const columns = [
     {
@@ -177,7 +181,7 @@ const Usertable = () => {
       dataIndex: "First_Name",
       key: "FIRST_NAME",
       filters: nameFilters,
-      onFilter: (value, record) => record.FIRST_NAME === value,
+      onFilter: (value, record) => record.First_Name === value,
       
     },
     
@@ -185,6 +189,7 @@ const Usertable = () => {
       title: "Phone Number",
       dataIndex: "Contact_Number",
       key: "HOME_PHONE",
+     
     },
     {
       title: "Gender",
@@ -225,6 +230,7 @@ const Usertable = () => {
       title: "Created At",
       dataIndex: "createdAt",
       key: "createdAt",
+      filters:dateFilters,
       defaultSortOrder: 'descend', // Sort by latest created date
       render: (createdAt) => moment(createdAt).format("YYYY-MM-DD HH:mm:ss"), // Format date with time
       sorter: (a, b) => moment(a.createdAt).unix() - moment(b.createdAt).unix(), // Custom sorter function
