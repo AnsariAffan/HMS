@@ -25,7 +25,7 @@ import { useParams,Link ,useHistory} from "react-router-dom/cjs/react-router-dom
 import moment from "moment";
 const { Option } = Select;
 
-const BillingForm = () => {
+const NewBillscreen = () => {
   const {id} = useParams();
   console.log(id);
   const [form] = Form.useForm();
@@ -34,8 +34,10 @@ const BillingForm = () => {
   const [editingKey, setEditingKey] = useState("");
   const [totalAmount, setTotalAmount] = useState(0);
   const [patientBillData ,setpatientBillData]=useState()
+const [patientDetail ,setpatientDetail] = useState()
 
- 
+
+
 
 const history = useHistory()
 
@@ -45,7 +47,7 @@ console.log(id);
     (state) => state.products
   );
 
-// console.log(BillDetails?.data);
+console.log(BillDetails.data);
   const [billHeader,setBillheader] = useState({})
 const [billtable,setbilltable] = useState()
 
@@ -63,15 +65,19 @@ const [billtable,setbilltable] = useState()
 
   useEffect(() => {
     dispatch(getAllBills());
+    dispatch(getAllPateints())
+
+
   }, [dispatch]);
+
 
 
   useEffect(() => {
     if (id && BillDetails?.data) {
-      const billData = Array.isArray(BillDetails?.data) ? BillDetails.data.find((bill) => bill?.patient_id === id) : null;
-
+      const billData = Array.isArray(BillDetails?.data) ? BillDetails.data.find((bill) => bill?._id === id) : null;
+      const pid = Array.isArray(allPateint?.data) ? allPateint.data.find((bill) => bill?._id === BillDetails.patient_id) : null;
       setpatientBillData(billData)
-     console.log(billData);
+console.log(pid);
       if (billData) {
         setBillheader(billData.headerData || {});
         setbilltable(billData.tableData || []);
@@ -80,6 +86,7 @@ const [billtable,setbilltable] = useState()
            patient_id: billData.patient_id,
       // PaymentDueDate: billData.PaymentDueDate ,
       // billDate: billData.billDate,
+      Bill_ID: billData._id,
       Tax: billData.Tax,
       totalBillAmount: totalAmount,
       FIRST_NAME: billData.FIRST_NAME,
@@ -145,24 +152,32 @@ const [billtable,setbilltable] = useState()
   };
 
   const saveHeaderData = () => {
+    const patientData = BillDetails.data.find((patient) => patient._id === id);
     const headerData = {
+   
+   
       patient_id: id,
       PaymentDueDate: form.getFieldValue("PaymentDueDate") ,
       billDate: form.getFieldValue("billDate"),
       Tax: form.getFieldValue("Tax"),
       totalBillAmount: totalAmount,
-      FIRST_NAME: form.getFieldValue("FIRST_NAME"),
-      Contact_Number: form.getFieldValue("Contact_Number"),
+      // FIRST_NAME:form.setFieldValue("FIRST_NAME"),
+      FIRST_NAME:   form.setFieldsValue({
+        FIRST_NAME: patientData.First_Name
+     
+      }),
+      // Contact_Number: form.getFieldValue("Contact_Number"),
+      Contact_Number:   form.setFieldsValue({
+        Contact_Number: patientData.Contact_Number 
+     
+      })
     };
     setBillheader(headerData);
     console.log("Header Data:", headerData);
     return headerData;
   };
 
-  // useEffect(()=>{
-  //   saveHeaderData()
-  // },[dispatch])
-  
+
 
 
   
@@ -203,6 +218,7 @@ const [billtable,setbilltable] = useState()
     saveHeaderData();
      saveTableData(editingKey);
   },[id && patientBillData])
+  
 
    const handleSaveBill = async () => {
   
@@ -216,7 +232,7 @@ const [billtable,setbilltable] = useState()
     
      dispatch(updateBill({
        
-          headerData: {...headerData,_id:patientBillData._id},
+          headerData: {...headerData,_id:patientBillData._id,patient_id:patientBillData?.patient_id},
           tableData:billtable
         }));
         console.log("Bill updated successfully.");
@@ -390,14 +406,14 @@ const [billtable,setbilltable] = useState()
            New Bill
           </h2>
         </flex>
-        <Link to="" style={{padding: "20px"}}>Test Data </Link>
+        <Link to="" style={{padding: "20px"}}>{patientBillData?.patient_id}</Link>
         </flex>
         <Form form={form} layout="vertical">
           <Row gutter={16}>
             <Col span={6}>
               <Form.Item label="Bill ID" name="Bill_ID">
                 <Input
-                
+                disabled
                   style={{ width: "100%" }}
                   placeholder="Bill ID"
                 />
@@ -424,7 +440,7 @@ const [billtable,setbilltable] = useState()
 
             <Col span={6}>
             <Form.Item label="Patient" name="FIRST_NAME" >
-            <Input  style={{ width: "100%" }} placeholder="Patient" />
+            <Input disabled style={{ width: "100%" }} placeholder="Patient" />
             </Form.Item>
           </Col>
            
@@ -522,4 +538,4 @@ const [billtable,setbilltable] = useState()
   );
 };
 
-export default BillingForm;
+export default NewBillscreen;

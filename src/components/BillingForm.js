@@ -92,6 +92,7 @@ const [billtable,setbilltable] = useState()
            patient_id: billData.patient_id,
       // PaymentDueDate: billData.PaymentDueDate ,
       // billDate: billData.billDate,
+      Bill_ID: billData._id,
       Tax: billData.Tax,
       totalBillAmount: totalAmount,
       FIRST_NAME: billData.FIRST_NAME,
@@ -159,6 +160,8 @@ const [billtable,setbilltable] = useState()
   const saveHeaderData = () => {
     const patientData = allPateint.data.find((patient) => patient._id === id);
     const headerData = {
+   
+   
       patient_id: id,
       PaymentDueDate: form.getFieldValue("PaymentDueDate") ,
       billDate: form.getFieldValue("billDate"),
@@ -416,7 +419,7 @@ const [billtable,setbilltable] = useState()
             <Col span={6}>
               <Form.Item label="Bill ID" name="Bill_ID">
                 <Input
-                
+                disabled
                   style={{ width: "100%" }}
                   placeholder="Bill ID"
                 />

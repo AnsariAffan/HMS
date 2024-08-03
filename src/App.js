@@ -38,7 +38,7 @@ function App() {
             <PrivateRoute path="/billManager" component={BillManager} />
             <PrivateRoute path="/NewBillingForm/:id" component={NewBillscreen} />
             <Route path="/BillingForm" component={BillingForm} />
-            <Route path="/NewBillingForm" component={NewBillscreen} />
+            <Route path="/NewBillingForm" component={BillingForm} />
           </Switch>
           
         </Dashboard>

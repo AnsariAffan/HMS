@@ -125,21 +125,30 @@ const BillManager = () => {
 
   const dispatch = useDispatch();
 
-  const { isLoading,message,BillDetails } = useSelector((state) => state.products);
+  const { isLoading,message,BillDetails,allPateint } = useSelector((state) => state.products);
   const patientCount = BillDetails.data?.length;
   const [searchText, setSearchText] = useState("");
   const [filteredData, setFilteredData] = useState([]);
   const [uniqueNames2, setUniqueNames2] = useState([]);
 
-  console.log(BillDetails)
+  console.log(BillDetails.data)
   
   useEffect(() => {
     dispatch(getAllBills());
+    dispatch(getAllPateints())
   }, [dispatch]);
 
   const handleSearch = (value) => {
     setSearchText(value);
   };
+
+  
+  useEffect(()=>{
+    
+    const pid =  allPateint?.data?.find((bill) => bill?._id === BillDetails?.data?.patient_id)
+console.log(pid);
+
+  },[dispatch])
 
   useEffect(() => {
     if (Array.isArray(BillDetails?.data)) {
@@ -295,11 +304,7 @@ const BillManager = () => {
     </a>
   </Dropdown>  
   <ExportOutlined   style={{fontSize:"20px"}}/>  
-    <Link to="/NewBillingForm" > <Button  style={{ marginBottom: 8, width: "max-content" ,height: "40px"}} type="primary" >
-
-        <FileTextTwoTone style={{fontSize:"20px"}}/>
-        Add Bill
-        </Button></Link>
+   
        
         <DatePicker   style={{ marginBottom: 8, width: "15rem" ,height: "40px"}} defaultValue={moment()} format="YYYY-MM-DD" />
    
