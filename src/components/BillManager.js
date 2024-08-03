@@ -129,57 +129,62 @@ const BillManager = () => {
   const patientCount = BillDetails.data?.length;
   const [searchText, setSearchText] = useState("");
   const [filteredData, setFilteredData] = useState([]);
-  const [uniqueNames2, setUniqueNames2] = useState([]);
 
+  const [uniqueNames2, setUniqueNames] = useState([]);
   console.log(BillDetails.data)
   
   useEffect(() => {
     dispatch(getAllBills());
     dispatch(getAllPateints())
   }, [dispatch]);
-
   const handleSearch = (value) => {
     setSearchText(value);
   };
 
   
-  useEffect(()=>{
-    
-    const pid =  allPateint?.data?.find((bill) => bill?._id === BillDetails?.data?.patient_id)
-console.log(pid);
-
-  },[dispatch])
+  const [nameFilters, setNameFilters] = useState([]);
 
   useEffect(() => {
-    if (Array.isArray(BillDetails?.data)) {
-      const filteredData = BillDetails.data.filter((patient) =>
-        Object.values(patient).some(
-          (value) =>
-            value &&
-            typeof value === "string" &&
-            value.toLowerCase().includes(searchText.toLowerCase())
-        )
-      );
-      setFilteredData(filteredData);
-
-      const uniqueNames = [...new Set(BillDetails.data.map((patient) => patient.FIRST_NAME))];
-      setUniqueNames2(uniqueNames);
-    }
-  }, [BillDetails, searchText]);
-
-  const allPatientData = BillDetails?.data;
-  const uniqueNames = allPatientData && Array.isArray(allPatientData) ? [...new Set(allPatientData.map((patient) => patient.FIRST_NAME))] : [];
+    if (Array.isArray(BillDetails?.data) && Array.isArray(allPateint?.data)) {
+      // Create a map of patient IDs to names
+      const patientNameMap = new Map();
+      allPateint.data.forEach(patient => {
+        patientNameMap.set(patient._id, patient.First_Name);
+      });
   
-  const nameFilters = uniqueNames.map((name) => ({ text: name, value: name }));
+      // Update BillDetails with patient names
+      const updatedBillDetails = BillDetails.data
+        .map(bill => ({
+          ...bill,
+          First_Name: patientNameMap.get(bill.patient_id) || 'Unknown'
+        }))
+        .filter(bill =>
+          Object.values(bill).some(
+            value =>
+              value &&
+              typeof value === 'string' &&
+              value.toLowerCase().includes(searchText.toLowerCase())
+          )
+        );
+  
+      setFilteredData(updatedBillDetails);
+  
+      // Extract unique names for filters
+      const uniqueNames = [...new Set(updatedBillDetails.map(bill => bill.First_Name))];
+      const nameFilterOptions = uniqueNames.map(name => ({ text: name, value: name }));
+  
+      setNameFilters(nameFilterOptions);
+    }
+  }, [BillDetails, allPateint, searchText]);
 
   const columns = [
    
     {
       title: "Name",
-      dataIndex: "FIRST_NAME",
-      key: "FIRST_NAME",
+      dataIndex: "First_Name",
+      key: "First_Name",
       filters: nameFilters,
-      onFilter: (value, record) => record.FIRST_NAME === value,
+      onFilter: (value, record) => record.First_Name === value,
       
     }, {
       title: "Bill ID",
