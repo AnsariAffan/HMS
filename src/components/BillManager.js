@@ -252,6 +252,20 @@ const BillManager = () => {
     window.print();
   };
 
+  const getSumOfBillAmount = () => {
+    const sum = BillDetails?.data?.reduce((accumulator, bill) => {
+      const amount = parseFloat(bill.totalBillAmount) || 0; // Convert string to number
+      return accumulator + amount;
+    }, 0);
+    
+    console.log("Sum of all totalBillAmount entries:", sum);
+    return sum;
+  };
+
+useEffect(()=>{
+  getSumOfBillAmount()
+},[dispatch])
+
   const handleExportToExcel = () => {
     const worksheet = XLSX.utils.json_to_sheet(filteredData);
     const wb = XLSX.utils.book_new();
@@ -386,6 +400,21 @@ const BillManager = () => {
           scroll={{
             y: 310,
           }}
+          footer={() => (
+            <div style={{ display:"flex",    justifyContent: "flex-end"
+              ,textAlign: "right", padding: "4px 0" }}>
+              {/* Example footer content */}
+              <div style={{paddingRight: "26rem"
+
+              }}>
+              <strong>Total Amount: </strong>
+              <span>{getSumOfBillAmount()}</span></div>
+           
+
+              <strong>Total Records: </strong>
+              <span>{filteredData?.length}</span>
+            </div>
+          )}
         />
       </Flex>
   

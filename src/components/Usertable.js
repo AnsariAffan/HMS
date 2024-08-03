@@ -414,8 +414,14 @@ const Usertable = () => {
           scroll={{
             y: 310,
           }}
-          
-        />
+          footer={() => (
+            <div style={{ textAlign: "right", padding: "4px 0" }}>
+              {/* Example footer content */}
+              <strong>Total Records: </strong>
+              <span>{filteredData?.length}</span>
+            </div>
+          )}
+            />
       </Flex>
   
     </div>
