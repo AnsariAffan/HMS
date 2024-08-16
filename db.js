@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 const dbURI = process.env.MONGODB_URI;
 const localURL = process.env.LOCAL_URL
 
-const connectToMongo = mongoose.connect(localURL)
+const connectToMongo = mongoose.connect(dbURI)
     .then(() => {
         console.log(" connection successfull...")
     })
