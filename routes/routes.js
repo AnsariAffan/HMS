@@ -9,6 +9,8 @@ const authMiddleware = require('../middleware/authMiddleware');
 const { createBillingEntry } = require('../controllers/Billing');
 const { getAllBills } = require('../controllers/getAllBills');
 const { updateBillingEntry } = require('../controllers/updateBillingEntry');
+const { getAllDoctors, deleteDoctor, updateDoctor, createDoctor, getDoctorById} = require("../controllers/doctorController");
+const { createAppointment, getAllAppointments } = require('../controllers/Appointment');
 
 
 const router = express.Router();
@@ -25,5 +27,21 @@ router.put("/updatePateint/:id", authMiddleware, updatePateint);
 router.post("/createNewBill",authMiddleware,createBillingEntry);
 router.get("/getAllBills", authMiddleware,getAllBills);
 router.put("/updateBill", authMiddleware,updateBillingEntry);
+
+
+// Get all doctors
+router.get('/getAlldoctors', getAllDoctors);
+
+// Create a new doctor
+router.post('/createDoctors', createDoctor);
+// Update a doctor
+router.put('/updateDoctors/:id', updateDoctor);
+// Delete a doctor
+router.delete('/deleteDoctor/:id', deleteDoctor);
+
+
+//appointment
+router.post('/createAppointment', createAppointment);
+router.get('/getAllAppointments', getAllAppointments);
 
 module.exports = router;
