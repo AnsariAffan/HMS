@@ -312,7 +312,7 @@ export const createpayment = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       // Send the data as is to the backend
-      const response = await axios.post('http://localhost:8000/api/createPayment', data);
+      const response = await axios.post('https://services-uk8v.onrender.com/api/createPayment', data);
       return response.data; // Return the created appointment
     } catch (error) {
       console.error("Error creating appointment:", error);
@@ -343,7 +343,7 @@ export const deletePayment = createAsyncThunk(
   async (id, { rejectWithValue }) => {
     try {
       // Send the data as is to the backend
-      const response = await axios.delete(`http://localhost:8000/api/payments/${id}`);
+      const response = await axios.delete(`https://services-uk8v.onrender.com/api/payments/${id}`);
       return response.data; // Return the created appointment
     } catch (error) {
       console.error("Error creating appointment:", error);
