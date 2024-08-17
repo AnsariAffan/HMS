@@ -42,8 +42,8 @@ const Dashboard = ({ children }) => {
                     <Menu.Item key="Bill Manager" icon={<UsergroupAddOutlined />}>
                         <Link to="/billManager">Bill Manager</Link>
                     </Menu.Item>
-                    <Menu.Item key="Doctors Schedule" icon={<ScheduleOutlined />}>
-                        <Link to="/doctorsSchedule">Doctors Schedule</Link>
+                    <Menu.Item key="Doctors List" icon={<ScheduleOutlined />}>
+                        <Link to="/DoctorTable">Doctors List</Link>
                     </Menu.Item>
                     <Menu.Item key="Appointment" icon={<AppstoreAddOutlined />}>
                         <Link to="/appointment">Appointment</Link>

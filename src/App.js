@@ -18,10 +18,11 @@ import "./components/Dashboard.css";
 import "./components/Usertable.css";
 import "./components/UserDashboard.css";
 import NewBillscreen from "./components/NewBillscreen";
-
-
-
-
+import DoctorTable from "./components/DoctorTable";
+import DoctorForm from "./components/DoctorForm";
+import Appointment from "./components/Appointment";
+import PaymentModal from "./components/PaymentModal";
+import PaymentTable from "./components/PaymentTable";
 
 
 function App() {
@@ -39,6 +40,13 @@ function App() {
             <PrivateRoute path="/NewBillingForm/:id" component={NewBillscreen} />
             <Route path="/BillingForm" component={BillingForm} />
             <Route path="/NewBillingForm" component={BillingForm} />
+            <Route path="/DoctorTable" component={DoctorTable} />
+            <Route path="/DoctorForm" component={DoctorForm} />
+            <Route path="/EditdoctorForm/:id" component={DoctorForm} />
+            <Route path="/Appointment" component={Appointment} />
+            <Route path="/Payment" component={PaymentModal} />
+            <Route path="/Viewpayments" component={PaymentTable} />
+           
           </Switch>
           
         </Dashboard>

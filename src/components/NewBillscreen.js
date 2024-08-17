@@ -10,7 +10,8 @@ import {
   DatePicker,
   Select,
   Flex,
-  message
+  message,
+  FloatButton
 } from "antd";
 import Cascader from 'antd/es/cascader';
 
@@ -23,6 +24,8 @@ import { getAllBills, getAllPateints, saveBill, updateBill } from "../api/api";
 import { FileTextTwoTone } from "@ant-design/icons";
 import { useParams,Link ,useHistory} from "react-router-dom/cjs/react-router-dom.min";
 import moment from "moment";
+import PaymentModal from "./PaymentModal";
+import PaymentTable from "./PaymentTable";
 const { Option } = Select;
 
 const NewBillscreen = () => {
@@ -91,7 +94,13 @@ console.log(pid);
       Tax: billData.Tax,
       totalBillAmount: totalAmount,
       FIRST_NAME: billData.FIRST_NAME,
-      Contact_Number:billData.Contact_Number
+      Contact_Number:billData.Contact_Number,
+      billDate: billData.billDate
+      ? moment(billData.billDate)
+      : null,
+      PaymentDueDate: billData.PaymentDueDate
+      ? moment(billData.PaymentDueDate)
+      : null,
 
         });
         setData(billData?.lineItems || []);
@@ -120,9 +129,6 @@ console.log(pid);
     setEditingKey("");
   };
 
-  const handleGenerateBill = () => {
-   
-  };
 
   const handleDelete = (key) => {
     // Remove the item from the local state
@@ -241,6 +247,28 @@ return headerData;
   },[id && patientBillData])
   
 
+  const handleGenerateBill = () => {
+    const headerData = {
+      Bill_ID: form.getFieldValue("Bill_ID"),
+      PaymentDueDate: form.getFieldValue("PaymentDueDate"),
+      billDate: form.getFieldValue("billDate"),
+      totalBillAmount: totalAmount,
+      patient_id: patientBillData.patientId,
+      FIRST_NAME: patientBillData.FIRST_NAME,
+    };
+
+    const billingDetails = data.map((item) => ({
+      srNo: item.srNo,
+      qty: item.qty,
+      amount: item.amount,
+      discount: item.discount,
+      netAmount: item.netAmount,
+      itemName: item.itemName,
+    }));
+
+    PDFgenerator(headerData, data, billingDetails, totalAmount,patientDetail);
+  };
+
  
 
   useEffect(() => {
@@ -291,7 +319,6 @@ return headerData;
   };
   
 
-
   const columns = [
     {
       title: "Sr.No",
@@ -341,7 +368,7 @@ return headerData;
       render: (_, record) => {
         const editable = isEditing(record);
         return editable ? (
-          <span>
+          <span style={{display:"flex" }}>
             <Button onClick={() => saveTableData(record.key)} type="link">
               Save
             </Button>
@@ -350,7 +377,7 @@ return headerData;
             </Popconfirm>
           </span>
         ) : (
-          <span>
+          <span style={{display:"flex" }}>
             <Button
               disabled={editingKey !== ""}
               onClick={() => edit(record)}
@@ -472,7 +499,7 @@ return headerData;
             <Col span={6}>
               <Form.Item label="Bill Date" name="billDate" >
                 <DatePicker
-              
+             
                   style={{ width: "100%" }}
                   className="custom-input"
                 />
@@ -512,11 +539,29 @@ return headerData;
           </Row>
 
           <Row gutter={16}>
-            <Col span={24}>
-              <Button type="primary" onClick={handleAdd}>
+            <Col span={18}>
+            <Button  
+              // style={{
+
+              //   border: '1px solid black', /* Blank border */
+              //   color: 'black', /* Blank color text */
+              //   backgroundColor: 'white', /* White background */
+              //   // Optional: Add padding or other styling if needed
+              //   padding: '8px 16px',
+              // }}
+              onClick={handleAdd}>
                 Add Row
               </Button>
             </Col>
+            <Col span={3}>
+            <PaymentModal/>
+            
+            </Col>
+            <Col span={3}>
+            <PaymentTable/>
+            </Col>
+          
+            
           </Row>
           <Row gutter={16} style={{ marginTop: 16 }}>
             <Col span={24}>
@@ -566,11 +611,8 @@ return headerData;
                 Save
               </Button>
             </Col>
-            <Col span={4}>
-              <Button type="primary" onClick={handleGenerateBill}>
-                Generate Bill
-              </Button>
-            </Col>
+            
+            <FloatButton  tooltip={<div>Generate Bill</div>}  onClick={handleGenerateBill} />
           </Row>
         </Form>
       </Flex> 

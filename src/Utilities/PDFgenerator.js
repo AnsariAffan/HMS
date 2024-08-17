@@ -2,16 +2,17 @@ import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import { format } from 'date-fns';
 
-const PDFgenerator = (headerData, data,billingDetails, totalAmount ) => {
+const PDFgenerator = (headerData, data,billingDetails, totalAmount,patientDetail,patientBillData ) => {
     
-    console.log(data);
+    console.log(patientDetail);
+    console.log(patientBillData);
     // Sample vendor data
     const vendorData = {
-        vendorName: "Test vendor",
-        vendorAddress: "14/203, Kallakulam, Seenapuram",
-        vendorPinCode: "638057",
-        contactPerson: "Santhosh D",
-        contactPersonMobNo: "8993298712",
+        vendorName: patientDetail.First_Name + " "+ patientDetail.Last_Name,
+        vendorAddress: patientDetail.Permanent_address,
+        // vendorPinCode: "638057",
+        contactPerson: patientDetail.First_Name,
+        contactPersonMobNo: patientDetail.Contact_Number,
     };
 
     // Extract itemsData from billingDetails
@@ -28,7 +29,7 @@ const PDFgenerator = (headerData, data,billingDetails, totalAmount ) => {
 
     // Set document properties
     pdf.setProperties({
-        title: "Request For Quotation"
+        title: "Bill"
     });
 
     // Add images and text to the PDF
@@ -72,7 +73,7 @@ const PDFgenerator = (headerData, data,billingDetails, totalAmount ) => {
     pdf.text(`${vendorData?.vendorName}`, 13, 44);
     pdf.text(`${vendorData?.vendorAddress}`, 13, 48)
     pdf.setFont('times', 'normal');
-    pdf.text(`P.O BOX : ${vendorData?.vendorPinCode}`, 13, 52);
+    // pdf.text(`P.O BOX : ${vendorData?.vendorPinCode}`, 13, 52);
     pdf.setFont('times', 'bold')
     pdf.text('Contact Person', 13, 56)
     pdf.setFont('times', 'normal')

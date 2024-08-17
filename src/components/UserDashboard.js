@@ -19,11 +19,11 @@ const UserDashboard = () => {
 
     
 const data = allPateint.data
-
+console.log(data);
 function countGender() {
     let maleCount = 0;
     let femaleCount = 0;
-    if (!Array.isArray(data)) {
+    if (Array.isArray(data)) {
     data?.forEach(record => {
         if (record.Gender === 'Male') {
             maleCount++;
@@ -61,7 +61,7 @@ countGender()
   
     // Dummy data
     const doctorCount = 17;
-    const patientCount = allPateint.data?.length;
+    const patientCount = allPateint?.data?.length;
     const newBookingCount = 5;
     const todaySessionsCount = 3;
   
@@ -70,7 +70,7 @@ countGender()
     //   { name: 'Female', value: countGender().femaleCount },
     //   { name: 'Male', value: countGender().maleCount },
     // ];
-
+console.log(countGender().femaleCount);
     const pieChartData = [
         { name: 'Female', value: countGender().femaleCount },
         { name: 'Male', value: countGender().maleCount },

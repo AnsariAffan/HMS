@@ -10,7 +10,8 @@ import {
   DatePicker,
   Select,
   Flex,
-  message
+  message,
+  FloatButton
 } from "antd";
 import Cascader from 'antd/es/cascader';
 
@@ -23,6 +24,8 @@ import { getAllBills, getAllPateints, saveBill, updateBill } from "../api/api";
 import { FileTextTwoTone } from "@ant-design/icons";
 import { useParams,Link ,useHistory} from "react-router-dom/cjs/react-router-dom.min";
 import moment from "moment";
+import PaymentModal from "./PaymentModal";
+import PaymentTable from "./PaymentTable";
 const { Option } = Select;
 
 const BillingForm = () => {
@@ -35,7 +38,7 @@ const BillingForm = () => {
   const [totalAmount, setTotalAmount] = useState(0);
   const [patientBillData ,setpatientBillData]=useState()
 const [patientDetail ,setpatientDetail] = useState()
-
+console.log(patientBillData?._id);
 
 const history = useHistory()
 
@@ -96,9 +99,17 @@ const [billtable,setbilltable] = useState()
       Tax: billData.Tax,
       totalBillAmount: totalAmount,
       FIRST_NAME: billData.First_Name,
-      Contact_Number:billData.Contact_Number
+      Contact_Number:billData.Contact_Number,
+      
+      billDate: billData.billDate
+      ? moment(billData.billDate)
+      : null,
+      PaymentDueDate: billData.PaymentDueDate
+      ? moment(billData.PaymentDueDate)
+      : null,
 
         });
+        
         setData(billData?.lineItems || []);
         calculateTotalAmount();
       }
@@ -125,9 +136,6 @@ const [billtable,setbilltable] = useState()
     setEditingKey("");
   };
 
-  const handleGenerateBill = () => {
-   
-  };
 
 
   const handleAdd = () => {
@@ -209,7 +217,7 @@ const [billtable,setbilltable] = useState()
 
   const saveHeaderData = () => {
       const patientData = allPateint?.data?.find((patient) => patient?._id === id);
-
+      setpatientDetail(patientData)
        // Default the form fields if needed
   form.setFieldsValue({
     FIRST_NAME: patientData.First_Name,
@@ -305,6 +313,27 @@ console.log(patientData);
     
   };
   
+  const handleGenerateBill = () => {
+    const headerData = {
+      Bill_ID: form.getFieldValue("Bill_ID"),
+      PaymentDueDate: form.getFieldValue("PaymentDueDate"),
+      billDate: form.getFieldValue("billDate"),
+      totalBillAmount: totalAmount,
+      patient_id: patientBillData.patientId,
+      FIRST_NAME: patientBillData.FIRST_NAME,
+    };
+
+    const billingDetails = data.map((item) => ({
+      srNo: item.srNo,
+      qty: item.qty,
+      amount: item.amount,
+      discount: item.discount,
+      netAmount: item.netAmount,
+      itemName: item.itemName,
+    }));
+
+    PDFgenerator(headerData, data, billingDetails, totalAmount,patientDetail,patientBillData);
+  };
 
 
   const columns = [
@@ -356,7 +385,8 @@ console.log(patientData);
       render: (_, record) => {
         const editable = isEditing(record);
         return editable ? (
-          <span>
+          
+          <span style={{display:"flex" }}>
             <Button onClick={() => saveTableData(record.key)} type="link">
               Save
             </Button>
@@ -365,7 +395,7 @@ console.log(patientData);
             </Popconfirm>
           </span>
         ) : (
-          <span>
+          <span style={{display:"flex" }}>
             <Button
               disabled={editingKey !== ""}
               onClick={() => edit(record)}
@@ -380,6 +410,7 @@ console.log(patientData);
               <Button type="link" danger>
                 Delete
               </Button>
+           
             </Popconfirm>
           </span>
         );
@@ -462,7 +493,7 @@ console.log(patientData);
            New Bill
           </h2>
         </flex>
-        <Link to="" style={{padding: "20px"}}>Test Data </Link>
+        <Link to="" style={{padding: "20px"}}>{patientDetail?._id}</Link>
         </flex>
         <Form form={form} layout="vertical">
           <Row gutter={16}>
@@ -527,11 +558,26 @@ console.log(patientData);
           </Row>
 
           <Row gutter={16}>
-            <Col span={24}>
-              <Button type="primary" onClick={handleAdd}>
+            <Col span={18}>
+              <Button 
+              // style={{
+              //   border: '1px solid black', /* Blank border */
+              //   color: 'black', /* Blank color text */
+              //   backgroundColor: 'white', /* White background */
+              //   // Optional: Add padding or other styling if needed
+              //   padding: '8px 16px',
+              // }}
+              onClick={handleAdd}>
                 Add Row
               </Button>
             </Col>
+            <Col span={3}>
+            <PaymentModal billingId={patientBillData?._id} />
+            </Col>
+            <Col span={3}>
+            <PaymentTable billingId={patientBillData?._id}/>
+            </Col>
+           
           </Row>
           <Row gutter={16} style={{ marginTop: 16 }}>
             <Col span={24}>
@@ -581,11 +627,9 @@ console.log(patientData);
                 Save
               </Button>
             </Col>
-            <Col span={4}>
-              <Button type="primary" onClick={handleGenerateBill}>
-                Generate Bill
-              </Button>
-            </Col>
+            
+            <FloatButton tooltip={<div>Generate Bill</div>}  onClick={handleGenerateBill} />
+
           </Row>
         </Form>
       </Flex> 
