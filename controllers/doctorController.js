@@ -53,11 +53,11 @@ exports.createDoctor = async (req, res) => {
 exports.updateDoctor = async (req, res) => {
   try {
     const { id } = req.params; // Extract ID from URL parameters
-    const { Email, License_Number } = req.body;
+    const { Email } = req.body;
 
     // Check for duplicate Email or License Number, excluding the current record
     const existingDoctor = await Doctor.findOne({
-      $or: [{ Email }, { License_Number }],
+      $or: [{ Email }],
       _id: { $ne: id } // Exclude the current doctor's ID
     });
 

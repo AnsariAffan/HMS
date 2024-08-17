@@ -10,7 +10,8 @@ const { createBillingEntry } = require('../controllers/Billing');
 const { getAllBills } = require('../controllers/getAllBills');
 const { updateBillingEntry } = require('../controllers/updateBillingEntry');
 const { getAllDoctors, deleteDoctor, updateDoctor, createDoctor, getDoctorById} = require("../controllers/doctorController");
-const { createAppointment, getAllAppointments } = require('../controllers/Appointment');
+const { createAppointment, getAllAppointments, deleteAppointment } = require('../controllers/Appointment');
+const { createPayment, getPayments, deletePayment } = require('../controllers/paymentController');
 
 
 const router = express.Router();
@@ -40,8 +41,15 @@ router.put('/updateDoctors/:id', updateDoctor);
 router.delete('/deleteDoctor/:id', deleteDoctor);
 
 
+
 //appointment
 router.post('/createAppointment', createAppointment);
 router.get('/getAllAppointments', getAllAppointments);
+router.get('/deleteAppointment', deleteAppointment);
 
+//payment
+
+router.post('/createPayment', createPayment);
+router.get('/getPayments', getPayments);
+router.delete('/payments/:id',deletePayment);
 module.exports = router;
