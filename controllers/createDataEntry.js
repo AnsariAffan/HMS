@@ -1,5 +1,6 @@
 const NewEntry = require("../models/NewEntry");
-const generateUniqueID = require("../utils/idGenerator");
+const generateUniqueID = require("./CustomeIdGenerator");
+
 
 exports.createNewEntry = async (req, res) => {
   try {
