@@ -3,6 +3,7 @@
 const mongoose = require('mongoose');
 
 const NewEntrySchema = new mongoose.Schema({
+  customId: { type: String, unique: true, required: true }, // Custom ID field
   Ragistration_Date: { type: String },
   First_Name: { type: String },
   Middle_Name: { type: String },
