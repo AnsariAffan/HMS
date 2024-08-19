@@ -46,7 +46,7 @@ router.delete('/deleteDoctor/:id', deleteDoctor);
 router.post('/createAppointment', createAppointment);
 router.get('/getAllAppointments', getAllAppointments);
 router.delete('/deleteAppointment/:id', deleteAppointment);
-router.put('/updateAppointment', updateAppointment);
+router.put('/updateAppointment/:id', updateAppointment);
 
 //payment
 
