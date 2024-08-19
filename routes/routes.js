@@ -10,7 +10,7 @@ const { createBillingEntry } = require('../controllers/Billing');
 const { getAllBills } = require('../controllers/getAllBills');
 const { updateBillingEntry } = require('../controllers/updateBillingEntry');
 const { getAllDoctors, deleteDoctor, updateDoctor, createDoctor, getDoctorById} = require("../controllers/doctorController");
-const { createAppointment, getAllAppointments, deleteAppointment } = require('../controllers/Appointment');
+const { createAppointment, getAllAppointments, deleteAppointment, updateAppointment } = require('../controllers/Appointment');
 const { createPayment, getPayments, deletePayment } = require('../controllers/paymentController');
 
 
@@ -45,7 +45,8 @@ router.delete('/deleteDoctor/:id', deleteDoctor);
 //appointment
 router.post('/createAppointment', createAppointment);
 router.get('/getAllAppointments', getAllAppointments);
-router.get('/deleteAppointment', deleteAppointment);
+router.delete('/deleteAppointment/:id', deleteAppointment);
+router.put('/updateAppointment', updateAppointment);
 
 //payment
 
