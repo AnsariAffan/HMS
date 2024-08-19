@@ -15,7 +15,7 @@ const PaymentModal = ({ billingId }) => {
   const [form] = Form.useForm();
   const [invoiceAmount, setInvoiceAmount] = useState(null);
   const [previousPaymentStatus, setPreviousPaymentStatus] = useState(null);
-  const { payments, BillDetails } = useSelector((state) => state.products);
+  const { payments, BillDetails,isLoading } = useSelector((state) => state.products);
   const [loading, setLoading] = useState(false);
   
   const dispatch = useDispatch();
@@ -96,7 +96,7 @@ const PaymentModal = ({ billingId }) => {
           .then(() => {
             notification.success({
               message: 'Payment Created',
-              description: 'The payment has been successfully created.',
+              description: 'The payment has been created successfully.',
               placement: 'topRight',
             });
             setIsModalOpen(false);
@@ -161,8 +161,9 @@ const PaymentModal = ({ billingId }) => {
         open={isModalOpen} 
         onOk={handleOk} 
         onCancel={handleCancel}
+        loading={isLoading}
       >
-        <Form form={form} layout="vertical" initialValues={{
+        <Form form={form} layout="horizontal" initialValues={{
           invoiceAmount,
           paymentDate: dayjs(),
         }}>

@@ -11,10 +11,11 @@ import {
   Select,
   Modal,
   message,
+  notification,
 } from "antd";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
-import { createAppointment, getAllAppointment, getAllPateints } from "../api/api";
+import { createAppointment, deleteAppointment, getAllAppointment, getAllDoctors, getAllPateints, updateAppointment } from "../api/api";
 
 const { Option } = Select;
 
@@ -25,15 +26,19 @@ const Appointment = () => {
   const [isModalVisible, setIsModalVisible] = React.useState(false);
   const [modalType, setModalType] = React.useState("add"); // "add" or "edit"
   const [currentRecord, setCurrentRecord] = React.useState(null);
-  const { allPateint, isLoading, appointments } = useSelector(
+  const { allPateint,allDoctors, isLoading, appointments } = useSelector(
     (state) => state.products
   );
-  console.log(appointments);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
+    dispatch(getAllDoctors())
     dispatch(getAllAppointment())
+    dispatch(getAllPateints())
   }, [dispatch]);
+
+  
 
   const isEditing = (record) => record.key === editingKey;
 
@@ -51,18 +56,89 @@ const Appointment = () => {
   const cancel = () => {
     setEditingKey("");
   };
-
-  const handleDelete = (key) => {
-    const newData = data.filter((item) => item.key !== key);
-    setData(newData);
-    message.success("Item deleted successfully.");
+  const handleDelete = (record) => {
+    dispatch(deleteAppointment(record._id))
+      .then(() => {
+      
+        // Show success notification
+        notification.error({
+          message: 'Appointment deleted',
+          description: 'Appointment deleted successfully',
+        });  // Fetch the updated appointments list after deletion
+        dispatch(getAllAppointment());
+      })
+      .catch((error) => {
+        // Show success notification
+        notification.error({
+          message: 'Appointment deleted',
+          description: 'Faild deleted successfully',
+        });  // Fetch the updated appointments list after deletion
+      });
   };
-
+  
   const handleAdd = () => {
     form.resetFields();
     setModalType("add");
     setIsModalVisible(true);
   };
+
+//   const handleModalOk = () => {
+//     form
+//       .validateFields()
+//       .then((values) => {
+//         const formattedValues = {
+//           ...values,
+//           scheduledDateTime: values.scheduledDateTime
+//             ? values.scheduledDateTime.format("YYYY-MM-DDTHH:mm:ss") // Adjusted format
+//             : null,
+//         };
+
+//         if (modalType === "add") {
+//           dispatch(createAppointment(formattedValues)) // Send new appointment data
+//             .then(() => {
+//              // Show success notification
+//         notification.success({
+//           message: 'Appointment added',
+//           description: 'Appointment added successfully',
+//         });  // Fetch the updated appointments list after deletion
+//         dispatch(getAllAppointment());
+//               setIsModalVisible(false);
+//               setEditingKey("");
+//             })
+//             .catch((error) => {
+            
+//               // Show success notification
+//         notification.error({
+//           message: 'Appointment added',
+//           description: `Failed to add appointment: ${error.message}`,
+//         });  // Fetch the updated appointments list after deletion
+//         dispatch(getAllAppointment());
+//             });
+//         } else if (modalType === "edit") {
+//           const newData = data.map((item) =>
+//             item.key === currentRecord.key
+//               ? { ...item, ...formattedValues }
+//               : item
+//           );
+//           setData(newData);
+//           console.log(newData);
+// dispatch(updateAppointment(newData))
+       
+//           notification.success({
+//             message: 'Appointment updated',
+//             description: 'Appointment updated successfully',
+//           });
+//           setIsModalVisible(false);
+//           setEditingKey("");
+//           setCurrentRecord(null);
+//         }
+
+//         console.log("Updated Data: ", data); // Log updated data
+//       })
+//       .catch((info) => {
+//         console.log("Validate Failed:", info);
+//       });
+//   };
 
   const handleModalOk = () => {
     form
@@ -74,38 +150,65 @@ const Appointment = () => {
             ? values.scheduledDateTime.format("YYYY-MM-DDTHH:mm:ss") // Adjusted format
             : null,
         };
-
+  
         if (modalType === "add") {
           dispatch(createAppointment(formattedValues)) // Send new appointment data
             .then(() => {
-              message.success("Appointment added successfully.");
+              // Show success notification
+              notification.success({
+                message: "Appointment added",
+                description: "Appointment added successfully",
+              });
+              // Fetch the updated appointments list after adding
+              dispatch(getAllAppointment());
               setIsModalVisible(false);
               setEditingKey("");
             })
             .catch((error) => {
-              message.error(`Failed to add appointment: ${error.message}`);
+              // Show error notification
+              notification.error({
+                message: "Failed to add appointment",
+                description: `Error: ${error.message}`,
+              });
             });
         } else if (modalType === "edit") {
-          const newData = data.map((item) =>
-            item.key === currentRecord.key
-              ? { ...item, ...formattedValues }
-              : item
-          );
-          setData(newData);
+          const updatedData = {
+            ...currentRecord, 
+            ...formattedValues
+          };
+  
+          // Update appointment in the database
+          dispatch(updateAppointment({updatedData,id:updatedData._id}))
+            .then(() => {
+              // Log updated data to the console
+              console.log("Updated Appointment: ", updatedData);
 
-          message.success("Row updated successfully.");
-          setIsModalVisible(false);
-          setEditingKey("");
-          setCurrentRecord(null);
+              // Show success notification
+              notification.success({
+                message: "Appointment updated",
+                description: "Appointment updated successfully",
+              });
+  
+              // Fetch the updated appointments list after updating
+              dispatch(getAllAppointment());
+              setIsModalVisible(false);
+              setEditingKey("");
+              setCurrentRecord(null);
+            })
+            .catch((error) => {
+              // Show error notification
+              notification.error({
+                message: "Failed to update appointment",
+                description: `Error: ${error.message}`,
+              });
+            });
         }
-
-        console.log("Updated Data: ", data); // Log updated data
       })
       .catch((info) => {
         console.log("Validate Failed:", info);
       });
   };
-
+  
   const handleModalCancel = () => {
     setIsModalVisible(false);
     setEditingKey("");
@@ -170,14 +273,10 @@ const Appointment = () => {
             >
               Edit
             </Button>
-            <Popconfirm
-              title="Sure to delete?"
-              onConfirm={() => handleDelete(record.key)}
-            >
-              <Button type="link" danger>
+       <Button type="link" danger onClick={() => handleDelete(record)}>
                 Delete
               </Button>
-            </Popconfirm>
+            
           </span>
         );
       },
@@ -269,6 +368,7 @@ const Appointment = () => {
             columns={mergedColumns}
             dataSource={appointments}
             pagination={false}
+            loading={isLoading}
             footer={() => (
               <div style={{ textAlign: "right", marginRight: "10%" }}>
                 <strong>Total Amount: </strong>
@@ -285,15 +385,17 @@ const Appointment = () => {
         onOk={handleModalOk}
         onCancel={handleModalCancel}
       >
-        <Form form={form} layout="vertical">
+        <Form form={form} layout="horizontal" loading={isLoading}>
           <Form.Item
             name="doctorName"
             label="Doctor"
             rules={[{ required: true, message: 'Please select a doctor!' }]}
           >
             <Select placeholder="Select a doctor">
-              <Option value="Dr. John Smith">Dr. John Smith</Option>
-              <Option value="Dr. Jane Doe">Dr. Jane Doe</Option>
+            {allDoctors?.data?.map((dn)=>{
+
+              return    <Option value={dn.First_Name}>{dn.First_Name}</Option>
+            })}
             </Select>
           </Form.Item>
           <Form.Item
@@ -302,8 +404,12 @@ const Appointment = () => {
             rules={[{ required: true, message: 'Please select a patient!' }]}
           >
             <Select placeholder="Select a patient">
-              <Option value="Alice Johnson">Alice Johnson</Option>
-              <Option value="Bob Brown">Bob Brown</Option>
+            {allPateint?.data?.map((pn)=>{
+
+              return   <Option value={pn.First_Name}>{pn.First_Name}</Option>
+            })}
+            
+           
             </Select>
           </Form.Item>
           <Form.Item

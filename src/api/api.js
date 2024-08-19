@@ -176,7 +176,7 @@ export const getAllDoctors = createAsyncThunk(
   'doctors/getAllDoctors',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await api.get('http://localhost:8000/api/getAlldoctors');
+      const response = await api.get('https://services-uk8v.onrender.com/api/getAlldoctors');
       return response.data; // Assuming your API returns the doctors under a 'data' field
     } catch (error) {
       console.error("Error fetching doctors:", error);
@@ -190,7 +190,7 @@ export const getDoctorById = createAsyncThunk(
   'doctors/getDoctorById',
   async (id, { rejectWithValue }) => {
     try {
-      const response = await api.get(`http://localhost:8000/api/doctors/${id}`);
+      const response = await api.get(`https://services-uk8v.onrender.com/api/doctors/${id}`);
       return response.data;
     } catch (error) {
       console.error("Error fetching doctor by ID:", error);
@@ -205,7 +205,7 @@ export const saveDoctor = createAsyncThunk(
   async (doctorData, { rejectWithValue }) => {
     console.log(doctorData.values);
     try {
-      const response = await api.post('http://localhost:8000/api/createDoctors', doctorData.values);
+      const response = await api.post('https://services-uk8v.onrender.com/api/createDoctors', doctorData.values);
       return response.data;
     } catch (error) {
       console.error("Error creating doctor:", error);
@@ -220,7 +220,7 @@ export const updateDoctor = createAsyncThunk(
   async ({ id, doctorData }, { rejectWithValue }) => {
     console.log(doctorData);
     try {
-      const response = await api.put(`http://localhost:8000/api/updateDoctors/${id}`, doctorData);
+      const response = await api.put(`https://services-uk8v.onrender.com/api/updateDoctors/${id}`, doctorData);
       return response.data;
     } catch (error) {
       console.error("Error updating doctor:", error);
@@ -250,7 +250,7 @@ export const createAppointment = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       // Send the data as is to the backend
-      const response = await axios.post('http://localhost:8000/api/createAppointment', data);
+      const response = await axios.post('https://services-uk8v.onrender.com/api/createAppointment', data);
       return response.data; // Return the created appointment
     } catch (error) {
       console.error("Error creating appointment:", error);
@@ -266,7 +266,7 @@ export const getAllAppointment = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       // Send the data as is to the backend
-      const response = await axios.get('http://localhost:8000/api/getAllAppointments');
+      const response = await axios.get('https://services-uk8v.onrender.com/api/getAllAppointments');
       return response.data; // Return the created appointment
     } catch (error) {
       console.error("Error creating appointment:", error);
@@ -278,9 +278,9 @@ export const getAllAppointment = createAsyncThunk(
 // Update an existing appointment
 export const updateAppointment = createAsyncThunk(
   'appointments/updateAppointment',
-  async ({ id, appointmentData }, { rejectWithValue }) => {
+  async ({ id,updatedData }, { rejectWithValue }) => {
     try {
-      const response = await axios.put(`http://localhost:8000/api/appointments/${id}`, appointmentData);
+      const response = await axios.put(`https://services-uk8v.onrender.com/api/updateAppointment/${id}`, updatedData);
       return response.data;
     } catch (error) {
       console.error("Error updating appointment:", error);
@@ -296,7 +296,7 @@ export const deleteAppointment = createAsyncThunk(
   'appointments/deleteAppointment',
   async (id, { rejectWithValue }) => {
     try {
-      const response = await axios.delete(`http://localhost:8000/api/appointments/${id}`);
+      const response = await axios.delete(`https://services-uk8v.onrender.com/api/deleteAppointment/${id}`);
       return response.data;
     } catch (error) {
       console.error("Error deleting appointment:", error);
@@ -328,7 +328,7 @@ export const getAllPayments = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       // Send the data as is to the backend
-      const response = await axios.get('http://localhost:8000/api/getPayments');
+      const response = await axios.get('https://services-uk8v.onrender.com/api/getPayments');
       return response.data; // Return the created appointment
     } catch (error) {
       console.error("Error creating appointment:", error);
@@ -555,17 +555,48 @@ builder
 builder
       // Handle Create Appointment
       .addCase(createAppointment.pending, (state) => {
-        state.loading = true;
+        state.isLoading = true;
         state.error = null;
       })
       .addCase(createAppointment.fulfilled, (state, action) => {
-        state.loading = false;
+        state.isLoading = false;
         state.appointments.push(action.payload);
       })
       .addCase(createAppointment.rejected, (state, action) => {
-        state.loading = false;
+        state.isLoading = false;
         state.error = action.payload;
       })
+
+
+      builder
+      // Handle Create Appointment
+      .addCase(updateAppointment.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(updateAppointment.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.appointments.push(action.payload);
+      })
+      .addCase(updateAppointment.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+
+      // builder
+      // // Handle Create Appointment
+      // .addCase(deleteAppointment.pending, (state) => {
+      //   state.isLoading = true;
+      //   state.error = null;
+      // })
+      // .addCase(deleteAppointment.fulfilled, (state, action) => {
+      //   state.isLoading = false;
+      //   state.appointments=action.payload
+      // })
+      // .addCase(deleteAppointment.rejected, (state, action) => {
+      //   state.isLoading = false;
+      //   state.error = action.payload;
+      // })
 
       builder
       // Handle getAll Appointment
@@ -597,6 +628,17 @@ builder
         state.loading = false;
         state.error = action.payload;
       })
+
+      builder
+      .addCase(deletePayment.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(deletePayment.fulfilled, (state, action) => {
+        state.isLoading = false;
+        // state.payments=action.payload;
+      })
+      
     },
 });
 

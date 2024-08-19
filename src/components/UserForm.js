@@ -10,6 +10,7 @@ import {
   Select,
   message,
   Spin,
+  notification,
 } from "antd";
 import "./Userform.css"; // Import your custom CSS file
 import { useDispatch, useSelector } from "react-redux";
@@ -87,19 +88,38 @@ const MyForm = () => {
   const onFinish = async (values) => {
     try {
       if (isEditing) {
-        await dispatch(updatePateint({ history, values })); // Call updatePatient if editing
-        message.success("Patient updated successfully");
+        await dispatch(updatePateint({ history, values }));
+        
+        // Success notification for patient update
+        notification.success({
+          message: 'Patient Updated',
+          description: 'Patient information updated successfully.',
+          placement: 'topRight',
+        });
         console.log("Patient updated:", values);
       } else {
         await dispatch(savePateint({ history, values }));
-
-        message.success("Patient added successfully");
+        
+        // Success notification for patient addition
+        notification.success({
+          message: 'Patient Added',
+          description: 'New patient added successfully.',
+          placement: 'topRight',
+        });
         console.log("Patient saved:", values);
       }
     } catch (error) {
+      // Error notification for failure
+      notification.error({
+        message: 'Error',
+        description: 'Failed to save/update patient information. Please try again later.',
+        placement: 'topRight',
+      });
       console.error("Error saving/updating patient:", error);
     }
   };
+
+  
 
   return (
     <>

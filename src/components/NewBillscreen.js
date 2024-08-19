@@ -11,7 +11,9 @@ import {
   Select,
   Flex,
   message,
-  FloatButton
+  FloatButton,
+  Spin,
+  notification
 } from "antd";
 import Cascader from 'antd/es/cascader';
 
@@ -20,7 +22,7 @@ import jsPDF from "jspdf";
 import "jspdf-autotable";
 import "./BillingForm.css";
 import PDFgenerator from "../Utilities/PDFgenerator";
-import { getAllBills, getAllPateints, saveBill, updateBill } from "../api/api";
+import { getAllBills, getAllPateints, getAllPayments, saveBill, updateBill } from "../api/api";
 import { FileTextTwoTone } from "@ant-design/icons";
 import { useParams,Link ,useHistory} from "react-router-dom/cjs/react-router-dom.min";
 import moment from "moment";
@@ -38,6 +40,7 @@ const NewBillscreen = () => {
   const [totalAmount, setTotalAmount] = useState(0);
   const [patientBillData ,setpatientBillData]=useState()
 const [patientDetail ,setpatientDetail] = useState()
+const [lastPayment,setLastPayment] = useState()
 
 
 console.log(patientDetail);
@@ -46,9 +49,12 @@ const history = useHistory()
 
 
   const dispatch = useDispatch();
-  const { allPateint, isLoading, BillDetails } = useSelector(
+  const { allPateint, isLoading, BillDetails,payments } = useSelector(
     (state) => state.products
   );
+console.log(payments.data);
+
+
 
 
   const [billHeader,setBillheader] = useState({})
@@ -69,14 +75,21 @@ const [billtable,setbilltable] = useState()
   useEffect(() => {
     dispatch(getAllBills());
     dispatch(getAllPateints())
-
-
+   
   }, [dispatch]);
+
 
  
 
 
   useEffect(() => {
+
+    const filteredPayments = payments.data?.filter(payment => payment.billId === id) || [];
+// console.log(filteredPayments[filteredPayments.length-1]);
+setLastPayment(filteredPayments[filteredPayments.length-1])
+console.log(lastPayment?.paymentStatus);
+    dispatch(getAllPayments())
+
     if (id && BillDetails?.data) {
       const billData = Array.isArray(BillDetails?.data) ? BillDetails.data.find((bill) => bill?._id === id) : null;
       const pid = Array.isArray(allPateint?.data) ? allPateint.data.find((bill) => bill?._id === BillDetails.patient_id) : null;
@@ -101,17 +114,16 @@ console.log(pid);
       PaymentDueDate: billData.PaymentDueDate
       ? moment(billData.PaymentDueDate)
       : null,
-
+      paymentStatus:   lastPayment?.paymentStatus
+      ?  lastPayment?.paymentStatus
+      : null,
+    
         });
         setData(billData?.lineItems || []);
         calculateTotalAmount();
       }
     }
   }, [id, BillDetails,dispatch]);
-
-  useEffect(() => {
-    // console.log('BillDetails?.data:', BillDetails?.data);
-  }, [BillDetails]);
 
 
 
@@ -289,36 +301,51 @@ return headerData;
   
   
   
-   const handleSaveBill = async () => {
-  
+  const handleSaveBill = async () => {
+    try {
       const headerData = saveHeaderData();
       await saveTableData(editingKey);
       form.getFieldValue(['qty', 'amount', 'discount', 'netAmount', 'itemName']); 
-  //     console.log("headerData");
-  // console.log(headerData);
-      if (id && patientBillData ) {
+  
+      if (id && patientBillData) {
         // Update existing bill
-    
-     dispatch(updateBill({
-       
-          headerData: {...headerData,_id:patientBillData._id,patient_id:patientBillData?.patient_id},
-          tableData:billtable
+        await dispatch(updateBill({
+          headerData: { ...headerData, _id: patientBillData._id, patient_id: patientBillData?.patient_id },
+          tableData: billtable
         }));
+  
+        // Success notification for bill update
+        notification.success({
+          message: 'Bill Updated',
+          description: 'The bill has been updated successfully.',
+          placement: 'topRight',
+        });
         console.log("Bill updated successfully.");
-        message.success("Bill updated successfully.");
       } else {
         // Add new bill
-        dispatch(saveBill({
+        await dispatch(saveBill({
           headerData: headerData,
           tableData: billtable
         }));
-        console.log("Bill added successfully.");
-        message.success("Bill added successfully.");
-      }
-    
-  };
   
-
+        // Success notification for adding new bill
+        notification.success({
+          message: 'Bill Added',
+          description: 'The new bill has been added successfully.',
+          placement: 'topRight',
+        });
+        console.log("Bill added successfully.");
+      }
+    } catch (error) {
+      // Error notification for save/update failure
+      notification.error({
+        message: 'Error',
+        description: 'There was an error saving or updating the bill. Please try again.',
+        placement: 'topRight',
+      });
+      console.error("Error saving/updating bill:", error);
+    }
+  };
   const columns = [
     {
       title: "Sr.No",
@@ -459,8 +486,31 @@ return headerData;
   });
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return(
+
+      <>
+    <div
+    style={{
+      position: "absolute",
+      top: "50%",
+      left: "50%",
+      transform: "translate(-50%, -50%)",
+      zIndex: 9999,
+      backgroundColor: "rgba(255, 255, 255, 0.5)",
+      padding: "20px",
+      borderRadius: "8px",
+    }}
+  >
+    <Spin size="large" />
+  </div>
+
+    </>  
+    )
+    
+     
+
   }
+
 
   return (
     <>
@@ -536,7 +586,17 @@ return headerData;
                 />
               </Form.Item>
             </Col>
-          </Row>
+            <Col span={6}>
+            <Form.Item label="Payment status" name="paymentStatus">
+              <Input
+                style={{ width: "100%" }}
+               
+                disabled
+                value={lastPayment?.paymentStatus}
+              />
+            </Form.Item>
+          </Col>
+            </Row>
 
           <Row gutter={16}>
             <Col span={18}>

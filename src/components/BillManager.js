@@ -264,7 +264,7 @@ const BillManager = () => {
 
 useEffect(()=>{
   getSumOfBillAmount()
-},[dispatch])
+},[])
 
   const handleExportToExcel = () => {
     const worksheet = XLSX.utils.json_to_sheet(filteredData);

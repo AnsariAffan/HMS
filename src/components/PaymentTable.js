@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Button, Table, Popconfirm, FloatButton } from 'antd';
+import { Modal, Button, Table, FloatButton, notification } from 'antd'; // Import notification
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllPayments, deletePayment } from '../api/api';
 import PaymentModal from './PaymentModal';
@@ -8,8 +8,7 @@ import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
-import { CustomerServiceOutlined, CommentOutlined
- } from '@ant-design/icons';
+import { CommentOutlined } from '@ant-design/icons';
 
 const PaymentTable = ({ billingId }) => {
   const { id: urlId } = useParams();
@@ -18,7 +17,7 @@ const PaymentTable = ({ billingId }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState(null);
   const dispatch = useDispatch();
-  const { payments } = useSelector((state) => state.products);
+  const { payments, isLoading } = useSelector((state) => state.products);
 
   useEffect(() => {
     if (isModalOpen) {
@@ -40,9 +39,25 @@ const PaymentTable = ({ billingId }) => {
     setIsModalOpen(true);
   };
 
+
+
   const handleDelete = (record) => {
-    dispatch(deletePayment(record._id));
-    dispatch(getAllPayments());
+    dispatch(deletePayment(record._id))
+      .then(() => {
+        // Show success notification
+      notification.error({
+        message: 'payment deleted',
+        description: 'Payment has been deleted successfully.',
+      });
+      dispatch(getAllPayments())
+      })
+      .catch((error) => {
+        // Show error notification
+      notification.error({
+        message: 'Error',
+        description: 'Failed to delete the payment. Please try again.',
+      });
+      });
   };
 
   const filteredPayments = payments.data?.filter(payment => payment.billId === id) || [];
@@ -82,15 +97,9 @@ const PaymentTable = ({ billingId }) => {
       title: 'Actions',
       key: 'actions',
       render: (text, record) => (
-        <div>
-         
-          <Popconfirm
-            title="Are you sure to delete this payment?"
-            onConfirm={() => handleDelete(record)}
-          >
-            <Button type="danger">Delete</Button>
-          </Popconfirm>
-        </div>
+        <Button type="danger" loading={isLoading} onClick={() => handleDelete(record)}>
+          Delete
+        </Button>
       ),
     },
   ];
@@ -130,44 +139,34 @@ const PaymentTable = ({ billingId }) => {
         View Payments
       </Button>
       <Modal
-        title="Payments Table"
+        title="Payments"
         open={isModalOpen}
         onCancel={handleCancel}
         footer={null}
         width={800}
+        loading={isLoading}
       >
-      
         <Table
           dataSource={filteredPayments}
           columns={columns}
           rowKey="_id"
           pagination={{ pageSize: 10 }}
         />
-      
-     
-      <FloatButton.Group
-        trigger="hover"
-        type="primary"
-        style={{
-          insetInlineEnd: 94,
-        }}
-      
-      >
-        <FloatButton onClick={exportToPDF}/>
-        <FloatButton onClick={exportToExcel} icon={<CommentOutlined />} />
-      </FloatButton.Group>
-
+        <FloatButton.Group
+          trigger="hover"
+          type="primary"
+          style={{ position: 'absolute', bottom: 10, right: 10 }}
+        >
+          <FloatButton onClick={exportToPDF} />
+          <FloatButton onClick={exportToExcel} icon={<CommentOutlined />} />
+        </FloatButton.Group>
       </Modal>
       {selectedRecord && (
-        
         <PaymentModal
           record={selectedRecord}
           visible={isModalOpen}
           onCancel={handleCancel}
-          
         />
-        
-   
       )}
     </>
   );

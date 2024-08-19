@@ -11,7 +11,9 @@ import {
   Select,
   Flex,
   message,
-  FloatButton
+  FloatButton,
+  Spin,
+  notification
 } from "antd";
 import Cascader from 'antd/es/cascader';
 
@@ -20,7 +22,7 @@ import jsPDF from "jspdf";
 import "jspdf-autotable";
 import "./BillingForm.css";
 import PDFgenerator from "../Utilities/PDFgenerator";
-import { getAllBills, getAllPateints, saveBill, updateBill } from "../api/api";
+import { getAllBills, getAllPateints, getAllPayments, saveBill, updateBill } from "../api/api";
 import { FileTextTwoTone } from "@ant-design/icons";
 import { useParams,Link ,useHistory} from "react-router-dom/cjs/react-router-dom.min";
 import moment from "moment";
@@ -31,6 +33,10 @@ const { Option } = Select;
 const BillingForm = () => {
   const {id} = useParams();
   console.log(id);
+  const { allPateint, isLoading, BillDetails,payments } = useSelector(
+    (state) => state.products
+  );
+  // console.log(payments.data);
   const [form] = Form.useForm();
   const [data, setData] = useState([]);
   const [billEdit, setbillEdit] = useState("");
@@ -38,15 +44,15 @@ const BillingForm = () => {
   const [totalAmount, setTotalAmount] = useState(0);
   const [patientBillData ,setpatientBillData]=useState()
 const [patientDetail ,setpatientDetail] = useState()
+const [lastPayment,setLastPayment] = useState()
+const [billingIdforPayment,setBillingIdforPayment] = useState()
 console.log(patientBillData?._id);
 
 const history = useHistory()
-
+console.log(payments.data);
 console.log(id);
   const dispatch = useDispatch();
-  const { allPateint, isLoading, BillDetails } = useSelector(
-    (state) => state.products
-  );
+
 
 // console.log(BillDetails?.data);
   const [billHeader,setBillheader] = useState({})
@@ -66,62 +72,64 @@ const [billtable,setbilltable] = useState()
 
   useEffect(() => {
     dispatch(getAllBills());
+    dispatch(getAllPayments())
+
   }, [dispatch]);
 
-  // useEffect(() => {
-  //   if (allPateint && allPateint.data && id) {
-  //     const patientData = allPateint.data.find((patient) => patient._id === id);
-  //     if (patientData) {
-  //   console.log(patientData);
-  //       form.setFieldsValue({
-  //         FIRST_NAME: patientData.First_Name
-       
-  //       });
-  //     }
-  //   }
-  // }, [id, allPateint, form]);
+
 
   useEffect(() => {
+
+      
+ 
+
+
     if (id && BillDetails?.data) {
-      const billData = Array.isArray(BillDetails?.data) ? BillDetails.data.find((bill) => bill?.patient_id === id) : null;
+      const billData = Array.isArray(BillDetails?.data) ? BillDetails?.data.find((bill) => bill?.patient_id === id) : null;
     
       setpatientBillData(billData)
+      setBillingIdforPayment(billData?._id)
+      console.log(billingIdforPayment);
      console.log(billData);
       if (billData) {
         setBillheader(billData.headerData || {});
         setbilltable(billData.tableData || []);
         form.setFieldsValue({
           // ...billData.headerData,
-           patient_id: billData.patient_id,
+           patient_id: billData?.patient_id,
       // PaymentDueDate: billData.PaymentDueDate ,
       // billDate: billData.billDate,
       Bill_ID: billData._id,
       Tax: billData.Tax,
       totalBillAmount: totalAmount,
-      FIRST_NAME: billData.First_Name,
-      Contact_Number:billData.Contact_Number,
+      FIRST_NAME: billData?.First_Name,
+      Contact_Number:billData?.Contact_Number,
       
-      billDate: billData.billDate
+      billDate: billData?.billDate
       ? moment(billData.billDate)
       : null,
-      PaymentDueDate: billData.PaymentDueDate
+      PaymentDueDate: billData?.PaymentDueDate
       ? moment(billData.PaymentDueDate)
       : null,
-
+paymentStatus: lastPayment?.paymentStatus
+      ?  lastPayment?.paymentStatus
+      : null,
         });
         
         setData(billData?.lineItems || []);
         calculateTotalAmount();
+
+        const filteredPayments = payments.data?.filter(payment => payment.billId === billingIdforPayment);
+        console.log(filteredPayments);
+       setLastPayment(filteredPayments[filteredPayments?.length-1])
+        // console.log(lastPayment?.paymentStatus);
+            dispatch(getAllPayments())
+        
+
       }
     }
-  }, [id, BillDetails, form,dispatch]);
-
-  useEffect(() => {
-    // console.log('BillDetails?.data:', BillDetails?.data);
-  }, [BillDetails]);
-
-
-
+  }, [id, BillDetails,dispatch]);
+  
 
   //defualting Login on bill screen from patient table
  
@@ -134,23 +142,6 @@ const [billtable,setbilltable] = useState()
 
   const cancel = () => {
     setEditingKey("");
-  };
-
-
-
-  const handleAdd = () => {
-    const newRow = {
-      key: data.length + 1,
-      srNo: data.length + 1,
-      qty: "",
-      amount: "",
-      discount: "",
-      netAmount: "",
-      itemName: [],
-    };
-    setData([...data, newRow]);
-    setEditingKey(newRow.key);
-    form.resetFields(['qty', 'amount', 'discount', 'netAmount', 'itemName']); // Reset only row fields
   };
 
   const handleDelete = (key) => {
@@ -175,6 +166,23 @@ const [billtable,setbilltable] = useState()
     // Optionally, you can show a success message
     message.success("Item deleted successfully.");
   };
+
+  const handleAdd = () => {
+    const newRow = {
+      key: data.length + 1,
+      srNo: data.length + 1,
+      qty: "",
+      amount: "",
+      discount: "",
+      netAmount: "",
+      itemName: [],
+    };
+    setData([...data, newRow]);
+    setEditingKey(newRow.key);
+    form.resetFields(['qty', 'amount', 'discount', 'netAmount', 'itemName']); // Reset only row fields
+  };
+
+
   
 
   const calculateTotalAmount = () => {
@@ -185,43 +193,15 @@ const [billtable,setbilltable] = useState()
     setTotalAmount(total);
   };
 
-  // const saveHeaderData = () => {
-  //   const patientData = allPateint?.data?.find((patient) => patient?._id === id);
-  //   const headerData = {
-   
-   
-  //     patient_id: id,
-  //     PaymentDueDate: form.getFieldValue("PaymentDueDate") ,
-  //     billDate: form.getFieldValue("billDate"),
-  //     Tax: form.getFieldValue("Tax"),
-  //     totalBillAmount: totalAmount,
-
-  //      FIRST_NAME:   form.setFieldsValue({
-  //       FIRST_NAME: patientData.First_Name
-     
-  //     }),
-    
-  //     // Contact_Number: form.getFieldValue("Contact_Number"),
-  //     Contact_Number:   form.setFieldsValue({
-  //       Contact_Number: patientData.Contact_Number 
-     
-  //     })
-  //   };
-
-    
-   
-  //   setBillheader(headerData);
-  //   console.log("Header Data:", headerData);
-  //   return headerData;
-  // };
+  
 
   const saveHeaderData = () => {
       const patientData = allPateint?.data?.find((patient) => patient?._id === id);
       setpatientDetail(patientData)
        // Default the form fields if needed
   form.setFieldsValue({
-    FIRST_NAME: patientData.First_Name,
-    Contact_Number: patientData.Contact_Number,
+    FIRST_NAME: patientData?.First_Name,
+    Contact_Number: patientData?.Contact_Number,
   });
 
 console.log(patientData);
@@ -231,7 +211,7 @@ console.log(patientData);
     billDate: form.getFieldValue("billDate"),
     Tax: form.getFieldValue("Tax"),
     totalBillAmount: totalAmount,
-    FIRST_NAME: patientData.First_Name,// Directly assign patient data
+    FIRST_NAME: patientData?.First_Name,// Directly assign patient data
     Contact_Number: patientData.Contact_Number // Directly assign patient data
   };
 
@@ -244,7 +224,7 @@ console.log(patientData);
 };
 
 
-  
+
   const saveTableData = async (key) => {
     try {
       const rowData = await form.validateFields();
@@ -271,12 +251,13 @@ console.log(patientData);
       }));
   
       setbilltable(formattedTableData);
-     
+  
       console.log("Table Data:", formattedTableData);
     } catch (errInfo) {
       console.log("Validate Failed:", errInfo);
     }
   };
+  
 
   useEffect(()=>{
     saveHeaderData();
@@ -284,33 +265,100 @@ console.log(patientData);
   },[id && patientBillData])
   
 
-   const handleSaveBill = async () => {
+  useEffect(() => {
+    if (id && BillDetails?.data) {
+      const billData = Array.isArray(BillDetails?.data)
+        ? BillDetails.data.find((bill) => bill?.patient_id === id)
+        : null;
   
+      setpatientBillData(billData);
+      setBillingIdforPayment(billData?._id);
+  
+      if (billData) {
+        setBillheader(billData.headerData || {});
+        setbilltable(billData.tableData || []);
+  
+        // Fetch the last payment for the current billing ID
+        const filteredPayments =
+          payments.data?.filter(
+            (payment) => payment.billId === billData?._id
+          ) || [];
+        const lastPayment = filteredPayments[filteredPayments.length - 1];
+        setLastPayment(lastPayment);
+  
+        form.setFieldsValue({
+          patient_id: billData?.patient_id,
+          Bill_ID: billData._id,
+          Tax: billData.Tax,
+          totalBillAmount: totalAmount,
+          FIRST_NAME: billData?.First_Name,
+          Contact_Number: billData?.Contact_Number,
+          billDate: billData?.billDate ? moment(billData.billDate) : null,
+          PaymentDueDate: billData?.PaymentDueDate
+            ? moment(billData.PaymentDueDate)
+            : null,
+          paymentStatus: lastPayment?.paymentStatus || null, // Set payment status here
+        });
+  
+        setData(billData?.lineItems || []);
+        calculateTotalAmount();
+      }
+    }
+  }, [dispatch]);
+  
+  const [paymentStatus, setPaymentStatus] = useState('');
+  useEffect(() => {
+    if (lastPayment) {
+      if (lastPayment.openAmount === 0) {
+        setPaymentStatus('Fully Paid');
+      } else {
+        setPaymentStatus('Partially Paid');
+      }
+    }
+  }, [lastPayment]);
+  const handleSaveBill = async () => {
+    try {
       const headerData = saveHeaderData();
-      await saveTableData(editingKey);
-      form.getFieldValue(['qty', 'amount', 'discount', 'netAmount', 'itemName']); 
-  //     console.log("headerData");
-  // console.log(headerData);
-      if (id && patientBillData ) {
+      await saveTableData(editingKey); // Ensure table data is saved correctly
+  
+      if (id && patientBillData) {
         // Update existing bill
-    
-     dispatch(updateBill({
-       
-          headerData: {...headerData,_id:patientBillData._id},
-          tableData:billtable
+        await dispatch(updateBill({
+          headerData: { ...headerData, _id: patientBillData._id },
+          tableData: billtable // Ensure table data is included
         }));
+  
+        // Success notification for bill update
+        notification.success({
+          message: 'Bill Updated',
+          description: 'The bill has been updated successfully.',
+          placement: 'topRight',
+        });
         console.log("Bill updated successfully.");
-        message.success("Bill updated successfully.");
       } else {
         // Add new bill
-        dispatch(saveBill({
+        await dispatch(saveBill({
           headerData: headerData,
-          tableData: billtable
+          tableData: billtable // Ensure table data is included
         }));
+  
+        // Success notification for adding new bill
+        notification.success({
+          message: 'Bill Added',
+          description: 'The new bill has been added successfully.',
+          placement: 'topRight',
+        });
         console.log("Bill added successfully.");
-        message.success("Bill added successfully.");
       }
-    
+    } catch (error) {
+      // Error notification for save/update failure
+      notification.error({
+        message: 'Error',
+        description: 'There was an error saving or updating the bill. Please try again.',
+        placement: 'topRight',
+      });
+      console.error("Error saving/updating bill:", error);
+    }
   };
   
   const handleGenerateBill = () => {
@@ -319,8 +367,8 @@ console.log(patientData);
       PaymentDueDate: form.getFieldValue("PaymentDueDate"),
       billDate: form.getFieldValue("billDate"),
       totalBillAmount: totalAmount,
-      patient_id: patientBillData.patientId,
-      FIRST_NAME: patientBillData.FIRST_NAME,
+      patient_id: patientBillData?.patientId,
+      FIRST_NAME: patientBillData?.FIRST_NAME,
     };
 
     const billingDetails = data.map((item) => ({
@@ -478,7 +526,29 @@ console.log(patientData);
   });
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return(
+
+      <>
+    <div
+    style={{
+      position: "absolute",
+      top: "50%",
+      left: "50%",
+      transform: "translate(-50%, -50%)",
+      zIndex: 9999,
+      backgroundColor: "rgba(255, 255, 255, 0.5)",
+      padding: "20px",
+      borderRadius: "8px",
+    }}
+  >
+    <Spin size="large" />
+  </div>
+
+    </>  
+    )
+    
+     
+
   }
 
   return (
@@ -555,6 +625,17 @@ console.log(patientData);
                 />
               </Form.Item>
             </Col>
+          
+            <Col span={6}>
+            <Form.Item label="Payment status" name="paymentStatus">
+              <Input
+                style={{ width: "100%" }}
+               
+                disabled
+                value={lastPayment?.paymentStatus}
+              />
+            </Form.Item>
+          </Col>
           </Row>
 
           <Row gutter={16}>
