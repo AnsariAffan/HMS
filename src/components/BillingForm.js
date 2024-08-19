@@ -563,7 +563,7 @@ console.log(patientData);
            New Bill
           </h2>
         </flex>
-        <Link to="" style={{padding: "20px"}}>{patientDetail?._id}</Link>
+        <Link to="" style={{padding: "20px"}}>{patientDetail?.customId}</Link>
         </flex>
         <Form form={form} layout="vertical">
           <Row gutter={16}>

@@ -12,11 +12,12 @@ import {
   Modal,
   message,
   notification,
+  FloatButton,
 } from "antd";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import { createAppointment, deleteAppointment, getAllAppointment, getAllDoctors, getAllPateints, updateAppointment } from "../api/api";
-
+import { PlusOutlined} from '@ant-design/icons';
 const { Option } = Select;
 
 const Appointment = () => {
@@ -350,13 +351,7 @@ const Appointment = () => {
 
   return (
     <>
-      <Row gutter={16}>
-        <Col span={24}>
-          <Button type="primary" onClick={handleAdd}>
-            Add Row
-          </Button>
-        </Col>
-      </Row>
+   
       <Row gutter={16} style={{ marginTop: 16 }}>
         <Col span={24}>
           <Table
@@ -369,6 +364,7 @@ const Appointment = () => {
             dataSource={appointments}
             pagination={false}
             loading={isLoading}
+        
             footer={() => (
               <div style={{ textAlign: "right", marginRight: "10%" }}>
                 <strong>Total Amount: </strong>
@@ -376,6 +372,7 @@ const Appointment = () => {
               </div>
             )}
           />
+          <FloatButton onClick={handleAdd} icon={<PlusOutlined/>} type="primary" style={{ insetInlineEnd: 50 }} />
         </Col>
       </Row>
 

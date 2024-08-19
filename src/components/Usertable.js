@@ -173,7 +173,7 @@ const Usertable = () => {
       dataIndex: "_id",
       key: "patentId",
       render: (text, record) => (
-        <Link to={`pateint/${record.customId}`}>{`${record.customId}`}</Link>
+        <Link to={`pateint/${record._id}`}>{`${record.customId}`}</Link>
       ),
     },
     {
